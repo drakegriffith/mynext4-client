@@ -1,0 +1,28 @@
+dec 4 checklist 
+    p0 (misc)
+        -transfer all .tsx to .jsx files @done 12:29pm
+    p1 (clean up / optimization)
+        -delete unneeded component pages @done 10:24am
+        -remove unused import statements @done 10:48am
+        -remove unused shells from files @done 11:12am
+    p2 (page generation)
+        -create new about us and product @done 9:18pm
+            -fill in five sections still
+        -school system and student pages @done 1:58am
+            -fill in five sections still
+        -develop static site 4 dashboard @done 4:07am
+
+dec 5 checklist 
+    p0 (misc)
+        -landing v3.1 edits for tomorrow @done 2:03am
+        -new nav bar with routes working @done 7:50pm
+    p1 (page generation p2)
+        -complete colored background all @done 1:44am
+            -course college & career not @done 4:01am
+        -course college and course check @done 3:27am
+        -develop dynamic site: dashboard 
+    p2 (site sync) *** moved to tomorrow
+        -connect all buttons on site pgs
+        -add animations on event handles
+        -ensure sign up and sign in work
+        
