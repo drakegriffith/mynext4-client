@@ -1,0 +1,132 @@
+* {
+    font-family: 'Sora', cursive;
+      margin: 0;
+    box-sizing: border-box;
+  }
+
+.side-bar {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 18em;
+    border: 1px solid black;
+    border-radius: 20px 20px 20px 20px; 
+   
+}
+
+.side-bar > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 2.6em;
+    height: 8em; 
+    }
+
+
+.top-nav {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    width: 100%;
+    height: 8vh;
+    background-image: linear-gradient(90deg, #99d98c 0%, #76C893 20%, #34A0A4 40%, #1A759F 60%, #184E77 100%);     
+    
+}
+
+.top-nav > li {
+    width: 7vw;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    list-style-type: none;
+   
+    padding: 6px;
+    margin: 0 3px;
+    border-radius: 15px 15px 15px 15px;
+
+}
+
+.top-nav > Link {
+    text-decoration: none;
+}
+
+.top-nav > h3 {
+    margin: 0;
+}
+  
+
+#link-products {
+    font-size: 18px;
+}
+
+#link-students {
+    font-size: 18px
+}
+#link-about {
+    font-size: 18px;
+}
+#link-schools {
+    font-size: 18px;
+}
+#link-home {
+    position: relative;
+    top: 45%;
+    margin: 0 10px;
+    width: 4vw;
+    height: 60px;
+   
+   
+
+}
+
+#link-signin {
+    position: absolute;
+    font-size: 18px;
+    left: 90%;
+}
+
+
+#link-demo {
+    position: absolute;
+    font-size: 18px;
+    right: 90%;
+}
+#logo-home {
+    width: 84px;
+    border: 1px solid white;
+    background-color: white;
+    padding: 5px;
+    border-radius: 40% 40% 40% 40%;
+}
+
+
+
+@media only screen and (max-width: 1440px) {
+    #logo-home {
+    width: 64px;
+    }
+    #link-demo {
+        display: none;
+    }
+    #link-signin {
+        display: none;
+    }
+    .top-nav > li {
+        width: 14vw;
+        height: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        list-style-type: none;
+       
+        padding: 6px;
+        margin: 0 3px;
+        border-radius: 15px 15px 15px 15px;
+    
+    }
+}

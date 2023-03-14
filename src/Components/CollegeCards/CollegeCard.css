@@ -1,0 +1,81 @@
+.college-card_image {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+.college-card_title {
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  width: 20%;
+  position: center;
+}
+.college-card_dataPic {
+  position: left;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  width: 1;
+  height: -1;
+}
+.college-card_ourRecommendations {
+  position: absolute;
+  left: 750px;
+  top: 800px;
+  font-size: smaller;
+  bottom: 0px;
+}
+.college-card_title {
+  position: absolute;
+  left: 240px;
+}
+.college-card_summary {
+  position: middle;
+  left: 300px;
+  right: 0px;
+  top: 1000px;
+  max-width: 1000px;
+  font-size: 18px;
+}
+.AvgEarnings {
+  position: absolute;
+  left: 1100px;
+  top: 800px;
+  font-size: smaller;
+  bottom: 0px;
+}
+.college-card_tuition {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  right: 10%;
+  width: 700px;
+}
+.college-card_applicants {
+  position: middle;
+  left: 0px;
+}
+.college-card_piechartapplicants {
+  width: 25%;
+  height: 25%;
+}
+.college-card_title {
+  position: absolute;
+  left: 22.5%;
+  right: 80%;
+}
+.college-card_salary {
+  width: 100px;
+  height: 100px;
+  color: green;
+}
+.CircularProgressbar-path {
+  stroke: green;
+  stroke-width: 5px;
+}
+.college_card_container {
+  background-image: url('../Universal/BlobBackgrounds/10.png');
+    background-size: auto;
+
+}

@@ -1,0 +1,10 @@
+
+.college-mini-container {
+    border: 1px solid black;
+    display: flex;
+  
+    max-height: 100px;
+   
+    align-items: center;
+  
+}

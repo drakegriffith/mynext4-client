@@ -1,0 +1,8 @@
+.rootRCS {
+    display: grid;
+    align-items: center;
+    position: relative;
+    width: 750px;
+    grid-auto-flow: column;
+    grid-column-gap: 20px;
+}

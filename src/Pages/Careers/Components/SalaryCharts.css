@@ -1,0 +1,21 @@
+
+.salary_charts_curve1 > p {
+    font-size: 24px;
+    font-weight: bold;
+    position: relative;
+    left: 270px;
+    padding-bottom: 50px;
+}
+
+.salary_charts_curve2 > p {
+    font-size: 24px;
+    font-weight: bold;
+    position: relative;
+    left: 270px;
+    padding-bottom: 50px;
+}
+
+.salary_charts_container {
+    display: flex;
+    flex-direction: row;
+}
