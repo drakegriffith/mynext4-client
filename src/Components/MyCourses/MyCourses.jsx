@@ -16,7 +16,7 @@ const MyCourses = ({ onSelectCollege, setCareers, colleges, removeDuplicates}) =
     }
     
     function removeCareer(career) {
-      const updatedList = colleges.filter(item => item.career_id !== career)
+      const updatedList = colleges.filter(item => item.course_id !== career)
       console.log(updatedList)
       setCareers(updatedList);
       handleDeleteCareerFeedback(career);
@@ -31,8 +31,6 @@ const MyCourses = ({ onSelectCollege, setCareers, colleges, removeDuplicates}) =
         colleges.filter((_, i) => i !== index)
       );
     };
-
-    
 
     const handleDeleteCareerFeedback = async (career) => {
       
@@ -169,16 +167,14 @@ const MyCourses = ({ onSelectCollege, setCareers, colleges, removeDuplicates}) =
       
       if (careerFilteredList.length == 0) {
         init_api();
-        await API.get(`/api/career/recommendations/${userID}/`)
+        // await API.get(`/api/courses/recommendations/${userID}/`)
+        await API.get(`/api/users/careerlist/${userID}/`)
         .then((response) => {
           console.log(response.data);
         });
       }
       
     }
-
-   
-
   
     const search = async(e) => {
       var searchVal = e.target.value;
@@ -202,8 +198,7 @@ const MyCourses = ({ onSelectCollege, setCareers, colleges, removeDuplicates}) =
       }
       setPrevSearchLength(searchVal.length);
     }
-  
-    
+       
     return (
       <div className="collegecomputer">
         
@@ -257,6 +252,7 @@ const MyCourses = ({ onSelectCollege, setCareers, colleges, removeDuplicates}) =
   
           
         </div>
+
         
        {view == "Filter" && filterVal != "Search" &&
         

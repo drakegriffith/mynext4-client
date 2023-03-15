@@ -431,18 +431,18 @@ const MyCareers = ({ onSelectCollege, setCareers, colleges, removeDuplicates}) =
       return cookieValue;
   }
   
-    const test = async() => {
-      /*
-      init_api();
-          API.get(`/api/users/careerlist/${userID}/`)
-          .then((response) => {
-              setData(response.data);
-              console.log(response.data)
-          });
-          */
-         //console.log(data);
+    // const test = async() => {
+  
+    //   init_api();
+    //       API.get(`/api/users/careerlist/${userID}/`)
+    //       .then((response) => {
+    //           setData(response.data);
+    //           console.log(response.data)
+    //       });
+          
+    //      console.log(data);
       
-    }
+    // }
   
   
     return (

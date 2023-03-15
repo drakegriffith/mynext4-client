@@ -141,6 +141,7 @@ function Login({ login, setUserID }) {
         <Nav />
 
         {auth && <Navigate to={`/MyCareers/${userID}`} />}
+        {/* {auth && <Navigate to={`/CareerSurveyOne/`} />} loads survey after you login */}
       </div>
     </div>
   )}
