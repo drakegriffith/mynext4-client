@@ -1,22 +1,25 @@
 import React, { useEffect, useState, useContext } from "react";
-import "./MyColleges.css";
+import "./MyCourses.css";
 import { SmallCourse, MediumCourse, LargeCourse } from "./course";
 import { API, init_api } from '../../API';
 import Nav from "../Nav/Nav";
+import { FocusCentered, Apps, Book, Book2  } from "tabler-icons-react";
 import { useLocation, useParams } from "react-router";
 import AuthContext from '../../Pages/LogIn/AuthContext';
 import { UserContext } from '../../Pages/App'
+import { Paper } from "@mantine/core";
+import TopNav from "../Nav/components/TopNav";
 
-const MyCourses = ({ onSelectCollege, setCareers, colleges, removeDuplicates}) => {
+const MyCourses = ({ user, onSelectCollege, setCareers, colleges, removeDuplicates}) => {
     //const [colleges, setColleges] = useState([]);
-    const userID = useParams().userID;
+    const { userID, username } = user;
     const handleRemoveDuplicate = () => {
       const uniqueList = removeDuplicates(colleges);
       setCareers(uniqueList);
     }
     
     function removeCareer(career) {
-      const updatedList = colleges.filter(item => item.career_id !== career)
+      const updatedList = colleges.filter(item => item.course_id !== career)
       console.log(updatedList)
       setCareers(updatedList);
       handleDeleteCareerFeedback(career);
@@ -53,13 +56,13 @@ const MyCourses = ({ onSelectCollege, setCareers, colleges, removeDuplicates}) =
     }
     console.log(colleges)
     return (
-      <div className="mycolleges">
-        <button onClick={handleRemoveDuplicate} > Handler </button>
+      <Paper shadow="xl" className="mycolleges" style={{backgroundColor: 'white'}}>
+      
         <div className="mycolleges-header">
-          <div className="mycolleges-header-text">My Colleges</div>
-          <div className="mycolleges-header-filter">
-            <i className="fa fa-filter" />
-          </div>
+          <div className="mycolleges-header-text">My<b>Courses</b></div>
+          
+            <Book2  size={24} />
+
         </div>
         <ul className="mycolleges-list">
           {colleges.map((college, index) => (
@@ -73,7 +76,7 @@ const MyCourses = ({ onSelectCollege, setCareers, colleges, removeDuplicates}) =
             </li>
           ))}
         </ul>
-      </div>
+      </Paper>
     );
   };
   
@@ -169,7 +172,7 @@ const MyCourses = ({ onSelectCollege, setCareers, colleges, removeDuplicates}) =
       
       if (careerFilteredList.length == 0) {
         init_api();
-        await API.get(`/api/career/recommendations/${userID}/`)
+        await API.get(`/api/course/recommendations/${userID}/`)
         .then((response) => {
           console.log(response.data);
         });
@@ -205,11 +208,11 @@ const MyCourses = ({ onSelectCollege, setCareers, colleges, removeDuplicates}) =
   
     
     return (
-      <div className="collegecomputer">
+      <Paper className="collegecomputer" shadow="lg" style={{backgroundColor: 'white', padding: '5px'}}>
         
-        <div className="collegecomputer-header">
+        <div className="collegecomputer-header" style={{textAlign: 'center'}}>
           
-          College Computer
+          <p style={{fontSize: '18px'}}> Course <b> Computer </b> </p>
           <div className="collegecomputer-filter">
             
            { view == "Filter" ? (<select id="collegecomputer-filter-select" onChange={filter}>
@@ -326,7 +329,7 @@ const MyCourses = ({ onSelectCollege, setCareers, colleges, removeDuplicates}) =
         
       
         
-      </div>
+      </Paper>
     );
   };
   
@@ -337,7 +340,7 @@ const MyCourses = ({ onSelectCollege, setCareers, colleges, removeDuplicates}) =
     const [selectedColleges, setSelectedColleges] = useState([]);
     const [view, setView] = useState("large");
     const [careerLikedList, setCareerLikedList] = useState([]);
-    const userID = useParams().userID;
+    const { userID, username } = props.user;
     
     
     const removeDuplicates = (list) => {
@@ -387,10 +390,10 @@ const MyCourses = ({ onSelectCollege, setCareers, colleges, removeDuplicates}) =
       if (!careerExists) {
       //var headers = {'X-CSRFToken': csrf}
         init_api();
-        console.log(college)
+        console.log(college.course_name)
         console.log(userID)
         API.post('/api/users/courselist/add/', {
-          course_name: college.course_name,
+          course_name:college.course_name,
           user_id: userID,
           score: 4.5
         }).then(() => {
@@ -451,26 +454,39 @@ const MyCourses = ({ onSelectCollege, setCareers, colleges, removeDuplicates}) =
       
     }
   
+    const handleClick = () => {
+      if (view === "large") {
+        setView("small");
+      } else {
+        setView("large");
+      }
+    };
   
+
     return (
       <div className="collegedata">
-          <Nav />
+          <TopNav user={props.user}/>
   
           
         <MyCourses removeDuplicates={removeDuplicates} onSelectCollege={selectCollege} setCareers = {setCareerLikedList} colleges = {careerLikedList}/>
-        <div className="collegeMiddle">
+        <Paper shadow="xl" className="courseMiddle">
           <div className="collegeMiddleHeader">
-              <div className="collegeMiddleHeaderText"> Selected Colleges </div>
-              <button onClick={() => setView(view === "large" ? "medium" : "large")}>
-                  {view === "large" ? "Switch to Medium" : "Switch to Large"}
+              <div className="collegeMiddleHeaderText"> <b> Selected Courses</b> </div>
+              <div style={{marginTop: 10}}>
+              <button style={{backgroundColor: 'white', border: 'none'}}onClick={handleClick}>
+                  <FocusCentered size={32} />
                   </button>
+                  <button style={{backgroundColor: 'white', border: 'none'}} onClick={handleClick}>
+                  <Apps size={32} />
+                  </button>
+                  </div>
                   </div>
               {view === "large" ? (
                   <LargeCourse  
                   onAdd = {() => addCollege(selectedCollege)} course={selectedCollege} /> 
                 
               ) : (
-                  <div className="mediumColleges">
+                  <div className="mediumCourses">
                       {selectedColleges.map((college, index) => (
                           index < 4 &&
                           <MediumCourse 
@@ -482,7 +498,7 @@ const MyCourses = ({ onSelectCollege, setCareers, colleges, removeDuplicates}) =
                       ))}
                   </div>
               )}
-              </div>
+              </Paper>
         
         
         <CourseComputer onSelectCollege={selectCollege}

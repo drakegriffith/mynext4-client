@@ -3,8 +3,8 @@ import SideBar from "./components/SideBar";
 import {useState, useRef} from 'react';
 
 
-function Nav() {
-
+function Nav(props) {
+    
     let sideNav = useRef(null);
     let topNav = useRef(null);
     const [lightMode, setLightMode] = useState([true]);

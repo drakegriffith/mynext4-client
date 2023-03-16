@@ -6,38 +6,28 @@ import { useSelector } from 'react-redux';
 import { useLocation, useParams } from "react-router";
 import AuthContext from "../Pages/LogIn/AuthContext";
 import { UserContext } from '../Pages/App';
-import { Lock } from 'tabler-icons-react';
+import { Lock, User } from 'tabler-icons-react';
 
 
-function CollegeSurveyTest() {
-    init_api()
+function CollegeSurveyTest({username, userID, completedCollege, handleCollegeClick, showFullSurvey, setCompletedCollege, checkCollegeCompletion}) {
+
     const { auth } = useContext(AuthContext)
     const [answer, setAnswer] = useState(null);
     const [complete, setComplete] = useState(false);
     const [preCompleted, setPreCompleted] = useState(false);
     const [questions, setQuestions] = useState([]);
     const [submittedAnswer, setSubmittedAnswer] = useState(null);
-    const userID = useContext(UserContext)
+
     const [id, setId] = useState(1);
-  
-    const checkCareerCompletion = async (userID) => {
-        const promise = API.get(`/check-college-survey/${userID}/`)
-            promise.then((response) => {
-                const res = response.data;
-                console.log(res)
-                if (res.collegeCompleted) {
-                   setPreCompleted(true)
-                }
-            });
-           
-          
-        }
-       
     
+    function handleCollegeClicker() {
+        handleCollegeClick();
+      }
+     
     useEffect(() => {
-        checkCareerCompletion(userID);
+        setPreCompleted(completedCollege)
         
-    }, [userID])
+    }, [completedCollege])
     
     const handleChange = (event) => {
         setAnswer(parseInt(event.target.value, 10));
@@ -87,7 +77,8 @@ function CollegeSurveyTest() {
         const data = {
             questionID: questions.question,
             userID: userID,
-            answer: submittedAnswer
+            answer: submittedAnswer,
+            user_id: username,
         };
         
         try {
@@ -111,10 +102,12 @@ function CollegeSurveyTest() {
             console.log(error);
             // If the POST request failed, you can show an error message here
           });
+          window.location.href = `/Dashboard/${userID}`
       };
   
 
     return (
+        showFullSurvey ?
             preCompleted ? 
             <div style={{textAlign: 'center', marginTop:'5%'}}>
                 <h3 style={{marginBottom: 10}}> You have already completed this quiz. </h3>
@@ -124,9 +117,9 @@ function CollegeSurveyTest() {
                 </div>
                 </div>
                 :
-            auth  && !complete ?
+             !complete ?
               <div style={{textAlign: 'center', marginTop: '5%'}}>
-                <h1>Career Quiz</h1>
+                <h1>College Quiz</h1>
                 <p style={{color: 'gray', fontSize: '16px'}}><i>Complete all the questions and click submit. </i></p>
                 <form onSubmit={handleSubmit} style={{marginTop: '15px' ,width: '35vw', margin: '0 auto 0 auto'}}>
                   <h3 style={{marginBottom: 25}}>{questions.question}</h3>
@@ -152,13 +145,27 @@ function CollegeSurveyTest() {
                   </form>
                 </div>
             :
-            !auth ? 
-            <div>
-                <p> Restricted Content</p>
-                </div>
-            :
+          
             <button onClick={handleFinalSubmit}> Submit </button>
-             
+            : 
+            <div style={{width: '90%', height: '80px', margin: '5px', backgroundColor: 'white', borderRadius: '3px'}}>
+                <h3> College Survey Test</h3>
+                {completedCollege ? 
+                    <p> Complete </p>
+                : 
+                    <div>
+                    <p> Uncomplete </p>
+                    {completedCollege ? 
+                    <p> Complete </p>
+                : 
+                    <div>
+                    <p> Uncomplete </p>
+                    <button onClick={handleCollegeClicker} > Take the Test</button>
+                    </div>
+            }
+                    </div>
+            }
+            </div>
           
     
           

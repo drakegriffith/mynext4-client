@@ -15,7 +15,7 @@ import { useState, useContext, createContext } from "react";
 import { connect } from "react-redux";
 import { login } from "../../redux/users/userActions";
 import store from "../../redux/store";
-import { Navigate } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 import Nav from "../../Components/Nav/Nav";
 import { init_api, API } from "../../API";
 import AuthContext from "./AuthContext";
@@ -56,12 +56,16 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-function Login({ login, setUserID }) {
+function Login({ login, handleUserLogin, setUserID }) {
   const { classes } = useStyles();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { auth, setAuth } = useContext(AuthContext);
   const userID = useContext(UserContext)
+  
+  
+  const [id, setID] = useState(0);
+  
 
   const loginPressed = async () => {
             //setAuth(true);
@@ -88,17 +92,20 @@ function Login({ login, setUserID }) {
             init_api();
             await API.get('/auth/users/me/', config)
             .then((response) => {
-                setUserID(response.data.id);
+              console.log(response)
+              
+             
+            
+              setUserID(response.data.id)
+            
             });
             //console.log(store.getState().user.id);
             setAuth(true);
+            
          
   };
 
-  const test = () => {
-    console.log(store.getState().user.isAuthenticated);
-  };
-  test();
+  
   return (
     <AuthContext.Consumer>
   {({ auth, setAuth }) => (
@@ -140,7 +147,7 @@ function Login({ login, setUserID }) {
       <div className="root-login">
         <Nav />
 
-        {auth && <Navigate to={`/MyCareers/${userID}`} />}
+        {auth && <Navigate to={`/Dashboard`} />}
       </div>
     </div>
   )}

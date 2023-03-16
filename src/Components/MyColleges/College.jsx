@@ -86,10 +86,14 @@ export const SmallCollege = ({college, onClick, onFavoriteToggle }) => {
   
 
   function exemptWords(text) {
+    if (text) {
       let newText = text.replace("University", "");
       newText = newText.replace("of", "");
       return newText.slice(0, 30) 
+    } else {
+      return "N/A"
     }
+  }
 
   window.onload = function() {
     let starAnim = document.querySelector('.small-college-star');

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import "./MyColleges.css";
+import "./MyCareers.css";
 import { SmallCareer, MediumCareer, LargeCareer } from "./career";
 import { API, init_api } from '../../API';
 import Nav from "../Nav/Nav";
@@ -7,9 +7,9 @@ import { useLocation, useParams } from "react-router";
 import AuthContext from '../../Pages/LogIn/AuthContext';
 import { UserContext } from '../../Pages/App'
 
-const MyCareers = ({ onSelectCollege, setCareers, colleges, removeDuplicates}) => {
+const MyCareers = ({ user, onSelectCollege, setCareers, colleges, removeDuplicates}) => {
     //const [colleges, setColleges] = useState([]);
-    const userID = useParams().userID;
+    const { userID, username } = user;
     const handleRemoveDuplicate = () => {
       const uniqueList = removeDuplicates(colleges);
       setCareers(uniqueList);
@@ -332,7 +332,7 @@ const MyCareers = ({ onSelectCollege, setCareers, colleges, removeDuplicates}) =
     const [selectedColleges, setSelectedColleges] = useState([]);
     const [view, setView] = useState("large");
     const [careerLikedList, setCareerLikedList] = useState([]);
-    const userID = useParams().userID;
+    const { userID, username } = props.user;
     
     
     const removeDuplicates = (list) => {
@@ -450,7 +450,7 @@ const MyCareers = ({ onSelectCollege, setCareers, colleges, removeDuplicates}) =
           <Nav />
   
           
-        <MyCareers removeDuplicates={removeDuplicates} onSelectCollege={selectCollege} setCareers = {setCareerLikedList} colleges = {careerLikedList}/>
+        <MyCareers removeDuplicates={removeDuplicates} user={props.user} onSelectCollege={selectCollege} setCareers = {setCareerLikedList} colleges = {careerLikedList}/>
         <div className="collegeMiddle">
           <div className="collegeMiddleHeader">
               <div className="collegeMiddleHeaderText"> Selected Colleges </div>

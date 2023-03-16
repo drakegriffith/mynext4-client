@@ -1,6 +1,9 @@
 import React from "react";
-import "../MyColleges.css";
-import { Plus } from "tabler-icons-react";
+import "../MyCourses.css";
+
+import { BoxOff, Apple, Chalkboard, Plus, Eraser, PencilPlus, InfoCircle } from "tabler-icons-react";
+
+import { Card, Group } from "@mantine/core";
 // Small College Component - C1(X)
 
 export const SmallCourse= ({course, onDelete, onAdd}) => {
@@ -9,10 +12,15 @@ export const SmallCourse= ({course, onDelete, onAdd}) => {
     }
     return (
         <div className="smallcollege">
-            <button className="delete-button" onClick={() => onDelete(course)}>
-            X
+            <button style={{marginLeft: '5px', border: 'none', backgroundColor: 'none', display: 'flex', justifyContent: 'center', alignItems: 'right'}} onClick={() => onDelete(course)}>
+            <BoxOff size={21} style={{border: 'none'}}/>
           </button>
-            <div className="smallcollege-name">{course.course_name}</div>
+        
+            <h4 className="smallcollege-name">{course.course_name}</h4>
+
+            <button style={{marginRight: '5px', background: 'none', border: 'none' }}>
+                <InfoCircle size={21} style={{border: 'none'}} />
+            </button>
         </div>
     );
 };
@@ -26,15 +34,44 @@ export const MediumCourse = (props) => {
         onAdd(course);
     }
    
+    
+function truncateText(str, maxLength) {
+  return str.length > maxLength ? str.substr(0, maxLength - 3) + "..." : str;
+}
     return course ? (
-        <div className="mediumcollege">
-               <button onClick={handleAddClick} ><Plus size={32} /> </button>
-            <div className="mediumcollege-name">{course.course_name}</div>
-            <div className="mediumcollege-description">{course.description}</div>
-            <button className="delete-button" onClick={() => onDelete(course)}>
-            X
+        <Card shadow="sm" padding="md" className="mediumcollege" style={{backgroundColor: '#FFF'}}>
+            <div style={{display: 'flex', justifyContent: 'space-around'}}>
+            <h4 className="mediumcourse-name">   {truncateText(course.course_name, 33)}</h4>
+            <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+               <button style={{cursor: 'pointer', margin: '1px', marginRight: '1px', border: 'none', background: 'white', borderRadius: '50%', width: '25px', height: '25px'}} onClick={handleAddClick} ><PencilPlus size={23} /> </button>
+               <button style={{cursor: 'pointer', margin: '1px',border: 'none', background: 'white', borderRadius: '50%', width: '25px', height: '25px'}} onClick={() => onDelete(course)}>
+            <Eraser  size={23} />
           </button>
-        </div>
+          </div>
+          
+          </div>
+          <hr style={{marginTop: 5}}/>
+          <Group position="apart" mt="md" mb="xs" style={{display: 'flex', alignItems: 'center'}}>
+            <h5 style={{fontSize: '12px', margin: 0}}> Course Qualities</h5>
+            <div style={{display: 'flex', justifyContent: 'right', alignItems: 'center'}}>
+        
+                {course && course.ap ? <Apple size={16} /> : ""}
+                {course && course.honors ? <Chalkboard size={16} /> : ""}
+            </div>
+          </Group>
+          <hr />
+            <Group position="apart" mt="md" style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+            <div style={{border: '1px solid black', width: '50px', height: '90px'}}> {course.difficulty} </div>
+            <div style={{border: '1px solid black', width: '50px', height: '90px'}}> {course.field} </div>
+           
+            </Group>
+            <div style={{position: 'absolute', bottom: 0}}>
+         <InfoCircle size={24} />  
+         </div>
+          
+        
+          
+        </Card>
     ) : null;
 };
 

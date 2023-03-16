@@ -6,39 +6,54 @@ import { useSelector } from 'react-redux';
 import { useLocation, useParams } from "react-router";
 import AuthContext from "../Pages/LogIn/AuthContext";
 import { UserContext } from '../Pages/App';
-import { Lock } from 'tabler-icons-react';
+import { Lock, User } from 'tabler-icons-react';
+import { CircleCheck } from 'tabler-icons-react';
+import { SurveyContext } from '../SurveyContext';
 
-
-function CourseSurveyTest() {
+function CourseSurveyTest({  handleCourseClick, completedCourse,  showFullSurvey }) {
     init_api()
-    const { auth } = useContext(AuthContext)
+    const userID = useContext(UserContext) 
+    
     const [answer, setAnswer] = useState(null);
     const [complete, setComplete] = useState(false);
     const [preCompleted, setPreCompleted] = useState(false);
     const [questions, setQuestions] = useState([]);
     const [submittedAnswer, setSubmittedAnswer] = useState(null);
-    const userID = useContext(UserContext)
+    console.log("The ID is " + Number(userID))
+    
     const [id, setId] = useState(1);
-  
-    const checkCareerCompletion = async (userID) => {
-        const promise = API.get(`/check-course-survey/${userID}/`)
-            promise.then((response) => {
-                const res = response.data;
-                console.log(res)
-                if (res.courseCompleted) {
-                   setPreCompleted(true)
-                }
-            });
-           
-          
-        }
-       
-    
+    const [username, setUsername] = useState('');
+
     useEffect(() => {
-        checkCareerCompletion(userID);
-        
-    }, [userID])
+        async function fetchData() {
+            init_api();
+            try {
+              const response = await API.get(`/api/users/return-user/${userID}/`)
+              .then((response) => {
+                setUsername(response.data.username)
+                
+            });
+              
+              // set user info in global state using your state management library
+            } catch (error) {
+              console.error(error);
+            }
+          }
+      fetchData();
+      console.log("RAN WITH" + userID)
+    }, []);
+
+    console.log(username)
     
+    function handleCourseClicker() {
+        handleCourseClick();
+      }
+   
+    useEffect(() => {
+        setPreCompleted(completedCourse)
+        
+    }, [completedCourse])
+
     const handleChange = (event) => {
         setAnswer(parseInt(event.target.value, 10));
     }
@@ -58,6 +73,7 @@ function CourseSurveyTest() {
         }
     };
 
+    console.log(complete)
     useEffect(() => {
         setSubmittedAnswer(answer)
        
@@ -78,18 +94,20 @@ function CourseSurveyTest() {
         },[id]);
    
 
-
     const handleSubmit = async (event) => {
         event.preventDefault();
         if (answer === null) {
             return;
         }
+        
         const data = {
             questionID: questions.question,
             userID: userID,
-            answer: submittedAnswer
+            answer: submittedAnswer,
+            user_id: username,
         };
-        
+        console.log(data.questionID)
+       
         try {
             await API.post('/api/CourseSurveyOneAnswers/', data);
             setAnswer(null);
@@ -111,22 +129,14 @@ function CourseSurveyTest() {
             console.log(error);
             // If the POST request failed, you can show an error message here
           });
+          window.location.href = `/Dashboard/${userID}`
       };
   
 
     return (
-            preCompleted ? 
-            <div style={{textAlign: 'center', marginTop:'5%'}}>
-                <h3 style={{marginBottom: 10}}> You have already completed this quiz. </h3>
-                <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
-                <Lock size={32} />
-                <a style={{marginTop: 10}}href="/dashboard"> Redirect to the dashboard here. </a>
-                </div>
-                </div>
-                :
-            auth  && !complete ?
+            !complete ?
               <div style={{textAlign: 'center', marginTop: '5%'}}>
-                <h1>Career Quiz</h1>
+                <h1>Course Quiz</h1>
                 <p style={{color: 'gray', fontSize: '16px'}}><i>Complete all the questions and click submit. </i></p>
                 <form onSubmit={handleSubmit} style={{marginTop: '15px' ,width: '35vw', margin: '0 auto 0 auto'}}>
                   <h3 style={{marginBottom: 25}}>{questions.question}</h3>
@@ -151,15 +161,11 @@ function CourseSurveyTest() {
                   <button style={{marginTop: 10, padding: '10px 10px'}}type="submit">Submit</button>
                   </form>
                 </div>
-            :
-            !auth ? 
-            <div>
-                <p> Restricted Content</p>
-                </div>
-            :
-            <button onClick={handleFinalSubmit}> Submit </button>
-             
           
+            : 
+            <div style={{marginTop: 200}}> 
+            <button onClick={handleFinalSubmit}> Submit </button>
+            </div>
     
           
     )

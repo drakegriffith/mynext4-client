@@ -1,5 +1,5 @@
 import React from "react";
-import "../MyColleges.css";
+import "../MyCareers.css";
 import { Plus } from "tabler-icons-react";
 // Small College Component - C1(X)
 

@@ -5,10 +5,10 @@ import React, { useEffect, useState, useRef, useContext} from "react";
 import { SmallCollege, MediumCollege, LargeCollege, Button } from "../College";
 import { useParams } from "react-router";
 
-export const MyColleges = ({ onSelectCollege, setColleges, colleges, removeDuplicates }) => {
+export const MyColleges = ({  user, onSelectCollege, setColleges, colleges, removeDuplicates }) => {
     const [activeTab, setActiveTab] = useState('home');
 
-    const userID = useParams().userID;
+    const { userID, username } = user;
   
     const handleRemoveDuplicate = () => {
       const uniqueList = removeDuplicates(colleges);
