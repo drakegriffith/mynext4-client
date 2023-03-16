@@ -1,6 +1,6 @@
-import React from 'react';
-import '../Nav.css'
-import next4Logo from '../icon.png'
+import React from "react";
+import "../Nav.css";
+import next4Logo from "../icon.png";
 import ReactDOM from "react-dom/client";
 import { Outlet, Link, Route, Routes, BrowserRouter} from "react-router-dom";
 import Products from '../../Products/Products';
@@ -55,19 +55,54 @@ function TopNav() {
       <Link to='/'>
         <img src={next4Logo} id='logo-home' />
         </Link>
-    </li>
-    <li id='link-schools'>
-      <Link style={{textDecoration: 'none', color: 'white', fontWeight: 600}} to="/SchoolSystems">Schools</Link>
-    </li>
-    <li id='link-about'>
-      <Link style={{textDecoration: 'none', color: 'white', fontWeight: 600}} to="/About">About Us</Link>
-    </li>
-    <li id='link-signin'>
-      <Link style={{textDecoration: 'none', color: 'white', fontWeight: 900}} to="/SignIn">Sign In</Link>
-    </li>
-  </div>
-       
-    )
+      </li>
+      <li id="link-products">
+        <Link
+          style={{ textDecoration: "none", color: "white", fontWeight: 600 }}
+          to="/MyCourses/1"
+        >
+          MyCourses
+        </Link>
+      </li>
+      <li id="link-students">
+        <Link
+          style={{ textDecoration: "none", color: "white", fontWeight: 600 }}
+          to="/MyColleges/1"
+        >
+          MyColleges
+        </Link>
+      </li>
+      <li id="link-home">
+        <Link to="/">
+          <img src={next4Logo} id="logo-home" />
+        </Link>
+      </li>
+      <li id="link-schools">
+        <Link
+          style={{ textDecoration: "none", color: "white", fontWeight: 600 }}
+          to="/MyCareers/1"
+        >
+          MyCareers
+        </Link>
+      </li>
+      <li id="link-about">
+        <Link
+          style={{ textDecoration: "none", color: "white", fontWeight: 600 }}
+          to="/About"
+        >
+          About Us
+        </Link>
+      </li>
+      <li id="link-about">
+        <Link
+          style={{ textDecoration: "none", color: "white", fontWeight: 600 }}
+          to="/SignIn"
+        >
+          Sign In
+        </Link>
+      </li>
+    </div>
+  );
 }
 
 export default TopNav;

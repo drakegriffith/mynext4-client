@@ -35,8 +35,6 @@ const MyCourses = ({ user, onSelectCollege, setCareers, colleges, removeDuplicat
       );
     };
 
-    
-
     const handleDeleteCareerFeedback = async (career) => {
       
       console.log(career)
@@ -179,9 +177,6 @@ const MyCourses = ({ user, onSelectCollege, setCareers, colleges, removeDuplicat
       }
       
     }
-
-   
-
   
     const search = async(e) => {
       var searchVal = e.target.value;
@@ -205,8 +200,7 @@ const MyCourses = ({ user, onSelectCollege, setCareers, colleges, removeDuplicat
       }
       setPrevSearchLength(searchVal.length);
     }
-  
-    
+       
     return (
       <Paper className="collegecomputer" shadow="lg" style={{backgroundColor: 'white', padding: '5px'}}>
         
@@ -260,6 +254,7 @@ const MyCourses = ({ user, onSelectCollege, setCareers, colleges, removeDuplicat
   
           
         </div>
+
         
        {view == "Filter" && filterVal != "Search" &&
         
