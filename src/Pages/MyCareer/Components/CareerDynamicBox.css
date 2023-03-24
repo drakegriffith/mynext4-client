@@ -1,0 +1,80 @@
+
+/*
+Styling for the root div of CareerDynamicBox
+*/
+
+.root {
+    height: 950px;
+    width: 750px;
+    margin-top: 80px;
+    margin-left: 20px;
+}
+
+/*
+Styling for the title div of CareerDynamicBox
+*/
+
+.title {
+    display: flex;
+    align-items: center;
+    position: relative;
+    width: 450px;  
+}
+
+/*
+Styling for the h1 element inside of the title div
+*/
+
+.title > h1 {
+    white-space: nowrap;
+    padding-right: 50px;
+    
+}
+
+/*
+Styling for the progressAndText div
+*/
+
+.progressAndText {
+    display: flex;
+    align-items: center;
+    position: relative;
+    margin-top: 50px;
+    height: 50px;
+}
+
+/*
+Styling for the progressBar div
+*/
+.progressBar {
+    width: 400px
+}
+
+/*
+Styling for the p element inside of the progressAndText div
+*/
+.progressAndText > p {
+    padding-left: 30px;
+}
+
+/*
+Styling for the mainList div
+*/
+
+.mainList {
+    display: flex;
+    margin-top: 75px;
+}
+
+/*
+Styling for refresh college card section 
+along with h3 text element
+*/
+
+.refreshCollegeCards {
+    margin-top: 50px;
+}
+
+
+
+

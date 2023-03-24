@@ -1,0 +1,30 @@
+.container {
+    text-align: center;
+    height: 100%;
+}
+
+.container > ul {
+    font-weight: bold;
+    position: relative;
+    margin-right: 25px;
+    
+}
+
+.container > ul > li {
+    margin: 40px;
+    font-size: 20px;
+    
+}
+
+.list_container {
+    display: inline-block;
+}
+
+.list_button {
+    height: 30px;
+    width: 150px;
+    margin-top: 50px;
+
+
+}
+

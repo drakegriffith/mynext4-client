@@ -1,0 +1,265 @@
+.collegedata {
+    display: flex;
+    height: 80vh;
+    margin: 5%;
+    padding-top: 25px;
+  }
+  
+  .mycolleges {
+    width: 30%;
+    height: 100%;
+    margin-right: 5%;
+    background-color: #eee;
+    overflow-y: auto;
+  }
+  
+  .mycolleges-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #333;
+  }
+  
+  .mycolleges-header-text {
+    font-size: 20px;
+    color: #333;
+  }
+  
+  .mycolleges-header-filter {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+  }
+  
+  .mycolleges-header-filter i {
+    color: #333;
+  }
+  
+  .mycolleges-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .mycolleges-list-item {
+    padding: 10px;
+    border-bottom: 1px solid #333;
+    cursor: pointer;
+  }
+  
+  .mycolleges-list-item:hover {
+    background-color: #ddd;
+  }
+  
+  .mycolleges-list-item-selected {
+    background-color: #ddd;
+  }
+  
+  .collegecomputer {
+    width: 30%;
+    height: 100%;
+    margin-left: 5%;
+    background-color: #eee;
+    overflow-y: auto;
+  }
+  
+  .collegecomputer-header {
+    padding: 10px;
+    font-size: 20px;
+    color: #333;
+    border-bottom: 1px solid #333;
+    display: inline-flex;
+    width: 100%;
+  }
+
+  .collegecomputer-filter {
+    margin-left: 25px;
+  }
+
+  .collegecomputer-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  
+  .collegecomputer-button {
+    min-width: 160px;
+  }
+
+.collegedata-main {
+    width: 70%;
+    height: 100%;
+    background-color: #f000ff;
+    overflow-y: auto;
+  }
+  
+  .collegedata-main-header {
+    padding: 10px;
+    font-size: 20px;
+    color: #333;
+    border-bottom: 1px solid #333;
+  }
+  
+  .collegedata-main-placeholder {
+    padding: 10px;
+    font-size: 20px;
+    color: #333;
+    text-align: center;
+  }
+
+  .mycolleges {
+    width: 30%;
+    height: 100%;
+    margin-right: 10%;
+    background-color: #eee;
+    overflow-y: auto;
+  }
+  
+  .mycolleges-header {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    font-size: 20px;
+    color: #333;
+    border-bottom: 1px solid #333;
+  }
+  
+  .mycolleges-header-text {
+    flex-grow: 1;
+  }
+  
+  .mycolleges-header-filter {
+    padding-left: 10px;
+    cursor: pointer;
+  }
+  
+  .mycolleges-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .mycolleges-list-item {
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+  }
+  
+  .mycolleges-list-item:hover {
+    background-color: #ddd;
+  }
+  
+  .smallcollege {
+    display: flex;
+    align-items: center;
+  }
+  
+  .smallcollege-name {
+    flex-grow: 1;
+  }
+  
+  .collegecomputer {
+    width: 30%;
+    height: 100%;
+    margin-left: 10%;
+    background-color: #eee;
+    overflow-y: auto;
+  }
+  
+  .collegecomputer-header {
+    padding: 10px;
+    font-size: 20px;
+    color: #333;
+    border-bottom: 1px solid #333;
+  }
+  
+  .mediumcollege {
+    width: 100%;
+    height: 100%;
+    background-color: lightblue;
+    overflow-y: auto;
+  }
+  
+  .mediumcollege-name {
+    padding: 10px;
+    font-size: 20px;
+    color: #333;
+    border-bottom: 1px solid #333;
+  }
+  
+  .mediumcollege-description {
+    padding: 10px;
+    font-size: 16px;
+    color: #333;
+  }
+
+  .mediumcollege-delete {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    cursor: pointer;
+  }
+  
+  /* container holding individual mediumcollege styled components */
+
+  .mediumColleges {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, calc(50% - 5px));
+    grid-gap: 10px;
+    height: 90%;
+  }
+  
+  .collegeMiddleHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #fff;
+  }
+  
+  .collegeMiddleHeaderText {
+    font-size: 20px;
+    color: #333;
+  }
+  
+  /* applies to each mediumcollege component to help control layout and appearance */
+
+  .collegeMiddle {
+    width: 50%;
+    height: 100%;
+    background-color: #fff;
+  }
+  
+  .largecollege {
+    width: 100%;
+    height: 100%;
+    background-color: lightcoral;
+    overflow-y: auto;
+  }
+  
+  .largecollege-name {
+    padding: 10px;
+    font-size: 20px;
+    color: #333;
+    border-bottom: 1px solid #333;
+  }
+  
+  .largecollege-description {
+    padding: 10px;
+    font-size: 16px;
+    color: #333;
+  }
+  
+  .largecollege-details {
+    padding: 10px;
+    font-size: 16px;
+    color: #333;
+  }

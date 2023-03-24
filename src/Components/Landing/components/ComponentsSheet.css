@@ -1,0 +1,54 @@
+* {
+    font-family: 'DM Sans', cursive;
+      margin: 0;
+    box-sizing: border-box;
+  }
+h4, h5, h6 {
+    font-family: 'DM Sans', cursive;
+    margin-bottom: 12px;
+  }
+
+p {
+    font-size: 10px;
+}
+
+.card-course {
+    width: 300px;
+    height: 200px;
+    border-radius: 3px;
+    border: 1px solid black;
+    
+}
+
+.card-college {
+    width: 300px;
+    height: 200px;
+    border-radius: 3px;
+    border: 1px solid black;
+}
+
+.card-career {
+    width: 300px;
+    height: 200px;
+    border-radius: 3px;
+    border: 1px solid black;
+}
+
+.course-tag {
+    position: relative;
+    left: 66%;
+    bottom: 28%;
+}
+
+.college-tag {
+    position: relative;
+    left: 67%;
+    bottom: 31%;
+}
+
+.career-tag {
+    position: relative;
+    left: 65%;
+    bottom: 31%;
+
+}
