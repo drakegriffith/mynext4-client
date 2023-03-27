@@ -29,6 +29,7 @@ import AuthContext from "./LogIn/AuthContext";
 import Navbar from "../Components/Nav/NewNav";
 import { SurveyContext, SurveyProvider } from "../SurveyContext";
 import AccountActivation from "../AccountActivation";
+import SurveySpecifications from "../Components/SurveySpecifications/SurveySpecifications";
 /*
 Testing push request
 */
@@ -81,6 +82,7 @@ function App() {
             <Route path = "/ExploreCourses" element = {<ExploreCourses />} />
             <Route path = "/ExploreCareers" element = {<ExploreCareers />} />
             <Route path = "/MyColleges/Colleges/:id" element = {<CollegeCard />} />
+            <Route path='/SurveySpecifications/:userID' element={<SurveySpecifications  />} />
           </Routes>
         </React.Fragment>
     
