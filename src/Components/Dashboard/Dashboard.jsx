@@ -3,7 +3,6 @@ import { useSpring, animated } from 'react-spring';
 import "./Dashboard.css";
 import { motion } from "framer-motion";
 import { BookUpload, Search, Trophy, School, Books, ChefHat, Book} from "tabler-icons-react";
-import TopNav from '../../Components/Nav/components/TopNav';
 import AssignedSurveys from '../../AssignedSurveys';
 import { API, init_api } from '../../API';
 import { useLocation, useParams } from "react-router";
@@ -256,7 +255,7 @@ const { userID, setUserID} = useContext(UserContext)
     
     <div className="dashboard-container" >
  
-    <TopNav  />
+
  
     
       
@@ -280,9 +279,9 @@ const { userID, setUserID} = useContext(UserContext)
   <div>
   <Tabs defaultValue="courses">
     <Tabs.List>
-      <Tabs.Tab value="courses" icon={<Book size="1.3rem" />}>Courses</Tabs.Tab>
-      <Tabs.Tab value="colleges" icon={<School size="1.3rem" />}>Colleges</Tabs.Tab>
-      <Tabs.Tab value="careers" icon={<ChefHat size="1.3rem" />}>Careers</Tabs.Tab>
+      <Tabs.Tab value="courses" icon={<Book size="1.3rem" />}>Course Cards</Tabs.Tab>
+      <Tabs.Tab value="colleges" icon={<School size="1.3rem" />}>College Cards</Tabs.Tab>
+      <Tabs.Tab value="careers" icon={<ChefHat size="1.3rem" />}>Career Cards</Tabs.Tab>
 
     </Tabs.List>
 
