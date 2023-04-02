@@ -1,0 +1,131 @@
+.root-login {
+  justify-content: center;
+  text-align: center;
+  /* height: 500px; */
+  /* margin-top: 100px; */
+}
+
+.login-input-email {
+  width: 30%;
+  justify-content: space-between;
+  padding: 10px;
+  margin-top: 50px;
+  margin-left: 500px;
+}
+
+.login-input-password {
+  width: 30%;
+  justify-content: space-between;
+  padding: 10px;
+  margin-left: 500px;
+}
+
+.auth-btn {
+  background-color: #ccc; /* Set the background color */
+  color: #fff; /* Set the font color */
+  border: none; /* Remove the border */
+  border-radius: 5px; /* Add rounded corners */
+  padding: 10px 20px; /* Add padding */
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* Add a shadow */
+  transition: all 0.2s ease-in-out; /* Add a transition */
+}
+
+.auth-btn:hover {
+  transform: translateY(2px); /* Move the button down slightly */
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3); /* Adjust the shadow */
+  background-color: #f00; /* Change the background color to red */
+}
+
+label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  margin: 10px;
+}
+
+input[type="radio"] {
+  display: none;
+}
+
+input[type="radio"] + span {
+  display: inline-block;
+  position: relative;
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+  border-radius: 50%;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  transition: all 0.2s ease-in-out;
+}
+
+input[type="radio"]:checked + span {
+  background-color: #fff;
+  box-shadow: 0px 0px 5px 2px rgba(255, 255, 255, 0.5);
+}
+
+input[type="radio"]:hover + span {
+  transform: translateY(-2px);
+  box-shadow: 0px 0px 5px 2px rgba(255, 255, 255, 0.5);
+}
+
+label span:after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #f00;
+  transition: all 0.2s ease-in-out;
+}
+
+input[type="radio"]:checked + span:after {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+label span:hover:after {
+  background-color: #f00;
+}
+
+label span:before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.5);
+  opacity: 0;
+  transition: all 0.2s ease-in-out;
+}
+
+label:hover span:before {
+  opacity: 1;
+}
+
+.auth-container {
+  margin-top: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
+  padding: 20px;
+  background-color: #fff;
+  animation: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+  from {
+    box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.5);
+  }
+  to {
+    box-shadow: 0px 0px 30px rgba(255, 255, 255, 0.8);
+  }
+}

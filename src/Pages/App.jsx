@@ -24,7 +24,7 @@ import Demo from "../Components/Demo/Demo";
 import ExploreCourses from "./ExploreCourses/ExploreCourses";
 import ExploreCareers from "./ExploreCareers/ExploreCareers";
 import CareerSurveyTest from "../Components/CareerSurveyTest";
-import Register from "../Register";
+import Register from "../Components/Auth/Register";
 import AuthContext from "./LogIn/AuthContext";
 import Navbar from "../Components/Nav/NewNav";
 import { SurveyContext, SurveyProvider } from "../SurveyContext";

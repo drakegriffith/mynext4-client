@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { API, init_api } from './API';
-import AuthContext from './Pages/LogIn/AuthContext';
+import { API, init_api } from '../../API';
+import AuthContext from '../../Pages/LogIn/AuthContext';
 import "./Components/MyComponents/MyComponents.css";
-import "./Register.css";
+import "./Auth.css";
 
 const Register = () => {
     const [accountType, setAccountType] = useState('');
@@ -10,6 +10,7 @@ const Register = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [rePassword, setRePassword] = useState('');
+    const { setToken } = useContext(AuthContext);
 
     const onSubmit = async (e) => {
         e.preventDefault();
@@ -27,9 +28,36 @@ const Register = () => {
                     re_password: rePassword,
                 });
                 if (response.status === 201) {
-                    alert('User registered successfully.');
-
-                }
+                    alert("User registered successfully.");
+                  
+                    // Log in the user and get the token
+                    const loginResponse = await API.post("/auth/jwt/create/", {
+                      email,
+                      password,
+                    });
+                  
+                    if (loginResponse.status === 200) {
+                      const { access } = loginResponse.data;
+                      setToken(access);
+                  
+                      // Send the confirmation email
+                      try {
+                        await API.post("/auth/users/activation/", {
+                          email,
+                          token: access,
+                        });
+                        alert("Confirmation email sent.");
+                      } catch (error) {
+                        console.error(error);
+                        if (error.response && error.response.data) {
+                          alert(`Error sending confirmation email: ${JSON.stringify(error.response.data)}`);
+                        } else {
+                          alert("Error sending confirmation email.");
+                        }
+                      }
+                    }
+                  }
+                  
             } catch (error) {
                 console.error(error);
                 if (error.response && error.response.data) {
@@ -44,7 +72,7 @@ const Register = () => {
     };
 
     return (
-        <div className="register-container">
+        <div className="auth-container">
             <div className='shiny-text'>
                 <h1>Register</h1>
                 <form onSubmit={onSubmit}>
@@ -97,7 +125,7 @@ const Register = () => {
 
                         </>
                     )}
-                    <button type="submit">Register</button>
+                    <button className='auth-btn' type="submit">Register</button>
                 </form>
             </div>
         </div>
