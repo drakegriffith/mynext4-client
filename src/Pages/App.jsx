@@ -73,9 +73,9 @@ function App() {
             <Route path='/CourseSurveyOne/:userID' element={<CourseSurveyTest   />} />
             <Route path='/CollegeSurveyOne/:userID' element={<CollegeSurveyTest  />} />
   
-            <Route path="/MyNext4/RegisterUser" element={<Register />} />
+            <Route path="auth/register" element={<Register />} />
             <Route path="/test" element={<Test />} />
-            <Route path = "/SignIn" element={<Login />} />
+            <Route path = "auth/signin" element={<Login />} />
             <Route path = "/Careers/:id" element = {<Careers />} />
             <Route path = "/ExploreColleges" element = {<ExploreColleges />} />
             <Route path = "/Courses/:id" element = {<Courses />} />
