@@ -1,4 +1,4 @@
-import Nav from "../../Components/Nav/Nav";
+
 import {init_API_College_AI, API_College_AI} from '../../API_College_AI';
 import {useEffect, useState} from 'react';
 import CourseCardList from "../../Components/CardList/CourseCardList";
@@ -62,7 +62,7 @@ function ExploreColleges() {
     }
     return (
         <div className="explore_colleges-container">
-            <Nav />
+           
             <div style = {{
                 marginTop: 200,
                 marginLeft: 675

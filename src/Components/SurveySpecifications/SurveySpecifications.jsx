@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useSpring, animated } from 'react-spring';
-import "./Dashboard.css";
+import "./SurveySpecifications.css";
 import { motion } from "framer-motion";
 import { BookUpload, Search, Trophy, School, Books, ChefHat, Book} from "tabler-icons-react";
 import AssignedSurveys from '../../AssignedSurveys';
@@ -15,7 +15,7 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import AuthContext from '../../Pages/LogIn/AuthContext';
 import { UserContext } from '../../Pages/App';
 import SeeSurveys from '../../SeeSurveys';
-import PersonalSide from './PersonalSide';
+import PersonalSide from '../Dashboard/PersonalSide';
 import { Paper, Tabs } from '@mantine/core';
 import { SurveyContext } from '../../SurveyContext';
 import { useDebouncedState } from '@mantine/hooks';
@@ -39,76 +39,7 @@ const ProfileSection = ({ name, email, pictureUrl }) => {
   );
 };
 
-/*
-
-function MissionList() {
-  function handleClick(event) 
-    const missionId = Number(event.target.id);
-    const circleNumber = missionId + 1;
-    const circle = document.querySelector(`.image-container .circle-container .circle${circleNumber}`);
-    console.log(circle)
-   
-    if (circle) {
-      
-      const variants = {
-        expanded: { scale: 1.5 },
-        collapsed: { scale: 1 },
-      };
-      const transition = { duration: 0.2 };
-      return (
-        <motion.div
-        animate={ "expanded" }
-      variants={variants}
-      />
-       
-       
-      );
-    }
-   
-   
-   
-  }
-  
-
-  return (
-    <div className="mission-list">
-      <h2>My Missions</h2>
-      <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-        {missions.map((mission) => (
-          <li
-            key={mission.id}
-            style={{ fontSize: '20px', fontWeight: 'bold', margin: '10px 0', cursor: 'pointer' }}
-            onClick={handleClick}
-            data-circle={mission.id}
-          >
-            {mission.title}
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
-
- 
- 
- 
- 
-
-*/
-
-
-
-
-
-
-
-// Infinite scroll for college sections
-
-
-
-
-
-function Dashboard({  }) {
+function SurveySpecifications({  }) {
   const [showCourses, setShowCourses] = useState(true);
 const [showColleges, setShowColleges] = useState(false);
 const [showCareers, setShowCareers] = useState(false);
@@ -366,7 +297,7 @@ whileTap={{
   )
 }
 
-export default Dashboard;
+export default SurveySpecifications;
 
 
 

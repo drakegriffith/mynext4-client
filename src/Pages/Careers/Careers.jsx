@@ -1,6 +1,8 @@
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import "./Careers.css";
+import { Carousel } from "react-responsive-carousel";
+import { Card } from "@mantine/core";
 import { Spoiler, Modal, Button, Paper } from '@mantine/core';
 import ListItem from "./Components/ListItems";
 import DescriptionPop from "./Components/DescriptionPop";
@@ -18,10 +20,11 @@ import {API} from "../../API";
 import { useSelector } from "react-redux";
 import { setAutoFreeze } from "immer";
 import { useParams } from "react-router-dom";
-import Nav from "../../Components/Nav/Nav";
+import { Chart } from "react-google-charts"
+import { MediumCareer } from "../../Components/MyComponents/MyCareers/Career";
 
 function Careers() {
-
+    const [career, setCareer] = useState("");
     const [data, setData] = useState("");
     const [stateNames, setStateNames] = useState([]);
     const [knowledge, setKnowledge] = useState([]);
@@ -34,7 +37,8 @@ function Careers() {
     const [statePercentages, setStatePercentages] = useState([]);
     const [baseInfo, setBaseInfo] = useState([]);
     const [salary, setSalary] = useState([]);
-    
+    const [careerCodes, setCareerCodes] = useState([]);
+    const [correlatedCareers, setCorrelatedCareers] = useState([]);
 
     const id = useParams();
 
@@ -44,8 +48,11 @@ function Careers() {
             init_api();
             await API.get(`/api/career/${id.id}/`)
             .then((response) => {
+                console.log("RESPONSE")
+                console.log(response.data.explore_more.careers.career)
+                setCareerCodes(response.data.explore_more.careers.career)
                 setData(response.data);
-                
+              
                 getKnowledge(response);
                 
                 getSkills(response);
@@ -66,12 +73,14 @@ function Careers() {
                 
                 getBaseInfo(response);
                 getSalary(response);
-                console.log(response.data);
+                
                 
                 
 
             });
         };
+
+    
 
         const getKnowledge = (response) => {
             var counter = 0;
@@ -284,27 +293,6 @@ function Careers() {
 
     
 
-
-    
-
-
-
-
-    
-
-
-    
-
-
-    
-
-
-    
-    
-
-    
-
-
     
 
     const exploreMoreNames = [
@@ -332,7 +320,6 @@ function Careers() {
             
     };
 
-    
 
     const tempItems = tasks.map((data) => {
         return (<ListItem text = {data}></ListItem>);
@@ -350,170 +337,219 @@ function Careers() {
         return <ListItem text = {data} > </ListItem>
     })
 
+    useEffect(() => {
+        console.log(careerCodes)
+        const codes = careerCodes.map((career) => career.code);
+        console.log(codes);
+        setCorrelatedCareers(codes)
+        console.log(correlatedCareers)
+    }, [])
     
+
+    /*
+    function CorrelatedCareers(props) {
+        const [careers, setCareers] = useState([]);
+        
+        useEffect(() => {
+          const fetchData = async () => {
+            console.log(props.onetIds)
+            const promises = props.onetIds.map(async (onetId) => {
+              const response = await API.get(
+                `api/careers/get_career/${onetId}/`
+              );
+              return response.data;
+            });
+            const careers = await Promise.all(promises);
+            setCareers(careers);
+          };
+          fetchData();
+        }, [props.onetIds]);
+      
+        return (
+          <div>
+            {careers.map((career) => (
+              <MediumCareer
+                key={career.code}
+            
+                career={career}
+              />
+            ))}
+          </div>
+        );
+      }
+      */
+     
     
+      const Circle = ({ stateName }) => {
+        const [hovered, setHovered] = useState(false);
+        const handleMouseOver = () => setHovered(true);
+        const handleMouseLeave = () => setHovered(false);
+    
+        return (
+        <div
+            style={{width: '60px', height: '60px', backgroundColor: '#EDF2F4', margin: '3px', borderRadius: '5px', display: 'flex',
+        justifyContent: 'center', alignItems: 'center'}}
+            onMouseOver={handleMouseOver}
+            onMouseLeave={handleMouseLeave}
+        >
+            <div className="letter"><b>{stateName.charAt(0)}</b></div>
+            {hovered && <div className="state-name">{stateName}</div>}
+        </div>
+        );
+    }
+
+
+    const PieChartIndustry = ({ industryData }) => {
+        const chartDataType = useCallback(() => {
+            return [
+              ['Industry', 'Data'], 
+              ...industryData.map(({ 'name (approximation)': name, 'percentage (approximation)': percentage }) => [name, percentage])
+            ];
+          }, [industryData]);
+      
+        const options = {
+          title: 'Industries worked in ',
+          is3D: true,
+        };
+
+      
+        return (
+          <Chart
+            chartType="PieChart"
+            data={chartDataType()}
+            options={options}
+            width="100%"
+            height="400px"
+          />
+        )
+      }
+     
+    
+      const SalaryPieChart = ({ data }) => {
+        const categories = ['Below Average', 'Average', 'Above Average'];
+        const transformedData = categories.map((category, index) => ({
+          name: category,
+          value: data[index],
+          percentage: data[index + 3],
+        }));
+      console.log(transformedData)
+      
+        const chartData = useCallback(() => {
+          return [
+            ['Salary', 'Percentage'],
+            ...transformedData.map(({ name, value }) => [name, value]),
+          ];
+        }, [transformedData]);
+      
+        const options = {
+          title: 'Salary Distribution',
+          is3D: true,
+        };
+      
+        return (
+          <Chart
+            chartType="PieChart"
+            data={chartData()}
+            options={options}
+            width="100%"
+            height="400px"
+          />
+        );
+      };
+
+      
+      const getCareer = useCallback(async (onet_id) => {
+        init_api();
+        const response  = await API.get(`api/careers/get_career/${onet_id}/`)
+        
+        setCareer(response.data);
+      }, []);
+  
+      console.log(career)
+      useEffect(() => {
+        let onet_id = baseInfo[2]
+    
+        getCareer(onet_id);
+        
+      }, []);
+
+      
 
     return (
         
                     <div style = {{
-                        marginLeft: 75,
-                        marginTop: 275
-                    }} className = "careers_container">
-                        <Nav />
-                        
-                        
-
-                        <Paper>
-                             
-
-                            <h1 style = {{
-                                paddingBottom: 80,
-                                marginLeft: 625
-                            }}>{data.name}</h1>
-                            <div className="main-container-Careers">
-
-                                <DescriptionPop 
-                                name = {baseInfo[0]}
-                                description = {baseInfo[1]}
-                                id = {baseInfo[2]}
-                                type = {"career"}/>
-                                
-
-                            </div>
-
-                        </Paper>
-
-                        <div className="tasks_skills">
-
+                            textAlign: 'center',
+                            marginTop: 50,
+                            height: '180vh'
                             
-                                <div className="tasks">
+                  
+                    }} >
+                        <div style={{width: '200px',margin: '0 auto 0 auto'}}>
+                      {career && <MediumCareer career={career} /> }
+                       </div>
+                     <h1 style={{ padding: '20px 10px', background: '#fff', width: '400px', margin: '30px auto 0 auto', border: '8px'}} > {baseInfo[0]} </h1>
+                   
+                    <Carousel >
 
-                                    <p>
-                                        What about day to day tasks?
-                                    </p>
-
-                                    <Modal
-                                    opened={modal1Opened}
-                                    onClose={()=> setModal1Opened(false)}
-                                    title={"Daily Tasks"}>
-                                        {tempItems}
-                                    </Modal>
-
-                                    <Button onClick={() => setModal1Opened(true)}
-                                    className="modal_btn">Tell me!</Button>
-
-                                </div>
-                            
-
-                            
-
-                                
-                                <div className="tasks_skills_abils">
-                                    <p>
-                                        What do I need to be good at?
-                                    </p>
-
-                                    <AccordionCustom 
-                                    knowledge={knowledgeMapped}
-                                    skills={skillsMapped}
-                                    abilities={abilitiesMapped}/>
-
-                                </div>
-
-                            
-
-                        </div>
-
-                        
-                        <div className="chars">
-                            <p>
-                                Career Characteristics
-                            </p>
-
-                            <div>
-                                <CareersTraits 
-                                chars = {characteristics}/>
-                            </div>
-
-                            
-                        </div>
-
-                    
-
-                        <div className="tech_skills_careers">
-                            <p>
-                                Technology Skills needed:
-                            </p>
-
-                            <div className="tech_careers">
-                                <TechSkills 
-                                values = {techSkills}/>
-                            </div>
-
-                            
-                        </div>
-
-
-                        <div className="education_careers">
-                            <CareerEducation />
-                        </div>
-
-                        <div className="salary_charts_career">
-                        <SalaryCharts 
-                            anually = {{
-                                tenth: salary[0],
-                                median: salary[1],
-                                ninetyith: salary[2]
-                            }}
-                            hourly = {{
-                                tenth: salary[3],
-                                median: salary[4],
-                                ninetyith: salary[5]
-                            }}/>
-                        </div>
-
-                        <div className="industries_career">
-
-                            <div className="industry_chart_career">
-                                <p>
-                                    What industries do they work in?
-                                </p>
-                                <BarChart width={500} height={600} data={industryData}>
-                                    <CartesianGrid strokeDasharray={"3 3"} />
-                                    <XAxis dataKey={"name"} />
-                                    <YAxis />
-                                    <Tooltip />
-                                    <Legend />
-                                    <Bar dataKey={"percentage (approximation)"} fill="#8884d8" />
-                                </BarChart>
-
-
-                            </div>
-
-                            <div className="outlook_careers">
-                                <p>Which states specialize in this Career?</p>
-                                <CareerOutlook 
-                                data={statePercentages}
-                                states = {stateNames}/>
-                            </div>
-
-                        </div>
-
-                        <div className="explore_more">
-                            {/*<p>Explore similar careers</p>
-                            <CourseCardList 
-                            data = {{
-                                "names": exploreMoreNames,
-                                "type": "career",
-                                "descriptions": exploreMoreDescriptions,
-                                "ids": [0,0,0]
-                            }}/>*/}
-                        </div>
-
-                        
-                        
+                    <div style={{width: '100%', margin: '0 auto 0 auto', marginTop: 30, height: '180px', backgroundColor: '#8D99AE',padding: '10px'}}>
+                    <h2>See Associated States</h2>
+                    <div style={{display: 'flex', justifyContent: 'center', marginTop: 15,}}>
+                        {stateNames.map((stateName, index) => (
+                        <Circle key={index} stateName={stateName} />
+                        ))}
                     </div>
-                
+                    </div>
+
+                    <div style={{width: '100%', margin: '0 auto 0 auto',marginTop: 30, height: '180px',backgroundColor: '#8D99AE', padding: '10px'}}>
+                    <h2>See Associated Courses </h2>
+                    <div style={{display: 'flex',marginTop: 15,alignItems: 'center', justifyContent: 'center', padding: '10px'}}>
+                        {knowledge.map((knowledgeName, index) => (
+                        <div style={{margin: 5, borderRadius: '3px', height: '80px', alignItems: 'center', display: 'flex', justifyContent: 'center', textAlign: 'center', fontWeight: 500, backgroundColor: '#EDF2F4'}}key={index} >{knowledgeName} </div>
+                        ))}
+                    </div>
+                    </div>
+
+                    <div style={{width: '100%', margin: '0 auto 0 auto', marginTop: 30, height: '180px',backgroundColor: '#8D99AE', borderRadius: '5px', padding: '10px'}}>
+                    <h2>See Associated Abilities </h2>
+                    <div style={{display: 'flex', marginTop: 15, alignItems: 'center', justifyContent: 'center'}}>
+                        {abilities.map((abilityName, index) => (
+                        <div style={{width: '100px',margin: 5, borderRadius: '3px', height: '80px', alignItems: 'center', display: 'flex', justifyContent: 'center', textAlign: 'center', fontWeight: 500, backgroundColor: '#EDF2F4'}}key={index} >{abilityName} </div>
+                        ))}
+                    </div>
+                    </div>
+
+                    <div style={{width: '100%', margin: '0 auto 0 auto', marginTop: 30, height: '180px',backgroundColor: '#8D99AE', borderRadius: '5px', padding: '10px'}}>
+                    <h2>See Associated Skills </h2>
+                    <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center',marginTop: 15,}}>
+                        {techSkills.map((skillName, index) => (
+                        <div style={{width: '100px',margin: 5, borderRadius: '3px', height: '80px', alignItems: 'center', display: 'flex', justifyContent: 'center', textAlign: 'center', fontWeight: 500, backgroundColor: '#EDF2F4'}}key={index} >{skillName} </div>
+                        ))}
+                    </div>
+                    </div>
+                    </Carousel>
+                   {/* <CorrelatedCareers onetIds={correlatedCareers}  /> */}
+
+                    <div style={{width: '80%', margin: '0 auto 0 auto', marginTop: 30, height: '320px',backgroundColor: '#2B2D42', borderRadius: '5px', padding: '10px'}}>
+                    <h1 style={{color: '#fff'}}>Task Types </h1>
+                    <div style={{display: 'flex',  alignItems: 'center', justifyContent: 'center',marginTop: 10,}}>
+                        {tasks.map((taskName, index) => (
+                        <div style={{width: '300px',margin: 15, borderRadius: '3px', height: '180px', alignItems: 'center', display: 'flex', justifyContent: 'center', textAlign: 'center', fontWeight: 500, backgroundColor: '#EDF2F4'}}key={index} >{taskName} </div>
+                        ))}
+                    </div>
+                    </div>
+                    <div style={{width: '80%', margin: '0 auto 0 auto', marginTop: 30, height: '420px',backgroundColor: '#2B2D42', borderRadius: '5px', padding: '10px'}}>
+                        <Carousel>
+
+                    <PieChartIndustry industryData={industryData} />
+                 
+                    <SalaryPieChart data={salary} />
+                    </Carousel>
+                        </div>
+
+                 
+                  
+                    
+                    </div>
         
     );
 };

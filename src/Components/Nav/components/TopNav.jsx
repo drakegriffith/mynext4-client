@@ -1,5 +1,4 @@
 import React from "react";
-import "../Nav.css";
 import next4Logo from "../icon.png";
 import ReactDOM from "react-dom/client";
 import { Outlet, Link, Route, Routes, BrowserRouter} from "react-router-dom";
@@ -9,10 +8,16 @@ import {useSelector} from 'react-redux';
 import { UserContext } from '../../../Pages/App';
 import { useContext } from 'react';
 import AuthContext from '../../../Pages/LogIn/AuthContext';
+import { Carousel } from 'react-responsive-carousel';
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
+
+
 
 function TopNav() {
   const { auth } = useContext(AuthContext)
+  
   const { userID} = useContext(UserContext)
+
     return (
       auth ? (
       <div className='top-nav'>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrandSafari, GridDots, Home2} from 'tabler-icons-react';
-import '../Nav.css';
+
 
 function SideBar() {
     return (

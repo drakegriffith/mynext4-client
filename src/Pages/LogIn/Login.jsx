@@ -16,70 +16,25 @@ import { connect } from "react-redux";
 import { login } from "../../redux/users/userActions";
 import store from "../../redux/store";
 import { Navigate, useParams } from "react-router-dom";
-import Nav from "../../Components/Nav/Nav";
 import { init_api, API } from "../../API";
 import AuthContext from "./AuthContext";
 import { UserContext } from '../App'
 
-const useStyles = createStyles((theme) => ({
-  wrapper: {
-    minHeight: 900,
-    backgroundSize: "cover",
-    backgroundImage:
-      "url(https://images.unsplash.com/photo-1446329360995-b4642a139973?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mjl8fGhpZ2glMjByZXNvbHV0aW9uJTIwc2Nob29sfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60)",
-  },
 
-  form: {
-    borderRight: `1px solid ${
-      theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.colors.gray[3]
-    }`,
-    minHeight: 900,
-    maxWidth: 450,
-    paddingTop: 80,
-
-    [`@media (max-width: ${theme.breakpoints.sm}px)`]: {
-      maxWidth: "100%",
-    },
-  },
-
-  title: {
-    color: theme.colorScheme === "dark" ? theme.white : theme.black,
-    fontFamily: `Greycliff CF, ${theme.fontFamily}`,
-  },
-
-  logo: {
-    color: theme.colorScheme === "dark" ? theme.white : theme.black,
-    width: 120,
-    display: "block",
-    marginLeft: "auto",
-    marginRight: "auto",
-  },
-}));
 
 function Login({ login, handleUserLogin }) {
-  const { classes } = useStyles();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { auth, setAuth } = useContext(AuthContext);
   const { userID, setUserID } = useContext(UserContext)
-  
-  
   const [id, setID] = useState(0);
   
-
   const loginPressed = async () => {
-            //setAuth(true);
-            // setUserID(store.getState().user.id); 
-            
             init_api();
             const res = await API.post("/auth/jwt/create", {
             email: email,
             password: password
         });
-        
-
-        
-            
             const config = {
                 headers: {
                     'Content-Type': 'application/json',
@@ -87,19 +42,13 @@ function Login({ login, handleUserLogin }) {
                     'Accept': 'application/json'
                 }
             };
-            
-            
-            init_api();
             await API.get('/auth/users/me/', config)
             .then((response) => {
-              console.log("RESPONSE WITH" + response.data.id)
-              
-             
-            
+
               setUserID(response.data.id)
             
             });
-            //console.log(store.getState().user.id);
+          
             setAuth(true);
             
          
@@ -110,22 +59,15 @@ function Login({ login, handleUserLogin }) {
     <AuthContext.Consumer>
   {({ auth, setAuth }) => (
     <div>
-      <div className={classes.wrapper}>
-        <Paper className={classes.form} radius={0} p={30}>
-          <Title
-            order={2}
-            className={classes.title}
-            align="center"
-            mt={100}
-            mb={40}
-          >
-            Welcome back to MyNext4!
-          </Title>
+      <div style={{margin: 30}} >
+        <Paper  radius={0} p={30} shadow="lg">
+        <div className="course-field-tag" style={{textAlign: 'center', fontWeight: 400, fontSize: '36px', marginBottom: 4, marginTop: 4, color: 'gray'}}> Welcome </div>
 
           <TextInput
             label="Email address"
             size="md"
             value={email}
+            style={{width: '50%', margin: '0 auto 0 auto'}}
             onChange={(event) => {
               setEmail(event.currentTarget.value);
             }}
@@ -134,18 +76,21 @@ function Login({ login, handleUserLogin }) {
             label="Password"
             mt="md"
             size="md"
+            style={{width: '50%', margin: '0 auto 0 auto'}}
             value={password}
             onChange={(event) => {
               setPassword(event.currentTarget.value);
             }}
           />
-          <Button fullWidth mt="xl" size="md" onClick={loginPressed}>
-            Login
+          <div style={{display: 'flex', justifyContent: 'center'}}>
+          <Button style={{width: '250px', margin: '30px auto 0 auto', }} mt="xl" size="lg" onClick={loginPressed}>
+            Log In
           </Button>
+          </div>
         </Paper>
       </div>
       <div className="root-login">
-        <Nav />
+     
 
         {auth && <Navigate to={`/Dashboard/${userID}`} />}
       </div>

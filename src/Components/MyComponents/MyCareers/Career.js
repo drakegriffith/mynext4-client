@@ -8,7 +8,7 @@ import { InfoCircle, Wood, ReportAnalytics, Poo, Cut, Paint, Track, Sailboat, Ti
 import {  User, Book2, Building, Meat, Book, Calculator, Ad, Eyeglass2, Home, Code, Bolt, Robot, Disc, Atom, Map2, Diamond, Movie, Music, News, FlameOff, Flame, Spade, Gavel, Growth } from "tabler-icons-react";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { CAREER_ATTRIBUTES } from './careerAttributes';
-
+import { Link } from "react-router-dom";
 const iconMapping = {
     "ReportAnalytics": <ReportAnalytics size={32} />,
     "Book": <Book size={32} />,
@@ -115,9 +115,16 @@ const iconMapping = {
   };
 // Small 
 
-export const SmallCareer = ({career, onSelect, showHeart, onDelete, isLiked  }) => {
+export const SmallCareer = ({career, onSelect,search, searchValue, showHeart, onDelete, isLiked  }) => {
   const [showModal, setShowModal] = useState(false);
   const icon = iconMapping[career.abbrev_icon];
+
+  const handleClick = (e) => {
+    if (!searchValue) {
+      e.preventDefault();
+      onSelect();
+    }
+  };
 
   const handleDelete = () => {
     onDelete();
@@ -158,10 +165,11 @@ export const SmallCareer = ({career, onSelect, showHeart, onDelete, isLiked  }) 
     />
   )
 }
-        <div className="icon-container" onClick={onSelect}>
-          <InfoCircle className="icon" size={24} />
-       
-      </div>
+<div className="icon-container" onClick={handleClick}>
+      <Link to={searchValue && career && career.onet_id ? `/Careers/${career.onet_id}` : "#"}>
+        <InfoCircle className="icon" size={24} />
+      </Link>
+    </div>
 </div>
       </div>
       </div>

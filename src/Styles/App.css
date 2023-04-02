@@ -13,6 +13,19 @@
   }
 }
 
+.nav-container {
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+}
+
+.content {
+  position: absolute;
+  top: 100%;
+  width: 100%;
+}
+
+
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
