@@ -9,7 +9,6 @@ import { MyColleges } from "./components/MyColleges";
 import { CollegeComputer } from "./components/CollegeComputer"
 import { UserContext } from "../../../Pages/App";
 import ShowcaseTabButton from "../helpers/ShowcaseTabButton";
-import AuthContext from "../../../Pages/LogIn/AuthContext";
 
 // MyCollege Template
 
@@ -21,7 +20,7 @@ const CollegeDataPage = ({setColleges, colleges}) => {
   const largeCollegeRef = useRef(null);
   const { userID } = useContext(UserContext)
   const [errorMessage, setErrorMessage] = useState(null);
-  const { auth } = useContext(AuthContext);
+
   const getLikedList = useCallback(async () => {
     init_api();
     const response = await API.get(`/api/users/collegelist/${userID}/`);
@@ -121,15 +120,15 @@ const CollegeDataPage = ({setColleges, colleges}) => {
   };
 
   return (
-    auth && 
+
       
      
     <div className="component-overall-container">
      
       <MyColleges onSelectCollege={selectCollege} setColleges= {setCollegeLikedList} colleges={collegeLikedList} />
-      <Paper withBorder shadow="xl" p="md" sx={{position: 'relative', width: "40%", top: -10, height:'78vh', margin: '0 3% 0 3%', backgroundColor: '#80ED99', border: '.5px solid #C7F9CC' ,borderRadius: '5px' , zIndex: 1}}>
+      <Paper withBorder shadow="xl" p="md" sx={{width: "40%", margin: '0 3% 0 3%', backgroundColor: '#8D99AE', border: '.5px solid #8D99AE' ,borderRadius: '5px' , zIndex: 1}}>
         <div className="componentMiddleHeader">
-            <div className="my-component-header-text"><b> Showcase Colleges</b> </div>
+            <div className="componentMiddleHeaderText"><b> Showcase Colleges</b> </div>
             <AnimatePresence>
         {errorMessage && (
           <motion.div

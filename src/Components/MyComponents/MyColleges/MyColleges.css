@@ -13,30 +13,6 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
 
-   
-  .college-pre-token-tooltip {
-    position: absolute;
-    display: none;
-    top: -50px; /* Adjust this value to position the tooltip */
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 9999;
-    background-color: #1F2937;
-    text-align: center;
-    color: #ffffff;
-    padding: 4px 8px;
-    border-radius: 4px;
-    z-index: 5;
-    font-size: 0.775rem;
-  }
-  
-  .grade-card:hover .college-pre-token-tooltip {
-    display: block;
-  }
-  
-  .grade-card {
-    position: relative;
-  }
   .college-icon-wrapper::after {
     content: "";
     position: absolute;

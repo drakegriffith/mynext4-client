@@ -14,12 +14,7 @@ export const MyColleges = ({  onSelectCollege, setColleges, colleges }) => {
   const [recommendedColleges, setRecommendedColleges] = useState([]);
   const [activeTab, setActiveTab] = useState("home");
   const { userID } = useContext(UserContext);
-
-  function removeCollege(collegeObject) {
-    const updatedList = colleges.filter(item => item.id !== collegeObject.id);
-    setColleges(updatedList);
-    handleDeleteCollegeFeedback(collegeObject);
-  }
+   
 
     const getRecommendedColleges = useCallback(async () => {
       init_api();
@@ -82,7 +77,7 @@ export const MyColleges = ({  onSelectCollege, setColleges, colleges }) => {
     };
   
     return (
-      <Paper shadow="xl" p="md" sx={{ borderRadius: '5px' ,width: "25%", backgroundColor: '#80ED99', border: '.5px solid #C7F9CC' , zIndex: 1 }}>
+      <Paper shadow="xl" p="md" sx={{border: '.5px solid #8D99AE' ,borderRadius: '5px' ,width: "25%", backgroundColor: '#8D99AE ', zIndex: 1 }}>
         <div className="my-component-header">
       <div className="my-component-header-text">
         <b>My Colleges</b>
@@ -108,7 +103,7 @@ export const MyColleges = ({  onSelectCollege, setColleges, colleges }) => {
               {chunk.map((name, id) => (
                 <li key={chunkIndex * 8 + id} className="my-component-list-item" >
                 
-                  <SmallCollege onDelete={() => removeCollege(name)} college={name} onSelect={() => onSelectCollege(name)} showHeart={false}/>
+                  <SmallCollege college={name} onSelect={() => onSelectCollege(name)} showHeart={false}/>
                 </li>
               ))}
             </ul>

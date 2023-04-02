@@ -1,31 +1,23 @@
 import React, { useState, useEffect, useCallback } from "react";
 import "./MyCourses.css";
-import { Card, Divider, Modal } from "@mantine/core";
-import {  Book, Search  } from "tabler-icons-react";
+import { Card, Divider, Progress, Modal } from "@mantine/core";
+import { Star, Medal, User, Book2, Book,  Eraser, ThumbUp, ArrowsMaximize, BallFootball, Award, Building, Meat, Confetti,  MoodWrrr, MoodUnamused, MoodAnnoyed2, MoodSmileBeam, LayoutBottombar, SoccerField } from "tabler-icons-react";
 import { motion, AnimatePresence } from 'framer-motion';
 import { InfoCircle, Trash, Heart,Calculator, Check, LetterX, InfoCircleFilled } from 'tabler-icons-react';
 import { API, init_api } from "../../../API";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
-import { COURSE_ATTRIBUTES } from './courseAttributes';
-import { Link, useNavigate } from "react-router-dom";
 
-import { Navigate } from "react-router-dom";
+import { COURSE_ATTRIBUTES } from './courseAttributes';
+import { IconProps } from "tabler-icons-react";
+
 // Small 
 
-export const SmallCourse = ({course, onSelect, showHeart, searchValue, onDelete, isLiked  }) => {
+export const SmallCourse = ({course, onSelect, showHeart, onDelete, isLiked  }) => {
   const [showModal, setShowModal] = useState(false);
   const handleDelete = () => {
     onDelete();
     setShowModal(false);
   };
-
-  const handleClick = (e) => {
-    if (!searchValue) {
-      e.preventDefault();
-      onSelect();
-    }
-  };
-  
 
   const handleCancel = () => {
     setShowModal(false);
@@ -61,11 +53,10 @@ export const SmallCourse = ({course, onSelect, showHeart, searchValue, onDelete,
     />
   )
 }
-<div className="icon-container" onClick={handleClick}>
-      <Link to={searchValue && course && course.id ? `/Courses/${course.id}` : "#"}>
-        <InfoCircle className="icon" size={24} />
-      </Link>
-    </div>
+        <div className="icon-container" onClick={onSelect}>
+          <InfoCircle className="icon" size={24} />
+       
+      </div>
 </div>
      </div>
       </div>
@@ -452,13 +443,13 @@ const CoursePrerequisites = React.memo(({ prerequisites }) => {
 
 
 // Medium 
-export const MediumCourse = ({course, coursePage, onDelete, onLargeClick, setView, setSelectedCourse}) => {
+export const MediumCourse = ({course, onDelete, onLargeClick, setView, setSelectedCourse}) => {
   const [displayedTooltip, setDisplayedTooltip] = useState(null);
 
   const [activeTab, setActiveTab] = useState("money");
     const [showSAT, setShowSAT] = useState(false);
     const [endpoints, setEndpoints] = useState([]);
-  
+
     const handleUpdateEndpoints = (newEndpoints) => {
       setEndpoints(newEndpoints);
     };
@@ -473,40 +464,12 @@ export const MediumCourse = ({course, coursePage, onDelete, onLargeClick, setVie
 function handleDelete() {
   onDelete();
 };
-const linkStyle = {
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  top: 0,
-  textDecoration: 'none', // remove underline
-  
-  outline: 'none',
-  backgroundColor: '#2B2D42',
-  color: "#FFF",
 
-  borderRadius: '5px',
-
-  padding: '3px', // remove outline
-};
-
-const navigate = useNavigate();
-const handleLinkClick = (course) => (event) => {
-  event.preventDefault();
-  navigate(`/Courses/${course.id}`);
-};
 
 return (
-<Card className={coursePage ? "my-individual-component" : "my-component"} shadow="sm" padding="lg" radius="md" withBorder >
-  <Card.Section className="component-medium-top-shelf" style={{padding: '8px'}}> 
-  <h4 className="component-medium-name shiny-text" style={{display: 'flex', justifyContent: 'center', alignItems: 'center', textAlign: 'center', marginBottom: 0}}> <b>{course.course_name} </b></h4>
-  { !coursePage &&
-  <div style={{position: 'absolute', right: 5, top: 5}}>
-    <a href={`/Courses/${course.id}`} onClick={handleLinkClick(course)}>
-      
-       <Search />
-      </a>
-      </div>
-}
+<Card className="my-component" shadow="sm" padding="lg" radius="md" withBorder >
+  <Card.Section className="component-medium-top-shelf"> 
+  <h4 className="component-medium-name shiny-text" style={{display: 'flex', justifyContent: 'center', alignItems: 'center',padding: '5px', textAlign: 'center', marginBottom: 0}}> <b>{course.course_name} </b></h4>
   </Card.Section>
   <Divider style={{marginBottom: 5}} />
   <Card.Section style={{display: 'flex', justifyContent: 'left', width: '100%', margin: '3px auto 3px auto', height: '25px',  marginBottom: 0}}>
@@ -516,8 +479,6 @@ return (
     backgroundColor: attribute.color,
     border: "1px solid #1F2937",
   };
-
-  
 
   return (
     <div
@@ -542,13 +503,12 @@ return (
 <p style={{textAlign: 'center', fontSize: '10px', marginBottom: 5}}>TBD</p>
         <Divider />
         <div className="course-field-tag" style={{textAlign: 'center', fontWeight: 400, fontSize: '12px', marginBottom: 4, marginTop: 4, color: 'gray'}}> Learn a Lot</div>
-  { course && <CourseSkillsList className="course-skill-list" learnSkills={course.learn_skills} /> }
+  <CourseSkillsList className="course-skill-list" learnSkills={course.learn_skills} />
   <Divider className="course-field-tag" style={{marginTop: 6, marginBottom: 4}} />
   <div style={{display: 'flex', justifyContent:'space-between', position: 'absolute', bottom: 5}}>
   <div  style={{ fontWeight: 400, fontSize: '10px', marginBottom: 4, marginTop: 8, color: 'gray'}}> Field <b> {course.field}</b></div> 
   <div  style={{position: 'relative', marginLeft: 5, fontWeight: 400, fontSize: '10px', marginBottom: 4, marginTop: 8, color: 'gray'}}> Industry <b> {course.field}</b></div> 
   </div>
-  
           </Card>
 
       );

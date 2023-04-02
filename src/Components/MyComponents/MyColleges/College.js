@@ -2,33 +2,26 @@ import React, { useState, useEffect, useCallback } from "react";
 import "../MyComponents.css"
 import "./MyColleges.css"
 import { Card, Divider, Progress, Modal } from "@mantine/core";
-import { Star, Medal, User, Book2,  Eraser, ThumbUp, ArrowsMaximize, BallFootball, Award, Building, Meat, Confetti,  MoodWrrr, MoodUnamused, MoodAnnoyed2, MoodSmileBeam, LayoutBottombar, SoccerField, Search } from "tabler-icons-react";
+import { Star, Medal, User, Book2,  Eraser, ThumbUp, ArrowsMaximize, BallFootball, Award, Building, Meat, Confetti,  MoodWrrr, MoodUnamused, MoodAnnoyed2, MoodSmileBeam, LayoutBottombar, SoccerField } from "tabler-icons-react";
 import { motion, AnimatePresence } from 'framer-motion';
 import { InfoCircle, Trash, Heart, Check, LetterX, InfoCircleFilled } from 'tabler-icons-react';
-import { Link, useNavigate } from "react-router-dom";
+
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from 'react-responsive-carousel';
 import {shuffle} from "lodash"
 import MyCollegeCards from './MyCollegeCards';
 import { gsap } from "gsap";
 import { COLLEGE_ATTRIBUTES } from './collegeAttributes';
-import next4Logo from "../../Nav/icon.png"
+
 
 // Small 
 
-export const SmallCollege = ({college, onSelect, showHeart, searchValue, onDelete, isLiked  }) => {
+export const SmallCollege = ({college, onSelect, showHeart, onDelete, isLiked  }) => {
   const [showModal, setShowModal] = useState(false);
 
   const handleDelete = () => {
     onDelete();
     setShowModal(false);
-  };
-
-  const handleClick = (e) => {
-    if (!searchValue) {
-      e.preventDefault();
-      onSelect();
-    }
   };
 
   const handleCancel = () => {
@@ -65,12 +58,10 @@ export const SmallCollege = ({college, onSelect, showHeart, searchValue, onDelet
     />
   )
 }
-<div className="icon-container" onClick={handleClick}>
-      <Link to={searchValue && college && college.id ? `/Colleges/${college.id}` : "#"}>
-        <InfoCircle className="icon" size={24} />
-      </Link>
-      
-    </div>
+        <div className="icon-container" onClick={onSelect}>
+          <InfoCircle className="icon" size={24} />
+       
+      </div>
 </div>
       </div>
       </div>
@@ -149,8 +140,7 @@ function getMatchingAttributes(college) {
   return matchingAttributes;
 }
 
-const getGradeColor = (grade) => {
-  console.log("I WORK WELL")
+function getGradeColor(grade) {
   const trimmedGrade = grade.trim();
   switch (trimmedGrade) {
     case "A+":
@@ -383,18 +373,16 @@ export const LargeCollegeActions = ({ onLargeClick, onDelete, onLike, college, l
 };
 
 // Medium 
-export const MediumCollege = ({college, collegePage,  onDelete, onLargeClick, setView, setSelectedCollege}) => {
-
-  const [displayedTooltip, setDisplayedTooltip] = useState(null);
+export const MediumCollege = ({college, onDelete, onLargeClick, setView, setSelectedCollege}) => {
+ 
   const college_grades = [
-    { label: 'Academic Grade', grade: college.academic_grade },
-    { label: 'Diversity Grade', grade: college.diversity_grade },
-    { label: 'Athletic Grade', grade: college.athletic_grade },
-    { label: 'Value Grade', grade: college.value_grade },
-    { label: 'Campus Grade', grade: college.campus_grade },
-    { label: 'Party Grade', grade: college.party_grade },
-  ];
-  
+    college.academic_grade,
+    college.diversity_grade,
+    college.athletic_grade,
+    college.value_grade,
+    college.campus_grade,
+    college.party_grade,
+  ]
  
   const [activeTab, setActiveTab] = useState("money");
     const [showSAT, setShowSAT] = useState(false);
@@ -409,12 +397,6 @@ export const MediumCollege = ({college, collegePage,  onDelete, onLargeClick, se
       setView('large');
       setSelectedCollege(college);
     };
-    const navigate = useNavigate();
-const handleLinkClick = (course) => (event) => {
-  event.preventDefault();
-  navigate(`/Courses/${course.id}`);
-};
-
 
   
 function handleDelete() {
@@ -425,17 +407,9 @@ function pascalCase(str) {
 }
 
 return (
-<Card className={collegePage ? "my-individual-component" : "my-component"} shadow="sm" padding="lg" radius="md" withBorder >
+<Card className="my-component" shadow="sm" padding="lg" radius="md" withBorder >
   <Card.Section className="component-medium-top-shelf"> 
   <h4 className="college-medium-name shiny-text" style={{display: 'flex', justifyContent: 'center', alignItems: 'center', textAlign: 'center', marginBottom: 0}}> <b>{college.college_name} </b></h4>
-  { !collegePage &&
-  <div style={{position: 'absolute', right: 5, top: 5}}>
-    <a href={`/Colleges/${college.id}`} onClick={handleLinkClick(college)}>
-      
-       <Search />
-      </a>
-      </div>
-}
   </Card.Section>
   <Divider style={{marginBottom: 5}} />
   <Card.Section style={{display: 'flex', justifyContent: 'left', width: '100%', margin: '3px auto 3px auto', height: '25px',  marginBottom: 0}}>
@@ -472,24 +446,16 @@ return (
       alignItems: 'center', // Center child elements vertically
       justifyItems: 'center',
     }}>
-      {college && college_grades.map((grade, index) => (
+      {college_grades.map((grade, index) => (
 
        <div className="grade-container">
-       <div className="grade-card "
-  onMouseEnter={() => setDisplayedTooltip(grade.label)}
-  onMouseLeave={() => setDisplayedTooltip(null)}>
-         <div key={index} className={`grade-front component-attribute`} style={{ backgroundColor: getGradeColor(grade.grade) }}>
-           {grade.grade}
-
-     
+       <div className="grade-card">
+         <div key={index} className={`grade-front component-attribute`} style={{ backgroundColor: getGradeColor(grade) }}>
+           {grade}
          </div>
-         <div className="grade-back" style={{ backgroundColor: getGradeColor(grade.grade) }}>
-         <img style={{width: '36px', height: '36px'}}src= {next4Logo} />
+         <div className="grade-back" style={{ backgroundColor: getGradeColor(grade) }}>
+           <SoccerField size={24} />
          </div>
-         {displayedTooltip === grade.label && (
-        <div className="college-pre-token-tooltip">{grade.label}</div>
-      )}
-        
        </div>
 
      </div>
@@ -508,26 +474,8 @@ return (
 
 export const LargeCollege = ({ college, onDelete, handleLiked}) => {
   const [endpoints, setEndpoints] = useState([]);
-  const [displayedTooltip, setDisplayedTooltip] = useState(null);
-
-  console.log("COLLEGE")
-  console.log(college)
   const [value, setValue] = useState(0);
-  let college_grades = [];
 
-  if (college) {
-    console.log("YES!")
-    college_grades = [
-      { label: 'Academic Grade', grade: college.academic_grade },
-      { label: 'Diversity Grade', grade: college.diversity_grade },
-      { label: 'Athletic Grade', grade: college.athletic_grade },
-      { label: 'Value Grade', grade: college.value_grade },
-      { label: 'Campus Grade', grade: college.campus_grade },
-      { label: 'Party Grade', grade: college.party_grade },
-    ];
-  }
-
-  
   useEffect(() => {
     // Update the value to simulate incoming money
     const interval = setInterval(() => {
@@ -584,21 +532,16 @@ export const LargeCollege = ({ college, onDelete, handleLiked}) => {
       alignItems: 'center', // Center child elements vertically
       justifyItems: 'center',
     }}>
-     {college_grades.map((grade, index) => (
+      {[            college.academic_grade,            college.diversity_grade,            college.athletic_grade,            college.value_grade,            college.campus_grade,            college.party_grade,          ].map((grade, index) => (
 
        <div className="grade-container">
-      <div className="grade-card "
-  onMouseEnter={() => setDisplayedTooltip(grade.label)}
-  onMouseLeave={() => setDisplayedTooltip(null)}>
-         <div key={index} className={`grade-front component-attribute-lg`} style={{ backgroundColor: getGradeColor(grade.grade) }}>
-           {grade.grade}
+       <div className="grade-card">
+         <div key={index} className={`grade-front component-attribute-lg`} style={{ backgroundColor: getGradeColor(grade) }}>
+           {grade}
          </div>
-         <div className="grade-back" style={{ backgroundColor: getGradeColor(grade.grade) }}>
-         <img style={{width: '24px', height: '24px'}}src= {next4Logo} size={32} />
+         <div className="grade-back" style={{ backgroundColor: getGradeColor(grade) }}>
+           <SoccerField size={24} />
          </div>
-         {displayedTooltip === grade.label && (
-        <div className="college-pre-token-tooltip">{grade.label}</div>
-      )}
        </div>
 
      </div>

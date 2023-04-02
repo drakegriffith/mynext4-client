@@ -10,7 +10,6 @@ import { MyCourses } from "./components/MyCourses"
 import { AnimatePresence, motion } from 'framer-motion'
 import { CourseComputer } from "./components/CourseComputer"
 import ShowcaseTabButton from "../helpers/ShowcaseTabButton";
-import AuthContext from "../../../Pages/LogIn/AuthContext";
 
 const CourseDataPage = ({setCourses, courses}) => {
     const [selectedCourse, setSelectedCourse] = useState(null); // Large view
@@ -20,8 +19,8 @@ const CourseDataPage = ({setCourses, courses}) => {
     const { userID } = useContext(UserContext)
     const largeCourseRef = useRef(null);
     const [errorMessage, setErrorMessage] = useState(null);
-    const { auth } = useContext(AuthContext);
-
+    
+   
     useEffect(() => {
       
       const getLikedList = async () => {
@@ -143,14 +142,13 @@ const CourseDataPage = ({setCourses, courses}) => {
   
 
     return (
-      auth && 
       <div className="component-overall-container">
     
   
         <MyCourses onSelectCourse={selectCourse} setCourses = {setCourseLikedList} courses = {courseLikedList}/>
-        <Paper withBorder shadow="xl" p="md" sx={{position: 'relative', width: "40%", top: -10, height:'78vh', margin: '0 3% 0 3%', backgroundColor: '#80ED99', border: '.5px solid #C7F9CC' ,borderRadius: '5px' , zIndex: 1}}>
+        <Paper withBorder shadow="xl" p="md" sx={{width: "40%", margin: '0 3% 0 3%', backgroundColor: '#8D99AE', border: '.5px solid #8D99AE' ,borderRadius: '5px' , zIndex: 1}}>
         <div className="componentMiddleHeader">
-            <div className="my-component-header-text"><b> Showcase Courses</b> </div>
+            <div className="componentMiddleHeaderText"><b> Course Comparator</b> </div>
             <AnimatePresence>
         {errorMessage && (
           <motion.div

@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState, useContext } from "react";
 import { SmallCareer, MediumCareer, LargeCareer} from "../Career";
 import { API, init_api } from '../../../../API';
+import Nav from "../../../Nav/Nav";
 import { Home2, Bookmarks } from "tabler-icons-react"
 import { useLocation, useParams } from "react-router";
 import AuthContext from '../../../../Pages/LogIn/AuthContext';
@@ -14,6 +15,7 @@ export const MyCareers = ({  onSelectCareer, setCareers, careers, removeDuplicat
   const [recommendedCareers, setRecommendedCareers] = useState([]);
   const [activeTab, setActiveTab] = useState("home");
   const { userID } = useContext(UserContext);
+   
     const getRecommendedCareers = useCallback(async () => {
       init_api();
     
@@ -73,12 +75,11 @@ export const MyCareers = ({  onSelectCareer, setCareers, careers, removeDuplicat
 
   
     return (
-
-      <Paper shadow="xl" p="md" sx={{borderRadius: '5px' ,width: "25%", backgroundColor: '#80ED99', border: '.5px solid #C7F9CC' , zIndex: 1 }}>
+      <Paper shadow="xl" p="md" sx={{border: '.5px solid #8D99AE' ,borderRadius: '5px' ,width: "25%", backgroundColor: '#8D99AE ', zIndex: 1 }}>
       
       <div className="my-component-header">
       <div className="my-component-header-text">
-      MyCareers
+        <span style={{fontWeight: 900, color: 'white'}}>My</span>Careers
       </div>
       <MyTabButton activeTab={activeTab} onChange={handleTabClick} />
     </div>

@@ -5,7 +5,7 @@ import Landing from "../Components/Landing/Landing";
 
 import Privacy from "../Components/Privacy/Privacy";
 import Dashboard from "../Components/Dashboard/Dashboard"
-import Colleges from "./Colleges/Colleges";
+
 import About from "../Components/About/About";
 import MyCourses from "../Components/MyComponents/MyCourses/MyCourseContainer"
 import { Provider } from "react-redux";
@@ -24,12 +24,10 @@ import Demo from "../Components/Demo/Demo";
 import ExploreCourses from "./ExploreCourses/ExploreCourses";
 import ExploreCareers from "./ExploreCareers/ExploreCareers";
 import CareerSurveyTest from "../Components/CareerSurveyTest";
-import Register from "../Register";
+
 import AuthContext from "./LogIn/AuthContext";
-import Navbar from "../Components/Nav/NewNav";
+import TopNav from "../Components/Nav/components/TopNav";
 import { SurveyContext, SurveyProvider } from "../SurveyContext";
-import AccountActivation from "../AccountActivation";
-import SurveySpecifications from "../Components/SurveySpecifications/SurveySpecifications";
 /*
 Testing push request
 */
@@ -38,8 +36,6 @@ export const UserContext = createContext(null);
 function App() {
   const [auth, setAuth] = useState(false);
   const [userID, setUserID] = useState(null);
-
- 
   
     return (
    
@@ -47,22 +43,14 @@ function App() {
       <AuthContext.Provider value= {{auth, setAuth }}>
        
       <Provider store={store}>
-
-  
-  <Navbar userID={userID} />
-
-     
-
-      
-  
+      <TopNav userID={userID} />
         <React.Fragment>
           <Routes>
-          <Route path="/activate/:uid/:token" element={<AccountActivation />} />
             <Route path="/" element={<Landing />} />
             <Route path="/About" element={<About />} />
             <Route path="/MyCourses/:userID" element={<MyCourses />} />
             
-            <Route path="/Colleges/:id" element={<Colleges />} />
+            <Route path="/Colleges/:id" element={<CollegeCard />} />
   
             <Route path="/Privacy" element={<Privacy />} />
             <Route path='/Dashboard/:userID' element={<Dashboard/>} />
@@ -73,7 +61,7 @@ function App() {
             <Route path='/CourseSurveyOne/:userID' element={<CourseSurveyTest   />} />
             <Route path='/CollegeSurveyOne/:userID' element={<CollegeSurveyTest  />} />
   
-            <Route path="/MyNext4/RegisterUser" element={<Register />} />
+      
             <Route path="/test" element={<Test />} />
             <Route path = "/SignIn" element={<Login />} />
             <Route path = "/Careers/:id" element = {<Careers />} />
@@ -82,11 +70,8 @@ function App() {
             <Route path = "/ExploreCourses" element = {<ExploreCourses />} />
             <Route path = "/ExploreCareers" element = {<ExploreCareers />} />
             <Route path = "/MyColleges/Colleges/:id" element = {<CollegeCard />} />
-            <Route path='/SurveySpecifications/:userID' element={<SurveySpecifications  />} />
           </Routes>
         </React.Fragment>
-    
-  
       </Provider>
       
       </AuthContext.Provider>

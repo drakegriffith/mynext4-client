@@ -97,7 +97,7 @@ export const CareerComputer = ({ onSelectCareer }) => {
   
     
     return (
-        <Paper shadow="lg" p="md" sx={{backgroundColor: '#80ED99', border: '.5px solid #C7F9CC' ,borderRadius: '5px' ,width: "25%", zIndex:1}}>
+        <Paper shadow="lg" p="md" sx={{border: '.5px solid #8D99AE' ,borderRadius: '5px' ,width: "25%",  backgroundColor: '#8D99AE ', zIndex:1}}>
         
         <div className="component-computer-header" style={{marginBottom: 20}}>
           

@@ -5,7 +5,6 @@ import { UserContext } from "../../../../Pages/App";
 import { Paper } from "@mantine/core";
 import { Carousel } from "react-responsive-carousel";
 import MyTabButton from "../../helpers/MyTabButton";
-import "../../MyComponents.css"
 
 export const MyCourses = ({ onSelectCourse, setCourses, courses, removeDuplicates}) => {
     const [recommendedCourses, setRecommendedCourses] = useState([]);
@@ -58,21 +57,20 @@ export const MyCourses = ({ onSelectCourse, setCourses, courses, removeDuplicate
     };
     const courseRecChunks = chunkArray(recommendedCourses, 8);
     const courseCouChunks = chunkArray(courses, 8);
-    console.log(courseCouChunks)
-
+    
     const handleTabClick = (tab) => {
       setActiveTab(tab);
       console.log(activeTab)
     };
     return (
-      <Paper shadow="xl" p="md" sx={{borderRadius: '5px' ,width: "25%", backgroundColor: '#80ED99', border: '.5px solid #C7F9CC' , zIndex: 1 }}>
+      <Paper shadow="xl" p="md" sx={{border: '.5px solid #8D99AE' ,borderRadius: '5px' ,width: "25%", backgroundColor: '#8D99AE ', zIndex: 1 }}>
       <div className="my-component-header">
     <div className="my-component-header-text">
       <b>My Courses</b>
     </div>
-    <div>
+    <button className="tab-button" onClick={handleTabClick}>
     <MyTabButton activeTab={activeTab} onChange={handleTabClick} />
-    </div>
+    </button>
   </div>
 
       {activeTab === 'home' && (

@@ -13,7 +13,6 @@ import { CareerComputer } from "./components/CareerComputer";
 import { UserContext } from "../../../Pages/App";
 import TopNav from "../../Nav/components/TopNav";
 import ShowcaseTabButton from "../helpers/ShowcaseTabButton";
-import AuthContext from "../../../Pages/LogIn/AuthContext";
 
 const CareerDataPage = ({setCareers, careers}) => {
     const [selectedCareer, setSelectedCareer] = useState(null);
@@ -21,7 +20,6 @@ const CareerDataPage = ({setCareers, careers}) => {
     const [view, setView] = useState("large");
     const [careerLikedList, setCareerLikedList] = useState([]);
     const { userID } = useContext(UserContext)
-    const { auth } = useContext(AuthContext);
     const largeCareerRef = useRef(null);
     const [errorMessage, setErrorMessage] = useState(null);
     
@@ -170,14 +168,13 @@ const CareerDataPage = ({setCareers, careers}) => {
  
 
     return (
-      auth &&
       <div className="component-overall-container">
     
           
         <MyCareers onSelectCareer={selectCareer} removeDuplicates={removeDuplicates} setCareers={setCareerLikedList}  careers = {careerLikedList}/>
-        <Paper withBorder shadow="xl" p="md" sx={{position: 'relative', width: "40%", top: -10, height:'78vh', margin: '0 3% 0 3%', backgroundColor: '#80ED99', border: '.5px solid #C7F9CC' ,borderRadius: '5px' , zIndex: 1}}>
+        <Paper withBorder shadow="xl" p="md" sx={{width: "40%", margin: '0 3% 0 3%', backgroundColor: '#8D99AE', border: '.5px solid #8D99AE' ,borderRadius: '5px' , zIndex: 1}}>
         <div className="componentMiddleHeader" style={{marginBottom: 15}}>
-            <div className="my-component-header-text" ><b> Showcase Careers</b> </div>
+            <div className="componentMiddleHeaderText" ><b> Showcase Careers</b> </div>
             <AnimatePresence>
         {errorMessage && (
           <motion.div

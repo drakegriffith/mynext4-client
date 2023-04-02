@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import {init_api, API} from '../../API';
 import CourseCardList from '../../Components/CardList/CourseCardList';
+import Nav from '../../Components/Nav/Nav';
 import "./ExploreCareers.css"
 import { init_api_onet, API_ONET } from '../../API_ONET';
 
@@ -25,7 +26,7 @@ function ExploreCareers() {
 
     return (
         <div className='explore_careers_container'>
-         
+            <Nav />
             <div style = {{
                 marginTop: 200,
                 marginLeft: 675
