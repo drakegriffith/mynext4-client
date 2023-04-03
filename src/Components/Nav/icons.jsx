@@ -4,7 +4,6 @@ import College from "./images/college.png"
 import Career from "./images/career.png"
 
 import React, { useContext } from "react"
-import AuthContext from "../../Pages/LogIn/AuthContext"
 import { UserContext } from "../../Pages/App"
 
 

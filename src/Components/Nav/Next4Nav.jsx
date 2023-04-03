@@ -1,19 +1,24 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
-import { AuthContext } from "../../Auth/AuthContext";
-import { UserContext } from "../../../Pages/App"; // Make sure to import these contexts from the correct location
+import { AuthContext } from "../Auth/AuthContext";
+import { UserContext } from "../../Pages/App"; // Make sure to import these contexts from the correct location
 import { ChevronDown } from "tabler-icons-react";
-import "../NavBar.css"
-function TopNav() {
+import SearchBar from "./SearchBar";
+import Next4Logo from "./icon.png"
+import "./NavBar.css"
+
+function Next4Nav() {
   const { auth } = useContext(AuthContext);
   const { userID } = useContext(UserContext);
 
   return (
-    <nav className="top-nav">
-      <div className="container">
+    <nav className="navbar">
+      <div style={{display: 'flex', justifyContent: 'space-around', alignItems: 'center'}}>
         <Link className="brand" to="/">
           MyNext4
         </Link>
+        <img src={Next4Logo} style={{width: '34px', height: '36px'}} />
+        </div>
         <div className="nav-links">
           <Link className="nav-link" to="/more">
             More with MyNext4
@@ -48,9 +53,9 @@ function TopNav() {
             </Link>
           )}
         </div>
-      </div>
+
     </nav>
   );
 }
 
-export default TopNav;
+export default Next4Nav;

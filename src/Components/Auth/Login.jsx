@@ -17,8 +17,9 @@ import { login } from "../../redux/users/userActions";
 import store from "../../redux/store";
 import { Navigate, useParams } from "react-router-dom";
 import { init_api, API } from "../../API";
-import AuthContext from "./AuthContext";
-import { UserContext } from '../App'
+import { AuthContext } from "./AuthContext";
+import { UserContext } from "../../Pages/App";
+import { SurveyContext } from "../../SurveyContext";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
@@ -31,7 +32,7 @@ const Login = () => {
   const [id, setID] = useState(0);
   
   function handleRegister() {
-    navigate("/auth/register")
+    navigate("/safe/register")
   }
   const loginPressed = async () => {
     init_api();
@@ -98,18 +99,19 @@ const Login = () => {
             <Button
               style={{ width: "250px", margin: "30px auto 0 auto" }}
               mt="xl"
+              mb="xl"
               size="lg"
               onClick={loginPressed}
             >
               Log In
             </Button>
           </div>
-          <h6> Not a user, make an account with us <span onClick={handleRegister} style={{fontWeight: 800}}><i>here</i></span></h6>
+          <h5 style={{textAlign: 'center'}}> Not a user, make an account with us <span onClick={handleRegister} style={{fontWeight: 800, color:'purple', marginTop: 10}}><i>here</i></span></h5>
         </Paper>
       </div>
       <div className="root-login">
-        {isAuthenticated && surveysCompleted && <Navigate to={`/Dashboard/${userID}`} />}
-        {isAuthenticated && !surveysCompleted && <Navigate to={`/SurveyShowcase/`} />}
+        {isAuthenticated && surveysCompleted && <Navigate to={`/next4/home/${userID}`} />}
+        {isAuthenticated && !surveysCompleted && <Navigate to={`/next4/survey-starter/${userID}`} />}
       </div>
     </div>
   );

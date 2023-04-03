@@ -4,7 +4,7 @@ import { API } from '../API';
 import { init_api } from '../API';
 import { useSelector } from 'react-redux';
 import { useLocation, useParams } from "react-router";
-import AuthContext from "../Pages/LogIn/AuthContext";
+import { AuthContext } from './Auth/AuthContext';
 import { UserContext } from '../Pages/App';
 import { Lock, User } from 'tabler-icons-react';
 import { CircleCheck } from 'tabler-icons-react';

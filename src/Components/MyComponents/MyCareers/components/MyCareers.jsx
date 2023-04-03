@@ -3,7 +3,6 @@ import { SmallCareer, MediumCareer, LargeCareer} from "../Career";
 import { API, init_api } from '../../../../API';
 import { Home2, Bookmarks } from "tabler-icons-react"
 import { useLocation, useParams } from "react-router";
-import AuthContext from '../../../../Pages/LogIn/AuthContext';
 import { UserContext } from "../../../../Pages/App";
 import { Paper } from "@mantine/core";
 import { Carousel } from "react-responsive-carousel";

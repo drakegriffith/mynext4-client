@@ -21,19 +21,23 @@
 }
 
 .auth-btn {
-  background-color: #ccc; /* Set the background color */
+  margin-top: 10px;
+  background-color: #38A3A5; /* Set the background color */
   color: #fff; /* Set the font color */
   border: none; /* Remove the border */
   border-radius: 5px; /* Add rounded corners */
   padding: 10px 20px; /* Add padding */
+  width: 200px;
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* Add a shadow */
+  cursor: pointer;
   transition: all 0.2s ease-in-out; /* Add a transition */
+  margin: 0 auto 0 auto;
 }
 
 .auth-btn:hover {
   transform: translateY(2px); /* Move the button down slightly */
   box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3); /* Adjust the shadow */
-  background-color: #f00; /* Change the background color to red */
+  background-color: #22577A; /* Change the background color to red */
 }
 
 label {
@@ -110,14 +114,13 @@ label:hover span:before {
 }
 
 .auth-container {
-  margin-top: 200px;
-  display: flex;
-  justify-content: center;
+   width: 35vw;
   align-items: center;
   box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.5);
   border-radius: 10px;
-  padding: 20px;
-  background-color: #fff;
+  padding: 25px;
+  background-color: #57CC99;
+  z-index: 1;
   animation: glow 2s ease-in-out infinite alternate;
 }
 
@@ -128,4 +131,74 @@ label:hover span:before {
   to {
     box-shadow: 0px 0px 30px rgba(255, 255, 255, 0.8);
   }
+}
+
+.register-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.auth-container {
+  padding: 2rem;
+  width: 100%;
+  max-width: 500px;
+  border-radius: 5px;
+  background-color: #ffffff;
+}
+
+.auth-title {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  margin-bottom: 0.5rem;
+}
+
+.form-group input,
+.form-group select {
+  padding: 0.5rem;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+.auth-btn {
+  display: block;
+  margin: 1rem auto 0;
+  padding: 0.5rem 1rem;
+  font-weight: bold;
+  color: #ffffff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.auth-btn:hover {
+  background-color: #0056b3;
+}
+
+.auth-btn:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
 }

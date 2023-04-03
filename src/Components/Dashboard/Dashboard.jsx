@@ -12,7 +12,7 @@ import { SmallCollege } from '../MyComponents/MyColleges/College';
 import { SmallCareer } from '../MyComponents/MyCareers/Career';
 import { Carousel } from 'react-responsive-carousel';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
-import AuthContext from '../../Pages/LogIn/AuthContext';
+import { AuthContext } from '../Auth/AuthContext';
 import { UserContext } from '../../Pages/App';
 import SeeSurveys from '../../SeeSurveys';
 import PersonalSide from './PersonalSide';

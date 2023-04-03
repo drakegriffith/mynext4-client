@@ -9,7 +9,7 @@ import { MyColleges } from "./components/MyColleges";
 import { CollegeComputer } from "./components/CollegeComputer"
 import { UserContext } from "../../../Pages/App";
 import ShowcaseTabButton from "../helpers/ShowcaseTabButton";
-import AuthContext from "../../../Pages/LogIn/AuthContext";
+import { AuthContext } from "../../Auth/AuthContext";
 
 // MyCollege Template
 

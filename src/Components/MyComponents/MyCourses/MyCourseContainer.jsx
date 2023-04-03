@@ -10,7 +10,7 @@ import { MyCourses } from "./components/MyCourses"
 import { AnimatePresence, motion } from 'framer-motion'
 import { CourseComputer } from "./components/CourseComputer"
 import ShowcaseTabButton from "../helpers/ShowcaseTabButton";
-import AuthContext from "../../../Pages/LogIn/AuthContext";
+import { AuthContext } from "../../Auth/AuthContext";
 
 const CourseDataPage = ({setCourses, courses}) => {
     const [selectedCourse, setSelectedCourse] = useState(null); // Large view

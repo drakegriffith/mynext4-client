@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import CareerSurveyTest from './Components/CareerSurveyTest';
 import CollegeSurveyTest from './Components/CollegeSurveyTest';
 import CourseSurveyTest from './Components/CourseSurveyTest';
-import AuthContext from './Pages/LogIn/AuthContext';
+import { AuthContext } from './Components/Auth/AuthContext';
 import { UserContext } from './Pages/App';
 import { SurveyProvider } from './SurveyContext';
 

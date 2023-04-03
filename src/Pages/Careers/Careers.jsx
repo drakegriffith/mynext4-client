@@ -5,16 +5,7 @@ import { Carousel } from "react-responsive-carousel";
 import { Card } from "@mantine/core";
 import { Spoiler, Modal, Button, Paper } from '@mantine/core';
 import ListItem from "./Components/ListItems";
-import DescriptionPop from "./Components/DescriptionPop";
-import SidePicker from "./Components/SidePicker";
-import AccordionCustom from "./Components/AccordionCustom";
-import CareersTraits from "./Components/CareerTraits";
-import TechSkills from "./Components/TechSkills";
-import CareerEducation from "./Components/CareerEducation";
-import SalaryCharts from "./Components/SalaryCharts";
-import {Bar, BarChart, CartesianGrid, Legend, Tooltip, XAxis, YAxis} from "recharts";
-import CareerOutlook from "./Components/CareerOutlook";
-import CourseCardList from "../../Components/CardList/CourseCardList";
+
 import {init_api} from "../../API";
 import {API} from "../../API";
 import { useSelector } from "react-redux";

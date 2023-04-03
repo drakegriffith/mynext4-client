@@ -13,7 +13,7 @@ import { CareerComputer } from "./components/CareerComputer";
 import { UserContext } from "../../../Pages/App";
 import TopNav from "../../Nav/components/TopNav";
 import ShowcaseTabButton from "../helpers/ShowcaseTabButton";
-import AuthContext from "../../../Pages/LogIn/AuthContext";
+import { AuthContext } from "../../Auth/AuthContext";
 
 const CareerDataPage = ({setCareers, careers}) => {
     const [selectedCareer, setSelectedCareer] = useState(null);

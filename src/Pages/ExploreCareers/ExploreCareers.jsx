@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { useState } from 'react';
 import {init_api, API} from '../../API';
-import CourseCardList from '../../Components/CardList/CourseCardList';
 import "./ExploreCareers.css"
 import { init_api_onet, API_ONET } from '../../API_ONET';
 

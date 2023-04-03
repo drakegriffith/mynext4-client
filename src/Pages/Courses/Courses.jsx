@@ -1,9 +1,3 @@
-
-import BasicInfo from "./Components/BasicInfo";
-
-import TypicalUnits from "./Components/TypicalUnits";
-import Resources from "./Components/Resources";
-import CourseCardList from "../../Components/CardList/CourseCardList";
 import {useParams} from 'react-router';
 import React, { useCallback, useEffect, useState } from "react";
 import { Book, Calculator } from "tabler-icons-react"

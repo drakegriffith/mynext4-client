@@ -1,16 +1,33 @@
-import React, { createContext, useState } from 'react';
+import React, { useState, useContext, useEffect, createContext } from "react";
 
-export const SurveyContext = createContext();
+export const SurveyContext = createContext({});
 
 export const SurveyProvider = ({ children }) => {
-  const [completedSurveys, setCompletedSurveys] = useState(0);
+  const [surveysCompleted, setSurveysCompleted] = useState(false);
+  const [isCourseCompleted, setIsCourseCompleted] = useState(false);
+  const [isCollegeCompleted, setIsCollegeCompleted] = useState(false);
+  const [isCareerCompleted, setIsCareerCompleted] = useState(false);
 
-  const completeSurvey = () => {
-    setCompletedSurveys(completedSurveys + 1);
-  };
+  useEffect(() => {
+    if (isCourseCompleted && isCollegeCompleted && isCareerCompleted) {
+      setSurveysCompleted(true);
+    }
+  }, [isCourseCompleted, isCollegeCompleted, isCareerCompleted]);
 
   return (
-    <SurveyContext.Provider value={{ completedSurveys, completeSurvey }}>
+    <SurveyContext.Provider
+      value={{
+        surveysCompleted,
+        isCourseCompleted,
+        setIsCourseCompleted,
+        isCollegeCompleted,
+        setIsCollegeCompleted,
+        isCareerCompleted,
+        setIsCareerCompleted,
+        surveysCompleted,
+        setSurveysCompleted,
+      }}
+    >
       {children}
     </SurveyContext.Provider>
   );

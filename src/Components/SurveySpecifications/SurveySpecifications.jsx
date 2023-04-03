@@ -1,309 +1,104 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { useSpring, animated } from 'react-spring';
-import "./SurveySpecifications.css";
-import { motion } from "framer-motion";
-import { BookUpload, Search, Trophy, School, Books, ChefHat, Book} from "tabler-icons-react";
-import AssignedSurveys from '../../AssignedSurveys';
-import { API, init_api } from '../../API';
-import { useLocation, useParams } from "react-router";
-import Careers from '../../Pages/Careers/Careers';
-import { SmallCourse } from '../MyComponents/MyCourses/Course';
-import { SmallCollege } from '../MyComponents/MyColleges/College';
-import { SmallCareer } from '../MyComponents/MyCareers/Career';
-import { Carousel } from 'react-responsive-carousel';
-import "react-responsive-carousel/lib/styles/carousel.min.css";
-import AuthContext from '../../Pages/LogIn/AuthContext';
-import { UserContext } from '../../Pages/App';
-import SeeSurveys from '../../SeeSurveys';
-import PersonalSide from '../Dashboard/PersonalSide';
-import { Paper, Tabs } from '@mantine/core';
-import { SurveyContext } from '../../SurveyContext';
-import { useDebouncedState } from '@mantine/hooks';
-// make API request to get user info upon login
+import React, { useContext } from "react";
+import { SurveyContext } from "../../SurveyContext";
+import { Check } from "tabler-icons-react";
+import { UserContext } from "../../Pages/App";
+function SurveySpecifications({ handleSurveyClick }) {
+  const { isCourseCompleted, isCollegeCompleted, isCareerCompleted, surveysCompleted } = useContext(SurveyContext);
+  const { userID } = useContext(UserContext)
+  // Define styles for the container
+  const containerStyles = {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#f7f7f7",
+    padding: "20px",
+    borderRadius: "5px",
+    boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",
+    margin: "20px",
+  };
 
+  // Define styles for the title
+  const titleStyles = {
+    fontSize: "28px",
+    fontWeight: "bold",
+    marginBottom: "20px",
+  };
 
+  const surveys = [
+    { id: 1, name: "Courses Questions", href: `/CourseSurveyOne/${userID}` },
+    { id: 2, name: "College Questions", href: `/CollegeSurveyOne/${userID}` },
+    { id: 3, name: "Career Questions", href: `/CareerSurveyOne/${userID}` },
+  ];
 
-const ProfileSection = ({ name, email, pictureUrl }) => {
   return (
-    <div className="profile-section">
-   
-      <div className="profile-info">
-        <h2>{name}</h2>
-        <p><u>{email}</u></p>
-        
-      </div>
-      <img src="" alt="Profile Info" className="profile-click-in" />
-      <img src={pictureUrl} alt="Profile picture" className="profile-picture" />
-      <img src={pictureUrl} alt="Profile school" className="profile-school" />
-    </div>
-  );
-};
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+      <h1 style={{ marginTop: "20px", marginBottom: "10px" }}>Survey Specifications</h1>
+      <h3 style={{ marginBottom: "20px" }}>{`${(isCourseCompleted + isCollegeCompleted + isCareerCompleted)}/3 surveys complete`}</h3>
 
-function SurveySpecifications({  }) {
-  const [showCourses, setShowCourses] = useState(true);
-const [showColleges, setShowColleges] = useState(false);
-const [showCareers, setShowCareers] = useState(false);
-const { userID, setUserID} = useContext(UserContext)
-
-  const [answer, setAnswer] = useState(null);
-  const [careerLikedList, setCareerLikedList] = useState([]);
-  const [collegeLikedList, setCollegeLikedList] = useState([]);
-  const [courseLikedList, setCourseLikedList] = useState([]);
-  const [activeUser, setActiveUser] = useState([]);
-  const username = activeUser.username
-
-
-  async function getUserInfo() {
-
-    init_api();
-    try {
-      const response = await API.get(`/api/users/return-user/${userID}/`)
-      .then((response) => {
-        const userInfo = response.data;
-        console.log(userInfo)
-        setActiveUser(userInfo);
-    });
-      
-  
-      // set user info in global state using your state management library
-    } catch (error) {
-      console.error(error);
-    }
-  }
-  const MyCarousel = ({ items }) => {
-    const chunks = [];
-    const size = 8;
-  
-    // Split the items array into chunks of size 8
-    for (let i = 0; i < items.length; i += size) {
-      chunks.push(items.slice(i, i + size));
-    }
-  
-    return (
-      <Carousel>
-        {chunks.map((chunk, index) => (
-          <div key={index}>
-            {chunk.map((item, itemIndex) => (
-              <div key={itemIndex}>
-                <div> { items == courseLikedList ? 
-                <SmallCourse course={item} />
-                : items == collegeLikedList ?
-                <SmallCollege college={item} />
-                : <SmallCareer career={item} />
-                }
+      <div style={{ display: "flex", flexDirection: "row" }}>
+        {surveys.map((survey) => (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              flexDirection: "column",
+              alignItems: "center",
+              width: "33%",
+              height: "280px",
+              backgroundColor: "#fff",
+              borderRadius: "5px",
+              margin: "20px",
+              padding: "20px",
+              boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",
+            }}
+            key={survey.id}
+          >
+            {survey.id === 1 && (
+              <div>
+                {isCourseCompleted ? (
+                  <Check size={64} color="green" />
+                ) : (
+                  <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
+                    <Check style={{ marginBottom: 10 }} size={48} color="red" />
+                    <button onClick={() => handleSurveyClick("course")}>Complete {survey.name}</button>
+                  </div>
+                )}
               </div>
+            )}
+
+            {survey.id === 2 && (
+              <div>
+                {isCollegeCompleted ? (
+                  <Check size={64} color="green" />
+                ) : (
+                  <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
+                    <Check style={{ marginBottom: 10 }} size={32} color="red" />
+                    <button onClick={() => handleSurveyClick("college")}>Complete {survey.name}</button>
+                  </div>
+                )}
               </div>
-            ))}
+            )}
+  
+
+            {survey.id === 3 && (
+              <div>
+                {isCareerCompleted ? (
+                  <Check size={64} color="green" />
+                ) : (
+                  <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
+                    <Check style={{ marginBottom: 10 }} size={48} color="red" />
+                    <button onClick={() => handleSurveyClick("career")}>Complete {survey.name}</button>
+                    </div>
+                )}
           </div>
+            )}
+            </div>
         ))}
-      </Carousel>
-    );
-  };
-
-  useEffect(() => {
-      
-    const getLikedCourses = async () => {
-        
-        init_api();
-        await API.get(`/api/users/courselist/${userID}/`)
-        .then((response) => {
-            
-            console.log(response.data.liked_list);
-            setCourseLikedList(response.data.liked_list);
-        });
-    }
-    
-    getLikedCourses();
-
-    const getLikedColleges = async () => {
-        
-      init_api();
-      await API.get(`/api/users/collegelist/${userID}/`)
-      .then((response) => {
-          
-          console.log(response.data.liked_list);
-          setCollegeLikedList(response.data.liked_list);
-      });
-  }
-  
-    getLikedColleges();
-  
-    const getLikedCareers = async () => {
-            
-      init_api();
-      await API.get(`/api/users/careerlist/${userID}/`)
-      .then((response) => {
-          
-          console.log(response.data.liked_list);
-          setCareerLikedList(response.data.liked_list);
-      });
-    }
-  
-    getLikedCareers();
-    getUserInfo();
- 
-  }, []);
-
- 
-  const handleCourseClick = () => {
-    window.location.href = '/mycourses';
-  };
-
-  const handleCollegeClick = () => {
-    window.location.href = '/mycolleges';
-  };
-
-  const handleCareerClick = () => {
-    window.location.href = '/mycareer';
-  };
-
-
-  
-  const [courseIndex, setCourseIndex] = useState(0);
-  const [collegeIndex, setCollegeIndex] = useState(0);
-  const [careerIndex, setCareerIndex] = useState(0);
-  const handleClick = () => {
-    // Code to run on click
-  };
-
-  const itemsPerContainer = 8;
-
-  // Function to get a slice of the array based on the current index and number of items to display
-  const getItems = (list, index) => {
-    const startIndex = index % list.length;
-    const endIndex = startIndex + itemsPerContainer;
-    return list.slice(startIndex, endIndex);
-  };
-
-  const courseComplete = activeUser.course_survey
-    const collegeComplete = activeUser.college_survey
-    const careerComplete = activeUser.career_survey
-
-    console.log(activeUser)
-  return (
-
-<div className="ovr-container">
-    
-    <div className="dashboard-container" >
- 
-
- 
-    
-      
-        <PersonalSide  name={activeUser.username} email={activeUser.email} courseComplete={courseComplete} 
-        collegeComplete={collegeComplete} careerComplete={careerComplete} />
-
-     
-      
-       
-        {/* 
-  <div className="my-mission-container"> 
-  <MissionList />
-  
-  </div>
-*/}
-  
-      
-     
-    <Paper shadow="lg" className="dashboard-main-area" style={{marginTop: 130}}>
-  
-  <div>
-  <Tabs defaultValue="courses">
-    <Tabs.List>
-      <Tabs.Tab value="courses" icon={<Book size="1.3rem" />}>Course Cards</Tabs.Tab>
-      <Tabs.Tab value="colleges" icon={<School size="1.3rem" />}>College Cards</Tabs.Tab>
-      <Tabs.Tab value="careers" icon={<ChefHat size="1.3rem" />}>Career Cards</Tabs.Tab>
-
-    </Tabs.List>
-
-
-
-  <Tabs.Panel value="courses" pt="xs">
-      <div className="dashboard-courses">
-      <div style={{textAlign: 'left', marginLeft: '3px', fontWeight: 700, fontSize: '16px', marginBottom: 0}}><i>MyCourses</i></div>
-      <hr />
-      
-    <MyCarousel items={courseLikedList} />
-  
-
-  <div style={{padding: '25px', backgroundColor: 'white', marginTop: 10, display: 'flex', justifyContent: 'center', alignItems: 'center', marginLeft: 'auto', marginRight: 'auto',marginLeft: 'auto', marginRight: 'auto', borderRadius: '4px', width: '20px', height: '20px'}}>
-   <div onClick={handleCourseClick} style={{ textAlign: 'center',  cursor: 'pointer'}}> <Search size={32} /></div>
-  </div>
-  </div>
-  </Tabs.Panel>
-
-  <Tabs.Panel value="colleges" pt="xs">
-      <div className="dashboard-colleges"> 
-      <div style={{textAlign: 'left', marginLeft: '3px', fontWeight: 700, fontSize: '16px', marginBottom: 0}}><i>MyColleges</i></div>
-      <hr />
-{/*
-      <WaterFallContainer items={collegeLikedList.map((college) => (
-   <SmallCollege key={college.id} college={college} />
- ))} />
-      */}
- 
-       <div onClick={handleCollegeClick} style={{ textAlign: 'center', cursor: 'pointer'}}> <Search size={32} /></div>
-
- </div>
- </Tabs.Panel>
-
- <Tabs.Panel value="careers" pt="xs">
-      <div className="dashboard-careers">
-      <div style={{textAlign: 'left', marginLeft: '3px', fontWeight: 700, fontSize: '16px', marginBottom: 0}}><i></i></div>
-      <hr />
-      {/*<WaterFallContainer items={careerLikedList.map((career) => (
-  <SmallCareer key={career.id} career={career} />
-      ))} /> */}
-<div style={{padding: '25px', backgroundColor: 'white', display: 'flex', justifyContent: 'center', alignItems: 'center', marginLeft: 'auto', marginRight: 'auto',marginLeft: 'auto', marginRight: 'auto', borderRadius: '4px', width: '20px', height: '20px'}}>
-      <div onClick={handleCareerClick} style={{textAlign: 'center',  cursor: 'pointer'}}> <Search size={32} /></div>
-    </div>
-    </div>
-    </Tabs.Panel>
-
-    </Tabs>
-
-</div>
-</Paper>
-    <div className="dashboard-right">
-
-        <div className='dashboard-miss-container'>
-      <div className="dashboard-missions">
-      <h6 className="animated-gradient-text h4Tag" style={{textAlign: 'center', fontWeight: 800, fontSize: '63px', marginLeft: 0, marginTop: 0, marginBottom: 0, fomtFamily: 'Phudu'}}> MyRecommendations </h6>
-      </div>
-
-      </div>
-
-      <div className="dashboard-missions-see">
-      <div style={{color: '#FFF', textAlign: 'center', fontWeight: 800, fontSize: '21px', marginLeft: 15, marginBottom: 0}}>Coming soon... </div>
-      <motion.div
-      className="dashboard-play"
-whileHover={{ scale: 1.2 }}
-whileTap={{
-  scale: 0.8,
-  borderRadius: "100%"
-}}>
-    <Trophy style={{color: 'white'}}size={42} />
-  </motion.div>
-      </div>
-      </div>
-
-    </div>
-  
-
-
- 
- </div>
-
+            </div>
+            </div>
   )
-}
-
-export default SurveySpecifications;
+                }
 
 
-
-
-
-
-
-
-
+  export default SurveySpecifications;
