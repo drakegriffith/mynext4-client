@@ -4,29 +4,23 @@ import { API } from '../API';
 import { init_api } from '../API';
 import { useSelector } from 'react-redux';
 import { useLocation, useParams } from "react-router";
-import { AuthContext } from './Auth/AuthContext';
+import { AuthContext } from '../Components/Auth/AuthContext';
 import { UserContext } from '../Pages/App';
-import { Lock, User } from 'tabler-icons-react';
-import { CircleCheck } from 'tabler-icons-react';
-import { SurveyContext } from '../SurveyContext';
 import { useNavigate } from 'react-router-dom';
-
+import styles from "./Surveys.module.css";
+import { motion } from "framer-motion";
+import { SurveyContext } from '../SurveyContext';
 function CareerSurveyTest({ }) {
-    const { auth } = useContext(AuthContext)
+    const { isAuthenticated } = useContext(AuthContext)
     const { userID, setUserID } = useContext(UserContext);
     const [answer, setAnswer] = useState(null);
     const [complete, setComplete] = useState(false);
     const navigate = useNavigate();
     const [questions, setQuestions] = useState([]);
     const [submittedAnswer, setSubmittedAnswer] = useState(null);
+    const surveyContext = useContext(SurveyContext);
     const [id, setId] = useState(1);
     
-  
-
-
-    
-  
-        
     const checkCareerCompletion = async (userID) => {
         const promise = API.get(`/check-career-survey/${userID}/`)
             promise.then((response) => {
@@ -114,56 +108,90 @@ function CareerSurveyTest({ }) {
 
   
 
-    const handleFinalSubmit = () => {
-          API.post(`/mark-completed-career-one/${userID}/`)
-          .then(response => {
-            console.log(response.data);
-            // If the POST request was successful, you can update the state or show a success message here
-          })
-          .catch(error => {
-            console.log(error);
-            // If the POST request failed, you can show an error message here
-          });
-          navigate(`/Dashboard/${userID}`);
-      
-      };
+    const handleFinalSubmit = async () => {
+        try {
+            await API.post(`/mark-completed-career-one/${userID}/`);
+            surveyContext.setIsCareerCompleted(true);
+            navigate(`/my/survey-starter/${userID}`);
+          } catch (error) {
+            console.error('Error marking survey as completed:', error);
+          }
+          surveyContext.setIsCareerCompleted(true);
+          navigate(`/my/survey-starter/${userID}`);
+        };
+       
+    
+
+      const handleReturnHome = () => {
+        navigate('/');
+      }
   
-      console.log(auth)
-    return (
-        auth && !complete ?
-              <div style={{textAlign: 'center', marginTop: '5%'}}>
-                <h1>Career Quiz</h1>
-                <p style={{color: 'gray', fontSize: '16px'}}><i>Complete all the questions and click submit. </i></p>
-                <form onSubmit={handleSubmit} style={{marginTop: '15px' ,width: '35vw', margin: '0 auto 0 auto'}}>
-                  <h3 style={{marginBottom: 25}}>{questions.question}</h3>
-                  <label style={{display: 'flex', justifyContent: 'center'}} >
-                  <input 
-                  type="radio"
-                  name="answer"
-                  value={0}
-                  checked={answer === 0}
-                  onChange={handleChange}
-                  />
-                  No
-                  <input
-                  type="radio"
-                  name="answer"
-                  value={1}
-                  checked={answer === 1}
-                  onChange={handleChange}
-                  />
-                  Yes
-                  </label>
-                  <button style={{marginTop: 10, padding: '10px 10px'}}type="submit">Submit</button>
-                  </form>
-                </div>
-          
-            : 
-            auth ?
-            <div style={{marginTop: 200}}> 
-            <button onClick={handleFinalSubmit}> Submit </button>
+
+      return (
+        surveyContext.isCareerCompleted && isAuthenticated ? 
+        <div>
+            <h4 style={{margin: '100px auto 0 auto', textAlign: 'center'}}>This survey has already been completed.</h4>
+            <div style={{ display: 'flex', justifyContent: 'center', marginTop: 200 }}>
+            <button className={styles.finalSubmit} onClick={handleReturnHome}>Return Home</button>
+          </div>
             </div>
             :
+       isAuthenticated && !complete ?
+        <motion.div
+        className={styles.container}
+        initial={{ opacity: 0, y: -50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        >
+        <h1 className={styles.title}>Career Quiz</h1>
+        <p className={styles.subtitle}>
+            <i>Complete all the questions and click submit. </i>
+        </p>
+        <form onSubmit={handleSubmit} className={styles.form}>
+        <motion.h3
+    className={styles.question}
+    key={questions.question}
+    initial={{ opacity: 0, y: -50 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.5 }}
+  >
+    {questions.question}
+  </motion.h3>
+            <label className={styles.radioBtnContainer}>
+  <input
+    className={styles.radioBtn}
+    type="radio"
+    name="answer"
+    value={0}
+    checked={answer === 0}
+    onChange={handleChange}
+    id="no"
+  />
+  <label htmlFor="no" className={styles.radioBtnLabel}>No</label>
+  <input
+    className={styles.radioBtn}
+    type="radio"
+    name="answer"
+    value={1}
+    checked={answer === 1}
+    onChange={handleChange}
+    id="yes"
+  />
+  <label htmlFor="yes" className={styles.radioBtnLabel}>Yes</label>
+</label>
+
+            <button className={styles.button} type="submit">
+            Submit
+            </button>
+        </form>
+        </motion.div>
+          
+            : 
+            isAuthenticated ?
+            <div style={{ display: 'flex', justifyContent: 'center', marginTop: 200 }}>
+            <button className={styles.finalSubmit} onClick={handleFinalSubmit}>Submit</button>
+          </div>
+            : 
             <div> You are not an authenticated user. </div>
           
     )

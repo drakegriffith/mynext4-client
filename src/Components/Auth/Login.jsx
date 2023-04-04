@@ -11,7 +11,7 @@ import {
 } from "@mantine/core";
 import "./Auth.css";
 
-import React, { useState, useContext, createContext } from "react";
+import React, { useState, useEffect, useContext, createContext } from "react";
 import { connect } from "react-redux";
 import { login } from "../../redux/users/userActions";
 import store from "../../redux/store";
@@ -27,10 +27,11 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { isAuthenticated, setIsAuthenticated, token, setToken } = useContext(AuthContext);
-  const { userID, setUserID } = useContext(UserContext);
+  const { userID, setUserID, setUsername } = useContext(UserContext);
   const { surveysCompleted } = useContext(SurveyContext);
   const [id, setID] = useState(0);
-  
+  const surveyContext = useContext(SurveyContext)
+
   function handleRegister() {
     navigate("/safe/register")
   }
@@ -51,11 +52,56 @@ const Login = () => {
     };
     await API.get("/auth/users/me/", config).then((response) => {
       setUserID(response.data.id);
+      setUsername(response.data.username)
     });
     setToken(token);
     setIsAuthenticated(true);
     console.log(isAuthenticated);
   };
+
+  useEffect(() => {
+    init_api();
+    const checkCollegeCompletion = async () => {
+      try {
+        const response = await API.get(`/check-college-survey/${userID}/`);
+        console.log("COLLEGE" + response.data.collegeCompleted)
+        surveyContext.setIsCollegeCompleted(response.data.collegeCompleted);
+      } catch (error) {
+        console.error('Error checking survey completion:', error);
+      }
+    };
+
+    const checkCourseCompletion = async () => {
+      try {
+        const response = await API.get(`/check-course-survey/${userID}/`);
+        console.log(response.data)
+        surveyContext.setIsCourseCompleted(response.data.courseCompleted);
+        console.log(surveyContext.isCourseCompleted)
+      } catch (error) {
+        console.error('Error checking survey completion:', error);
+      }
+    };
+  
+    const checkCareerCompletion = async () => {
+      try {
+        const response = await API.get(`/check-career-survey/${userID}/`);
+        surveyContext.setIsCareerCompleted(response.data.careerCompleted);
+      } catch (error) {
+        console.error('Error checking survey completion:', error);
+      }
+    };
+
+    checkCareerCompletion();
+    checkCollegeCompletion();
+    checkCourseCompletion();
+
+  }, [userID]);
+  
+  useEffect(() => {
+    if (surveyContext.isCareerCompleted && surveyContext.isCollegeCompleted && surveyContext.isCourseCompleted) {
+      surveyContext.setSurveysCompleted(true);
+    }
+  }, [userID])
 
   return (
     <div>
@@ -110,8 +156,8 @@ const Login = () => {
         </Paper>
       </div>
       <div className="root-login">
-        {isAuthenticated && surveysCompleted && <Navigate to={`/next4/home/${userID}`} />}
-        {isAuthenticated && !surveysCompleted && <Navigate to={`/next4/survey-starter/${userID}`} />}
+        {isAuthenticated && surveysCompleted && <Navigate to={`/my/home/${userID}`} />}
+        {isAuthenticated && !surveysCompleted && <Navigate to={`/my/survey-starter/${userID}`} />}
       </div>
     </div>
   );

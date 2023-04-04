@@ -1,8 +1,8 @@
 import { API, init_api } from './API';
 import React, { useContext, useEffect, useState } from 'react';
-import CareerSurveyTest from './Components/CareerSurveyTest';
-import CollegeSurveyTest from './Components/CollegeSurveyTest';
-import CourseSurveyTest from './Components/CourseSurveyTest';
+import CareerSurveyTest from './Surveys/CareerSurveyTest';
+import CollegeSurveyTest from './Surveys/CollegeSurveyTest';
+import CourseSurveyTest from './Surveys/CourseSurveyTest';
 import { AuthContext } from './Components/Auth/AuthContext';
 import { UserContext } from './Pages/App';
 import { SurveyProvider } from './SurveyContext';

@@ -8,8 +8,8 @@ import Next4Logo from "./icon.png"
 import "./NavBar.css"
 
 function Next4Nav() {
-  const { auth } = useContext(AuthContext);
-  const { userID } = useContext(UserContext);
+  const { isAuthenticated } = useContext(AuthContext);
+  const { userID, username } = useContext(UserContext);
 
   return (
     <nav className="navbar">
@@ -27,10 +27,10 @@ function Next4Nav() {
             MyNext4 Store
           </Link>
           <SearchBar />
-          {auth ? (
+          {isAuthenticated ? (
             <div className="user-dropdown">
               <button className="nav-bar-button">
-                <span>{userID}</span>
+                <span>{username}</span>
                 <ChevronDown size={16} />
               </button>
               {/* Dropdown menu */}

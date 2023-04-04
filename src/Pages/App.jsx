@@ -14,12 +14,12 @@ import Login from "../Components/Auth/Login"
 import Careers from "./Careers/Careers";
 import MyCareers from "../Components/MyComponents/MyCareers/MyCareerContainer";
 import MyColleges from "../Components/MyComponents/MyColleges/MyCollegeContainer"
-import CourseSurveyTest from "../Components/CourseSurveyTest";
-import CollegeSurveyTest from "../Components/CollegeSurveyTest";
+import CourseSurveyTest from "../Surveys/CourseSurveyTest";
+import CollegeSurveyTest from "../Surveys/CollegeSurveyTest";
 import ExploreColleges from "./ExploreColleges/ExploreColleges";
 import Courses from "./Courses/Courses";
 import Demo from "../Components/Demo/Demo";
-import CareerSurveyTest from "../Components/CareerSurveyTest";
+import CareerSurveyTest from "../Surveys/CareerSurveyTest";
 import Register from "../Components/Auth/Register";
 import { AuthProvider } from "../Components/Auth/AuthContext";
 import Navbar from "../Components/Nav/Next4Nav";
@@ -34,12 +34,13 @@ export const UserContext = createContext(null);
 
 function App() {
   const [userID, setUserID] = useState(null);
+  const [username, setUsername] = useState('');
 
  
   
     return (
       
-      <UserContext.Provider value={{userID, setUserID }}>
+      <UserContext.Provider value={{userID, setUserID, username, setUsername }}>
       <AuthProvider>
         <SurveyProvider>
        
@@ -52,18 +53,18 @@ function App() {
           <Route path="/activate/:uid/:token" element={<AccountActivation />} />
             <Route path="/" element={<Landing />} />
             <Route path="/About" element={<About />} />
-            <Route path="/MyCourses/:userID" element={<MyCourses />} />
+            <Route path="/my/courses/:uid" element={<MyCourses />} />
             
             <Route path="/Colleges/:id" element={<Colleges />} />
   
   
-            <Route path='/next4/home/' element={<Dashboard/>} />
-            <Route path="/MyCareers/:userID" element={<MyCareers  />} />
-            <Route path="/MyColleges/:userID" element={<MyColleges  />} />
+            <Route path='/my/home/:uid' element={<Dashboard/>} />
+            <Route path="/MyCareers/:uid" element={<MyCareers  />} />
+            <Route path="/MyColleges/:uid" element={<MyColleges  />} />
             <Route path='/Demo' element={<Demo /> } />
-            <Route path='/CareerSurveyOne/:userID' element={<CareerSurveyTest  />} />
-            <Route path='/CourseSurveyOne/:userID' element={<CourseSurveyTest   />} />
-            <Route path='/CollegeSurveyOne/:userID' element={<CollegeSurveyTest  />} />
+            <Route path='/my/surveys/careers/1/:uid' element={<CareerSurveyTest  />} />
+            <Route path='/my/surveys/courses/1/:uid' element={<CourseSurveyTest   />} />
+            <Route path='/my/surveys/colleges/1/:uid' element={<CollegeSurveyTest  />} />
   
             <Route path="web/auth/create" element={<Register />} />
             <Route path="/test" element={<Test />} />
@@ -72,7 +73,7 @@ function App() {
 
             <Route path = "/Courses/:id" element = {<Courses />} />
             <Route path = "/MyColleges/Colleges/:id" element = {<CollegeCard />} />
-            <Route path='/next4/survey-starter/:uid' element={<SurveySpecifications  />} />
+            <Route path='/my/survey-starter/:uid' element={<SurveySpecifications  />} />
           </Routes>
         </React.Fragment>
     

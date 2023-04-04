@@ -94,9 +94,17 @@ function PersonalSide({ courseComplete, collegeComplete, careerComplete}) {
     }
 
     return (
-        <Paper onClick={toggle} shadow='lg' sx={{position: 'relative', marginTop: '130px', width: '150px', height:'80vh', display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center'}}>
+
+        <Paper onClick={toggle} shadow='lg' sx={{
+            position: 'absolute',
+            marginTop: '0px',
+            top: 0,
+            width: opened ? '150px' : '150px', // Change width based on opened state
+            height: opened ? '80vh' : '150px', // Change height based on opened state
+            flexDirection: 'column',
+            alignItems: 'center'
+        }}>
             <ArtAvatar />
-            
 
 
             <Collapse  in={opened}>

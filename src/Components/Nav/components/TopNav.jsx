@@ -21,7 +21,7 @@ function TopNav() {
           <Link className="nav-link" to="/store">
             MyNext4 Store
           </Link>
-          <SearchBar />
+      
           {auth ? (
             <div className="user-dropdown">
               <button className="nav-bar-button">

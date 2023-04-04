@@ -14,97 +14,9 @@ import { Carousel } from 'react-responsive-carousel';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { AuthContext } from '../Auth/AuthContext';
 import { UserContext } from '../../Pages/App';
-import SeeSurveys from '../../SeeSurveys';
 import PersonalSide from './PersonalSide';
 import { Paper, Tabs } from '@mantine/core';
 import { SurveyContext } from '../../SurveyContext';
-import { useDebouncedState } from '@mantine/hooks';
-// make API request to get user info upon login
-
-
-
-const ProfileSection = ({ name, email, pictureUrl }) => {
-  return (
-    <div className="profile-section">
-   
-      <div className="profile-info">
-        <h2>{name}</h2>
-        <p><u>{email}</u></p>
-        
-      </div>
-      <img src="" alt="Profile Info" className="profile-click-in" />
-      <img src={pictureUrl} alt="Profile picture" className="profile-picture" />
-      <img src={pictureUrl} alt="Profile school" className="profile-school" />
-    </div>
-  );
-};
-
-/*
-
-function MissionList() {
-  function handleClick(event) 
-    const missionId = Number(event.target.id);
-    const circleNumber = missionId + 1;
-    const circle = document.querySelector(`.image-container .circle-container .circle${circleNumber}`);
-    console.log(circle)
-   
-    if (circle) {
-      
-      const variants = {
-        expanded: { scale: 1.5 },
-        collapsed: { scale: 1 },
-      };
-      const transition = { duration: 0.2 };
-      return (
-        <motion.div
-        animate={ "expanded" }
-      variants={variants}
-      />
-       
-       
-      );
-    }
-   
-   
-   
-  }
-  
-
-  return (
-    <div className="mission-list">
-      <h2>My Missions</h2>
-      <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-        {missions.map((mission) => (
-          <li
-            key={mission.id}
-            style={{ fontSize: '20px', fontWeight: 'bold', margin: '10px 0', cursor: 'pointer' }}
-            onClick={handleClick}
-            data-circle={mission.id}
-          >
-            {mission.title}
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
-
- 
- 
- 
- 
-
-*/
-
-
-
-
-
-
-
-// Infinite scroll for college sections
-
-
 
 
 
@@ -112,33 +24,16 @@ function Dashboard({  }) {
   const [showCourses, setShowCourses] = useState(true);
 const [showColleges, setShowColleges] = useState(false);
 const [showCareers, setShowCareers] = useState(false);
-const { userID, setUserID} = useContext(UserContext)
+const { userID } = useContext(UserContext)
+const { isAuthenticated } = useContext(AuthContext);
 
   const [answer, setAnswer] = useState(null);
   const [careerLikedList, setCareerLikedList] = useState([]);
   const [collegeLikedList, setCollegeLikedList] = useState([]);
   const [courseLikedList, setCourseLikedList] = useState([]);
   const [activeUser, setActiveUser] = useState([]);
-  const username = activeUser.username
 
 
-  async function getUserInfo() {
-
-    init_api();
-    try {
-      const response = await API.get(`/api/users/return-user/${userID}/`)
-      .then((response) => {
-        const userInfo = response.data;
-        console.log(userInfo)
-        setActiveUser(userInfo);
-    });
-      
-  
-      // set user info in global state using your state management library
-    } catch (error) {
-      console.error(error);
-    }
-  }
   const MyCarousel = ({ items }) => {
     const chunks = [];
     const size = 8;
@@ -209,7 +104,6 @@ const { userID, setUserID} = useContext(UserContext)
     }
   
     getLikedCareers();
-    getUserInfo();
  
   }, []);
 
@@ -250,31 +144,17 @@ const { userID, setUserID} = useContext(UserContext)
 
     console.log(activeUser)
   return (
+    isAuthenticated ?
 
 <div className="ovr-container">
-    
-    <div className="dashboard-container" >
- 
 
- 
-    
-      
+    <div className="dashboard-container" >
+    <div className="personal-container" >
         <PersonalSide  name={activeUser.username} email={activeUser.email} courseComplete={courseComplete} 
         collegeComplete={collegeComplete} careerComplete={careerComplete} />
+      </div>
 
-     
-      
-       
-        {/* 
-  <div className="my-mission-container"> 
-  <MissionList />
-  
-  </div>
-*/}
-  
-      
-     
-    <Paper shadow="lg" className="dashboard-main-area" style={{marginTop: 130}}>
+    <Paper shadow="lg" className="dashboard-main-area" style={{marginTop: 10}}>
   
   <div>
   <Tabs defaultValue="courses">
@@ -337,23 +217,11 @@ const { userID, setUserID} = useContext(UserContext)
 
         <div className='dashboard-miss-container'>
       <div className="dashboard-missions">
-      <h6 className="animated-gradient-text h4Tag" style={{textAlign: 'center', fontWeight: 800, fontSize: '63px', marginLeft: 0, marginTop: 0, marginBottom: 0, fomtFamily: 'Phudu'}}> MyRecommendations </h6>
+      <h6 className="animated-gradient-text h4Tag" style={{textAlign: 'center', fontWeight: 800, fontSize: '48px', marginLeft: 0, marginTop: 0, marginBottom: 0, fomtFamily: 'Phudu'}}> / </h6>
       </div>
 
       </div>
-
-      <div className="dashboard-missions-see">
-      <div style={{color: '#FFF', textAlign: 'center', fontWeight: 800, fontSize: '21px', marginLeft: 15, marginBottom: 0}}>Coming soon... </div>
-      <motion.div
-      className="dashboard-play"
-whileHover={{ scale: 1.2 }}
-whileTap={{
-  scale: 0.8,
-  borderRadius: "100%"
-}}>
-    <Trophy style={{color: 'white'}}size={42} />
-  </motion.div>
-      </div>
+ 
       </div>
 
     </div>
@@ -362,6 +230,10 @@ whileTap={{
 
  
  </div>
+
+ : 
+
+ <h4 style={{textAlign: 'center', marginTop: 30}}> You are not an active user. Please log in again.</h4>
 
   )
 }

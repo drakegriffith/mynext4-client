@@ -176,14 +176,14 @@ const SearchBar = () => {
             onChange={handleSearchTypeChange}
             className="searchTypeSelect"
           >
-            <option value="">Global Search</option>
-            <option value="career">Career Search</option>
-            <option value="course">Course Search</option>
-            <option value="college">College Search</option>
+            <option value="">Show All</option>
+            <option value="Careers">Career Search</option>
+            <option value="Courses">Course Search</option>
+            <option value="Colleges">College Search</option>
           </select>
           <input
             onChange={search}
-            placeholder={`Search ${searchType || "Global"}`}
+            placeholder={`Explore ${searchType || "MyNext4"}`}
             className="searchInput"
           />
           {showResults && searchVal.length > 0 && (
