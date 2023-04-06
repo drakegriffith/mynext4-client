@@ -1,0 +1,13 @@
+.centered-slide {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .slide-container {
+    width:80%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    grid-gap: 24px; /* Adjust the gap size as needed */
+  }
+  

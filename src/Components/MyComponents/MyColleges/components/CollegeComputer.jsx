@@ -190,7 +190,7 @@ export const CollegeComputer = ({  onSelectCollege }) => {
       }
 
     return (
-      <Paper shadow="lg" p="md" sx={{borderRadius: '5px' ,width: "25%",backgroundColor: '#80ED99', border: '.5px solid #C7F9CC' , zIndex:1}}>
+      <Paper shadow="lg" p="md" sx={{borderRadius: '5px' ,width: "25%",backgroundColor: '#57CC99', border: '.5px solid #C7F9CC' , zIndex:1}}>
         
         <div className="component-computer-header" style={{marginBottom: 10}}>
           

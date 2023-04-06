@@ -48,7 +48,7 @@ const Register = () => {
 
   return (
     <div className="register-container">
-      <Paper elevation={5} className="auth-container">
+      <Paper elevation={5} shadow='xl' className="auth-container">
         <h1 className="auth-title">Register</h1>
         <form onSubmit={onSubmit} className="auth-form">
           <div className="form-group">
@@ -107,7 +107,7 @@ const Register = () => {
                 </div>
             </div>)}
 
-             <div style={{marginTop: 10,display: 'flex', justifyContent: 'center'}}>
+             <div style={{marginTop: 0,display: 'flex', justifyContent: 'center'}}>
                     <button className="auth-btn" type="submit" disabled={loading}>
                     {loading ? 'Loading...' : 'Register'}
                     </button>

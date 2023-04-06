@@ -82,7 +82,7 @@ export const MyColleges = ({  onSelectCollege, setColleges, colleges }) => {
     };
   
     return (
-      <Paper shadow="xl" p="md" sx={{ borderRadius: '5px' ,width: "25%", backgroundColor: '#80ED99', border: '.5px solid #C7F9CC' , zIndex: 1 }}>
+      <Paper shadow="xl" p="md" sx={{ borderRadius: '5px' ,width: "25%", backgroundColor: '#57CC99', border: '.5px solid #C7F9CC' , zIndex: 1 }}>
         <div className="my-component-header">
       <div className="my-component-header-text">
         <b>My Colleges</b>

@@ -9,6 +9,7 @@ import {  User, Book2, Building, Meat, Book, Calculator, Ad, Eyeglass2, Home, Co
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { CAREER_ATTRIBUTES } from './careerAttributes';
 import { Link } from "react-router-dom";
+
 const iconMapping = {
     "ReportAnalytics": <ReportAnalytics size={32} />,
     "Book": <Book size={32} />,
@@ -166,7 +167,7 @@ export const SmallCareer = ({career, onSelect,search, searchValue, showHeart, on
   )
 }
 <div className="icon-container" onClick={handleClick}>
-      <Link to={searchValue && career && career.onet_id ? `/Careers/${career.onet_id}` : "#"}>
+      <Link to={searchValue && career && career.onet_id ? `/explore/careers/${career.onet_id}` : "#"}>
         <InfoCircle className="icon" size={24} />
       </Link>
     </div>
@@ -462,7 +463,7 @@ function handleDelete() {
 return (
 <Card className="my-component" shadow="sm" padding="lg" radius="md" withBorder >
   <Card.Section className="component-medium-top-shelf" style={{padding: '10px'}}> 
-  <h5 className="career-medium-name shiny-text" style={{display: 'flex', justifyContent: 'center', alignItems: 'center',padding: '5px', textAlign: 'center', marginBottom: 0}}> <b>{career.career_name} </b></h5>
+  <h5 className="career-medium-name shiny-text" style={{display: 'flex', justifyContent: 'center', alignItems: 'center',padding: '5px', textAlign: 'center', color: '#2B2D42',marginBottom: 0}}> <b>{career.career_name} </b></h5>
   </Card.Section>
   <Divider style={{marginBottom: 5}} />
   <Card.Section style={{display: 'flex', justifyContent: 'left', width: '100%', margin: '3px auto 3px auto', height: '25px',  marginBottom: 0}}>

@@ -97,7 +97,7 @@ function CollegeSurveyTest({ }) {
 
     const handleFinalSubmit = async () => {
         try {
-          await API.post(`/mark-college-one-completed/${userID}/`);
+          await API.post(`/mark-completed-college-one/${userID}/`);
           surveyContext.setIsCollegeCompleted(true);
           navigate(`/my/survey-starter/${userID}`);
         } catch (error) {
@@ -126,7 +126,7 @@ function CollegeSurveyTest({ }) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
         >
-        <h1 className={styles.title}>College Quiz</h1>
+        <h1 className="animated-gradient-text" style={{fontSize: '32px', fontWeight: 800, marginBottom: 10}}>College Quiz</h1>
         <p className={styles.subtitle}>
             <i>Complete all the questions and click submit. </i>
         </p>
@@ -169,13 +169,15 @@ function CollegeSurveyTest({ }) {
         </form>
         </motion.div>
           
-            : 
-            isAuthenticated ?
-            <div style={{ display: 'flex', justifyContent: 'center', marginTop: 200 }}>
-            <button className={styles.finalSubmit} onClick={handleFinalSubmit}>Submit</button>
-          </div>
-            : 
-            <div> You are not an authenticated user. </div>
+          : 
+          isAuthenticated && userID ?
+          <div style={{ display: 'flex', marginTop: 300, justifyContent: 'center', marginTop: 200 }}>
+          <button className={styles.finalSubmit} onClick={handleFinalSubmit}>Submit</button>
+        </div>
+          : 
+          <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+          <h1> Your account has been unauthorized. Refresh your browser and sign in again.</h1> </div>
+        
           
     )
 }

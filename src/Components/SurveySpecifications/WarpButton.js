@@ -15,7 +15,7 @@ function WarpButton() {
         setIsWarping(true);
   
         setTimeout(() => {
-         navigate(`/my/home/${userID}`) // Replace with the URL of your dashboard
+         navigate(`/my/account/${userID}`) // Replace with the URL of your dashboard
         }, 5000); // 5 seconds delay
       };
   

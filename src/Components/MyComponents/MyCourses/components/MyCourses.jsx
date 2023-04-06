@@ -11,18 +11,28 @@ export const MyCourses = ({ onSelectCourse, setCourses, courses, removeDuplicate
     const [recommendedCourses, setRecommendedCourses] = useState([]);
     const [activeTab, setActiveTab] = useState("home");
     const { userID } = useContext(UserContext)
-    
-    const getRecommendedCourses = useCallback(async () => {
+    const [hasReceivedRecommendations, setHasReceivedRecommendations] = useState(false);
+
+
+    const getRecommendations = useCallback(async () => {
       init_api();
+      await API.post(`/mark-recommendations-completed/${userID}/`);
       const response = await API.get(`/api/course/recommendations/view/${userID}/`);
-      console.log("RECOMMENDED");
-      console.log(response.data);
       setRecommendedCourses(response.data);
     }, [userID]);
 
     useEffect(() => {
-      getRecommendedCourses();
-    }, [getRecommendedCourses]);
+      const checkRecommendationStatus = async () => {
+        init_api();
+        const response = await API.get(`/check-recommendations/${userID}/`);
+        setHasReceivedRecommendations(response.data.recommendStatus);
+        if (response.data.recommendStatus) {
+          getRecommendations();
+        }
+      };
+  
+      checkRecommendationStatus();
+    }, [userID, getRecommendations]);
 
   
     function removeCourse(courseObject) {
@@ -65,7 +75,7 @@ export const MyCourses = ({ onSelectCourse, setCourses, courses, removeDuplicate
       console.log(activeTab)
     };
     return (
-      <Paper shadow="xl" p="md" sx={{borderRadius: '5px' ,width: "25%", backgroundColor: '#80ED99', border: '.5px solid #C7F9CC' , zIndex: 1 }}>
+      <Paper shadow="xl" p="md" sx={{borderRadius: '5px' ,width: "25%", backgroundColor: '#57CC99', border: '.5px solid #C7F9CC' , zIndex: 1 }}>
       <div className="my-component-header">
     <div className="my-component-header-text">
       <b>My Courses</b>
@@ -77,7 +87,7 @@ export const MyCourses = ({ onSelectCourse, setCourses, courses, removeDuplicate
 
       {activeTab === 'home' && (
       
-        <ul className="my-component-list">
+
           <Carousel
       showArrows={true}
       showStatus={false}
@@ -100,12 +110,12 @@ export const MyCourses = ({ onSelectCourse, setCourses, courses, removeDuplicate
         </div>
       ))}
     </Carousel>
-          </ul>
+  
       )
     }
 
 {activeTab === "recommended" && (
-    <ul className="my-component-list">
+
          <Carousel
       showArrows={true}
       showStatus={false}
@@ -128,7 +138,7 @@ export const MyCourses = ({ onSelectCourse, setCourses, courses, removeDuplicate
         </div>
       ))}
     </Carousel>
-    </ul>
+
   )}
     </Paper>
   

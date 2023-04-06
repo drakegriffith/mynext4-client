@@ -183,7 +183,7 @@ const SearchBar = () => {
           </select>
           <input
             onChange={search}
-            placeholder={`Explore ${searchType || "MyNext4"}`}
+            placeholder={`Explore ${searchType ? searchType : "MyNext4"}`}
             className="searchInput"
           />
           {showResults && searchVal.length > 0 && (

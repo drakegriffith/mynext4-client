@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import "./MyCourses.css";
 import { Card, Divider, Modal } from "@mantine/core";
-import {  Book, Search  } from "tabler-icons-react";
+import {  Book, Search, TrashX  } from "tabler-icons-react";
 import { motion, AnimatePresence } from 'framer-motion';
 import { InfoCircle, Trash, Heart,Calculator, Check, LetterX, InfoCircleFilled } from 'tabler-icons-react';
 import { API, init_api } from "../../../API";
@@ -35,7 +35,7 @@ export const SmallCourse = ({course, onSelect, showHeart, searchValue, onDelete,
       <Modal
   opened={showModal}
   onClose={handleCancel}
-  title="Delete College"
+  title="Delete Course"
   size="xs"
   radius="md"
   hideCloseButton
@@ -48,21 +48,24 @@ export const SmallCourse = ({course, onSelect, showHeart, searchValue, onDelete,
     </div>
   </div>
 </Modal>
+<div style={{display: 'flex', textAlign: 'center', justifyContent: 'center'}}>
 <div className="small-career-container">
       <div className="icon-wrapper"><Book /></div>
-      <div className="career-tooltip">{course.course_name}</div>
+      <div style={{marginRight: 'auto'}}>{course.course_name}</div>
         <div>
+        </div>
         {
   showHeart && (
-    <Heart
+    <Trash
       size={24}
-      className={`heart-icon ${isLiked ? 'heart-liked' : ''}`}
+    style={{cursor: 'pointer'}}
+    
       onClick={() => setShowModal(true)}
     />
   )
 }
 <div className="icon-container" onClick={handleClick}>
-      <Link to={searchValue && course && course.id ? `/Courses/${course.id}` : "#"}>
+      <Link to={searchValue && course && course.id ? `explore/courses/${course.id}` : "#"}>
         <InfoCircle className="icon" size={24} />
       </Link>
     </div>
@@ -492,16 +495,16 @@ const linkStyle = {
 const navigate = useNavigate();
 const handleLinkClick = (course) => (event) => {
   event.preventDefault();
-  navigate(`/Courses/${course.id}`);
+  navigate(`/explore/courses/${course.id}`);
 };
 
 return (
 <Card className={coursePage ? "my-individual-component" : "my-component"} shadow="sm" padding="lg" radius="md" withBorder >
   <Card.Section className="component-medium-top-shelf" style={{padding: '8px'}}> 
-  <h4 className="component-medium-name shiny-text" style={{display: 'flex', justifyContent: 'center', alignItems: 'center', textAlign: 'center', marginBottom: 0}}> <b>{course.course_name} </b></h4>
+  <h4 className="component-medium-name shiny-text" style={{display: 'flex', color: '#2B2D42', justifyContent: 'center', alignItems: 'center', textAlign: 'center', marginBottom: 0}}> <b>{course.course_name} </b></h4>
   { !coursePage &&
   <div style={{position: 'absolute', right: 5, top: 5}}>
-    <a href={`/Courses/${course.id}`} onClick={handleLinkClick(course)}>
+    <a href={`/explore/courses/${course.id}`} onClick={handleLinkClick(course)}>
       
        <Search />
       </a>

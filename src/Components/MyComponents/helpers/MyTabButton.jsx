@@ -32,9 +32,9 @@ const MyTabButton = ({ activeTab, onChange }) => {
       <motion.div
         className="tab-icon-wrapper"
         whileHover="hover"
-        onClick={() => handleTabClick("bookmarks")}
+        onClick={() => handleTabClick("recommended")}
         initial="inactive"
-        animate={activeTab === "bookmarks" ? "active" : "inactive"}
+        animate={activeTab === "recommended" ? "active" : "inactive"}
         variants={iconVariants}
       >
         <BookmarksIcon size={24}/>

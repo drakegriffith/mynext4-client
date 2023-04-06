@@ -9,10 +9,10 @@ import { Link, useNavigate } from "react-router-dom";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from 'react-responsive-carousel';
 import {shuffle} from "lodash"
-import MyCollegeCards from './MyCollegeCards';
 import { gsap } from "gsap";
 import { COLLEGE_ATTRIBUTES } from './collegeAttributes';
 import next4Logo from "../../Nav/icon.png"
+import ScoreBar from "../helpers/ScoreBar";
 
 // Small 
 
@@ -66,7 +66,7 @@ export const SmallCollege = ({college, onSelect, showHeart, searchValue, onDelet
   )
 }
 <div className="icon-container" onClick={handleClick}>
-      <Link to={searchValue && college && college.id ? `/Colleges/${college.id}` : "#"}>
+      <Link to={searchValue && college && college.id ? `/explore/colleges/${college.id}` : "#"}>
         <InfoCircle className="icon" size={24} />
       </Link>
       
@@ -183,24 +183,6 @@ const getGradeColor = (grade) => {
   }
 }
 
-const ScoreBar = ({ onSelect, setScoreBarVisible }) => {
-  const scores = [1, 2, 3, 4, 5];
-  
-  return (
-    <div className="score-bar">
-      {scores.map(score => (
-        <button
-          key={score}
-          className="score-button"
-          onClick={() => onSelect(score)}
-        >
-          {score}
-        </button>
-      ))}
-      
-    </div>
-  );
-};
 
 
 export const MediumCollegeActions = ({ onLargeClick, onDelete, onLike, college, largeCollegeRef, index, isLiked }) => {
@@ -427,7 +409,7 @@ function pascalCase(str) {
 return (
 <Card className={collegePage ? "my-individual-component" : "my-component"} shadow="sm" padding="lg" radius="md" withBorder >
   <Card.Section className="component-medium-top-shelf"> 
-  <h4 className="college-medium-name shiny-text" style={{display: 'flex', justifyContent: 'center', alignItems: 'center', textAlign: 'center', marginBottom: 0}}> <b>{college.college_name} </b></h4>
+  <h4 className="college-medium-name shiny-text" style={{display: 'flex', justifyContent: 'center', alignItems: 'center', textAlign: 'center', marginBottom: 0, color: '#2B2D42'}}> <b>{college.college_name} </b></h4>
   { !collegePage &&
   <div style={{position: 'absolute', right: 5, top: 5}}>
     <a href={`/Colleges/${college.id}`} onClick={handleLinkClick(college)}>
@@ -469,7 +451,7 @@ return (
       justifyContent: 'center',
       padding: '12.5px 5px 7.5px 5px',
       gap: '5px 5px',
-      alignItems: 'center', // Center child elements vertically
+      alignItems: 'center',
       justifyItems: 'center',
     }}>
       {college && college_grades.map((grade, index) => (

@@ -1,4 +1,5 @@
 .navbar {
+  z-index: 150;
   position: fixed;
   top: 0;
   left: 0;
@@ -13,6 +14,7 @@
 }
 
 .navbar a {
+  z-index: 150;
   text-decoration: none;
   color: black;
   margin-left: 15px;
@@ -20,33 +22,39 @@
 }
 
 .navbar .brand {
+  z-index: 150;
   font-size: 18px;
   color: black;
 }
 
 /* Optional: Add a hover effect to the links */
 .navbar a:hover {
+  z-index: 150;
   color: purple;
   transition: color 0.3s ease;
 }
 
 
 .navbar .nav-links {
+  z-index: 150;
   display: flex;
   gap: 16px;
   align-items: center;
 }
 
 .navbar .nav-link {
+  z-index: 150;
   color: #4a5568;
   text-decoration: none;
 }
 
 .navbar .user-dropdown {
+  z-index: 150;
   position: relative;
 }
 
 .navbar .user-dropdown button {
+  z-index: 150;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -54,9 +62,11 @@
   background: none;
   border: none;
   cursor: pointer;
+  z-index: 150;
 }
 
 .navbar .user-dropdown .dropdown-menu {
+  z-index: 150;
   position: absolute;
   background-color: white;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
@@ -67,13 +77,15 @@
 }
 
 .navbar .user-dropdown .dropdown-item {
+  z-index: 150;
   display: block;
   padding: 8px 16px;
-  color: #4a5568;
+  color: gray;
   text-decoration: none;
 }
 
 .navbar .user-dropdown .dropdown-item:hover {
+  z-index: 150;
   background-color: #f7fafc;
 }
 

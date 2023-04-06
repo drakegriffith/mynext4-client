@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { SurveyContext } from "../../SurveyContext";
 import { Check } from "tabler-icons-react";
 import { UserContext } from "../../Pages/App";
@@ -6,8 +6,11 @@ import { useNavigate } from "react-router";
 import "./SurveySpecifications.css"
 import WarpButton from "./WarpButton";
 import { API, init_api } from "../../API";
-
+import Joyride, { STATUS } from 'react-joyride';
+import { CircleX } from "tabler-icons-react";
 function SurveySpecifications() {
+  const [showTutorial, setShowTutorial] = useState(true);
+  const [showTutorialAfter, setTutorialAfter] = useState(true);
   const surveyContext = useContext(SurveyContext);
   const { userID } = useContext(UserContext);
   const navigate = useNavigate();
@@ -57,12 +60,13 @@ function SurveySpecifications() {
   }, [])
 
   const buttonStyles = {
-    padding: "10px 20px",
+    padding: "15px 20px",
     borderRadius: "5px",
-    backgroundColor: "#007BFF",
+    backgroundColor: "#22577A",
     color: "white",
     border: "none",
     fontSize: "16px",
+    marginTop: '5px',
     cursor: "pointer",
     textDecoration: "none",
     textAlign: "center",
@@ -78,7 +82,6 @@ function SurveySpecifications() {
   };
   
   function handleSurveyClick(path) {
-    console.log("WOR")
     navigate(path);
   }
 
@@ -88,35 +91,76 @@ function SurveySpecifications() {
     { id: 3, name: "Career Questions", path: `/my/surveys/careers/1/${userID}` },
   ];
 
-  function handleDashboardClick() {
-    document.addEventListener('DOMContentLoaded', function() {
-      var warpButton = document.getElementById('warp-button');
+ 
+  const handleJoyrideCallback = (data) => {
+    const { status } = data;
   
-      warpButton.addEventListener('click', function(event) {
-        event.preventDefault();
+    if ([STATUS.FINISHED, STATUS.SKIPPED].includes(status)) {
+      setShowTutorial(false);
+    }
+  };
   
-        // Add the 'warp' class to trigger the animation
-        warpButton.classList.add('warp');
+  const handleJoyrideCallbackAfter = (data) => {
+    const { status } = data;
   
-        // Simulate resource compilation and navigation to the dashboard
-        setTimeout(function() {
-          window.location.href = '/dashboard'; // Replace with the URL of your dashboard
-        }, 5000); // 5 seconds delay
-      });
-    });
-  }
+    if ([STATUS.FINISHED, STATUS.SKIPPED].includes(status)) {
+      setShowTutorial(false);
+    }
+  };
+  
+
+  const tutorialStepsAfter = [
+    {
+      target: '.step-2',
+      content: "Congratulations on completing your survey's. Your account is now accessible upon click.",
+    },
+  
+  
+    // ...
+  ];
+  const tutorialSteps = [
+    {
+      target: '.step-1',
+      content: "Welcome to MyNext4. Activate your account after completing three composite survey's on courses, colleges, and careers.",
+    },
+  
+  
+    // ...
+  ];
 
   
   return (
+
+ 
+
     surveyContext.surveysCompleted ? 
         <div style={{display: 'flex', justifyContent: 'center', marginTop: 200}}>
-          <WarpButton />
+          <Joyride
+  steps={tutorialStepsAfter}
+  run={showTutorialAfter}
+  callback={handleJoyrideCallbackAfter}
+  continuous
+  scrollToFirstStep
+  showProgress
+  showSkipButton
+/>
+          <WarpButton className="step-2" />
         </div>
         :
   
     <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-      <h1 style={{ marginTop: "20px", marginBottom: "10px" }}>Survey Specifications</h1>
-      <h3 style={{ marginBottom: "20px" }}>{`${(surveyContext.isCourseCompleted + surveyContext.isCollegeCompleted + surveyContext.isCareerCompleted)}/3 surveys complete`}</h3>
+
+<Joyride
+  steps={tutorialSteps}
+  run={showTutorial}
+  callback={handleJoyrideCallback}
+  continuous
+  scrollToFirstStep
+  showProgress
+  showSkipButton
+/>
+      <h1 className="shiny-text step-1" style={{ marginTop: "100px", marginBottom: "10px", fontSize: '36px' }}><b>Make MyNext4 Yours</b></h1>
+      <h2 style={{ marginBottom: "15px" }}>{`${(surveyContext.isCourseCompleted + surveyContext.isCollegeCompleted + surveyContext.isCareerCompleted)}/3 surveys complete`}</h2>
 
       <div style={{ display: "flex", flexDirection: "row" }}>
         {surveys.map((survey) => (
@@ -141,8 +185,8 @@ function SurveySpecifications() {
                 {surveyContext.isCourseCompleted ? (
                   <Check size={64} color="green" />
                 ) : (
-                  <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
-                    <Check style={{ marginBottom: 10 }} size={48} color="red" />
+                  <div  style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
+                    <CircleX style={{ marginBottom: 10 }} size={64} color="red" />
                     <button
                     style={buttonStyles}
                     onClick={() => handleSurveyClick(survey.path)}
@@ -159,8 +203,8 @@ function SurveySpecifications() {
                 {surveyContext.isCollegeCompleted ? (
                   <Check size={64} color="green" />
                 ) : (
-                  <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
-                    <Check style={{ marginBottom: 10 }} size={32} color="red" />
+                  <div  style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
+                    <CircleX style={{ marginBottom: 10 }} size={64} color="red" />
                     <button
                     style={buttonStyles}
                     onClick={() => handleSurveyClick(survey.path)}
@@ -179,7 +223,7 @@ function SurveySpecifications() {
                   <Check size={64} color="green" />
                 ) : (
                   <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
-                    <Check style={{ marginBottom: 10 }} size={48} color="red" />
+                    <CircleX  style={{ marginBottom: 10 }} size={64} color="red" />
                     <button
                     style={buttonStyles}
                     onClick={() => handleSurveyClick(survey.path)}
@@ -194,8 +238,10 @@ function SurveySpecifications() {
         ))}
             </div>
             </div>
+   
   )
                 }
+                
 
 
   export default SurveySpecifications;

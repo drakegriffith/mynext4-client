@@ -10,11 +10,7 @@ import {
   Anchor,
 } from "@mantine/core";
 import "./Auth.css";
-
 import React, { useState, useEffect, useContext, createContext } from "react";
-import { connect } from "react-redux";
-import { login } from "../../redux/users/userActions";
-import store from "../../redux/store";
 import { Navigate, useParams } from "react-router-dom";
 import { init_api, API } from "../../API";
 import { AuthContext } from "./AuthContext";
@@ -28,13 +24,17 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const { isAuthenticated, setIsAuthenticated, token, setToken } = useContext(AuthContext);
   const { userID, setUserID, setUsername } = useContext(UserContext);
-  const { surveysCompleted } = useContext(SurveyContext);
+  const [surveysCompleted, setSurveysCompleted] = useState(false);
   const [id, setID] = useState(0);
   const surveyContext = useContext(SurveyContext)
 
+  const [tempUserID, setTempUserID] = useState('');
   function handleRegister() {
-    navigate("/safe/register")
+    navigate("/web/auth/create")
   }
+
+  
+
   const loginPressed = async () => {
     init_api();
     const res = await API.post("/auth/jwt/create", {
@@ -50,10 +50,18 @@ const Login = () => {
         'Accept': 'application/json'
       }
     };
-    await API.get("/auth/users/me/", config).then((response) => {
+    await API.get("/auth/users/me/", config).then(async (response) => {
       setUserID(response.data.id);
-      setUsername(response.data.username)
+      setUsername(response.data.username);
+   
+      await API.get(`/check_initial_surveys/${response.data.id}/`).then((response) => {
+        console.log(response)
+        setSurveysCompleted(response.data.initalSurveys);
+      })
+      console.log(surveysCompleted)
+  
     });
+
     setToken(token);
     setIsAuthenticated(true);
     console.log(isAuthenticated);
@@ -104,29 +112,16 @@ const Login = () => {
   }, [userID])
 
   return (
-    <div>
-      <div style={{ margin: 30 }}>
-        <Paper radius={0} p={30} shadow="lg">
-          <div
-            className="course-field-tag"
-            style={{
-              textAlign: "center",
-              fontWeight: 400,
-              fontSize: "36px",
-              marginBottom: 4,
-              marginTop: 4,
-              color: "gray"
-            }}
-          >
-            {" "}
-            Welcome{" "}
-          </div>
+    <div className="login-container">
+      <div style={{ margin: 0 }}>
+        <Paper  elevation={5} radius={0} p="60px 180px" shadow="xl">
+        <h1 className="auth-title">Log In</h1>
 
           <TextInput
             label="Email address"
             size="md"
             value={email}
-            style={{ width: "50%", margin: "0 auto 0 auto" }}
+            style={{ width: "80%", margin: "0 auto 0 auto", textAlign: 'center' }}
             onChange={(event) => {
               setEmail(event.currentTarget.value);
             }}
@@ -135,7 +130,7 @@ const Login = () => {
             label="Password"
             mt="md"
             size="md"
-            style={{ width: "50%", margin: "0 auto 0 auto" }}
+            style={{ width: "80%", margin: "0 auto 0 auto" , textAlign: 'center' }}
             value={password}
             onChange={(event) => {
               setPassword(event.currentTarget.value);
@@ -152,11 +147,11 @@ const Login = () => {
               Log In
             </Button>
           </div>
-          <h5 style={{textAlign: 'center'}}> Not a user, make an account with us <span onClick={handleRegister} style={{fontWeight: 800, color:'purple', marginTop: 10}}><i>here</i></span></h5>
+          <h5 style={{marginTop: 20,textAlign: 'center'}}> No account created? Make one with us <span onClick={handleRegister} style={{fontWeight: 800, color:'purple', marginTop: 10, cursor: 'pointer'}}><i>here</i></span></h5>
         </Paper>
       </div>
       <div className="root-login">
-        {isAuthenticated && surveysCompleted && <Navigate to={`/my/home/${userID}`} />}
+        {isAuthenticated && surveysCompleted && <Navigate to={`/my/account/${userID}`} />}
         {isAuthenticated && !surveysCompleted && <Navigate to={`/my/survey-starter/${userID}`} />}
       </div>
     </div>

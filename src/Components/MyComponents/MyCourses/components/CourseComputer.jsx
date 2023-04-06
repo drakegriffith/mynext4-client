@@ -108,7 +108,7 @@ export const CourseComputer = ({onSelectCourse }) => {
     }
        
     return (
-        <Paper shadow="lg" p="md" sx={{border: '.5px solid #C7F9CC' ,borderRadius: '5px' ,width: "25%",  backgroundColor: '#80ED99', zIndex:1}}>
+        <Paper shadow="lg" p="md" sx={{border: '.5px solid #C7F9CC' ,borderRadius: '5px' ,width: "25%",  backgroundColor: '#57CC99', zIndex:1}}>
         
         <div className="component-computer-header" style={{marginBottom: 8}}>
           
@@ -158,7 +158,7 @@ export const CourseComputer = ({onSelectCourse }) => {
         
           
         <div>
-        <div style={{height: '10px', marginTop:0, textAlign: 'center', color: 'white', fontWeight: 500}}><b>{courseFilteredList.length} </b>items rendered</div>
+        <div style={{height: '10px', marginTop:13.5, textAlign: 'center', color: 'white', fontWeight: 500}}><b>{courseFilteredList.length} </b>items rendered</div>
         <Carousel
         showArrows={true}
         showStatus={false}
