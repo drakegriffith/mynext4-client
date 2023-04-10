@@ -1,19 +1,19 @@
 import React, { useRef, useCallback } from "react";
 import { API, init_api } from "../../API";
-import { Paper, Slider, MantineProvider} from '@mantine/core';
+import { Paper } from '@mantine/core';
 import { UserContext } from "../App";
 import { useState, useEffect, useContext } from "react"
 import "../../Components/MyComponents/MyComponents.css"
 import "../../Components/MyComponents/MyCourses/MyCourses.css"
 import { MediumCourseActions, LargeCourseActions } from "../../Components/MyComponents/MyCourses/Course";
-
 import { MyCourses } from "../../Components/MyComponents/MyCourses/components/MyCourses"
 import { AnimatePresence, motion } from 'framer-motion'
 import { CourseComputer } from "../../Components/MyComponents/MyCourses/components/CourseComputer"
 import ShowcaseTabButton from "../../Components/MyComponents/helpers/ShowcaseTabButton";
 import { AuthContext } from "../../Components/Auth/AuthContext";
-
+import Joyride, { STATUS } from 'react-joyride';
 const CourseDataPage = ({setCourses, courses}) => {
+  const [showTutorialCards, setShowTutorialCards] = useState(false);
     const [selectedCourse, setSelectedCourse] = useState(null); // Large view
     const [selectedCourses, setSelectedCourses] = useState([]); // Medium view
     const [view, setView] = useState("large");
@@ -22,22 +22,49 @@ const CourseDataPage = ({setCourses, courses}) => {
     const largeCourseRef = useRef(null);
     const [errorMessage, setErrorMessage] = useState(null);
     const { isAuthenticated } = useContext(AuthContext);
-
     useEffect(() => {
-      
       const getLikedList = async () => {
-          
-          init_api();
-          await API.get(`/api/users/courselist/${userID}/`)
+        init_api();
+        await API.get(`/api/users/courselist/${userID}/`)
           .then((response) => {
-              
-              console.log(response.data.liked_list);
-              setCourseLikedList(response.data.liked_list);
+            setCourseLikedList(response.data.liked_list);
           });
       }
-      
-      getLikedList();
-    }, []);
+    
+      if (userID) {
+        getLikedList();
+      }
+    }, [userID]);
+    
+    useEffect(() => {
+      const setTutorialCardsComplete = async () => {
+        try {
+          await API.post(`/mark-completed-tutorial-cards/${userID}/`);
+        } catch (error) {
+          console.error('Error marking survey as completed:', error);
+        }
+      }
+    
+      if (showTutorialCards && userID) {
+        setTutorialCardsComplete();
+      };
+    }, [showTutorialCards, userID])
+    
+    useEffect(() => {
+      const checkTutorialCompletion = async () => {
+        try {
+          const response = await API.get(`/check-tutorial-complete-cards/${userID}/`);
+          setShowTutorialCards(!response.data.tutorialStatusCards)
+        } catch (error) {
+          console.error('Error checking survey completion:', error);
+        }
+      };
+    
+      if (userID) {
+        checkTutorialCompletion();
+      }
+    }, [userID]);
+    
 
     
   const addCourse = useCallback(
@@ -54,7 +81,6 @@ const CourseDataPage = ({setCourses, courses}) => {
           user_id: userID,
           score: score,
         }).then(() => {
-          console.log("ADDED");
           setCourseLikedList([...courseLikedList, { ...course, score }]);
         });
       } else {
@@ -106,29 +132,44 @@ const CourseDataPage = ({setCourses, courses}) => {
     },
     [view, selectedCourses]
   );
+
+  const handleJoyrideCallback = (data) => {
+    const { status } = data;
   
+    if ([STATUS.FINISHED, STATUS.SKIPPED].includes(status)) {
+      setShowTutorialCards(false);
+    }
+  };
+
   
-    function getCookie(name) {
-      let cookieValue = null;
-  
-      if (document.cookie && document.cookie !== '') {
-          const cookies = document.cookie.split(';');
-          for (let i = 0; i < cookies.length; i++) {
-              const cookie = cookies[i].trim();
-  
-              // Does this cookie string begin with the name we want?
-              if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-  
-                  break;
-              }
-          }
-      }
-  
-      return cookieValue;
-  }
   
 
+  const tutorialSteps = [
+    {
+      target: '.step-1-tut',
+      content: 'Welcome to your personalized component page! This is where you can add, analyze, and compare cards with one another.',
+    },
+    {
+      target: '.step-2-tut',
+      content: 'View your liked component list and your newly receieved recommendations here!',
+    },
+    {
+      target: '.step-3-tut',
+      content: 'Choose component cards to compare or independantly inspect one with our showcase feature.',
+    },
+    {
+      target: '.step-4-tut',
+      content: "Switch between single or multi-mode with one click.",
+    },
+    {
+      target: '.step-5-tut',
+      content: "Search for component cards using the see feature. Filter and find the best choices for you.",
+    },
+    // ...
+  ];
+
+  
+  
     const handleTabClick = (tab) => {
       setView(tab);
 
@@ -145,13 +186,21 @@ const CourseDataPage = ({setCourses, courses}) => {
 
     return (
       isAuthenticated && 
-      <div className="component-overall-container">
-    
+      <div className="component-overall-container step-1-tut">
+         <Joyride
+        steps={tutorialSteps}
+        run={showTutorialCards}
+        callback={handleJoyrideCallback}
+        continuous
+        scrollToFirstStep
+        showProgress
+        showSkipButton
+      />
   
-        <MyCourses onSelectCourse={selectCourse} setCourses = {setCourseLikedList} courses = {courseLikedList}/>
-        <Paper withBorder shadow="xl" p="md" sx={{position: 'relative', width: "40%", top: -30, height:'82vh', margin: '0 1.5% 0 1.5%', backgroundColor: '#57CC99', border: '.5px solid #C7F9CC' ,borderRadius: '5px' , zIndex: 1}}>
+        <MyCourses className="step-2-tut" onSelectCourse={selectCourse} setCourses = {setCourseLikedList} courses = {courseLikedList}/>
+        <Paper  withBorder className="step-3-tut" shadow="xl" p="md" sx={{position: 'relative', width: "40%", top: -30, height:'82vh', margin: '0 1.5% 0 1.5%', backgroundColor: '#57CC99', border: '.5px solid #C7F9CC' ,borderRadius: '5px' , zIndex: 1}}>
         <div className="componentMiddleHeader">
-            <div className="my-component-header-text"><b> Showcase Courses</b> </div>
+            <div className="my-component-header-text step-4-tut"><b> Showcase Courses</b> </div>
             <AnimatePresence>
         {errorMessage && (
           <motion.div
@@ -170,14 +219,13 @@ const CourseDataPage = ({setCourses, courses}) => {
                 </div>
             {view === "large" ? (
           <LargeCourseActions 
-   
           largeCourseRef={largeCourseRef}
           course={selectedCourse}
           onDelete={() => deleteCourse()}
           onLargeClick={() => handleLarge(selectedCourse)}
           onLike = {addCourse}
-          isLiked={courseLikedList.some(
-            (likedCourse) => likedCourse.course_name === selectedCourse
+          isLiked={selectedCourse && courseLikedList.some(
+            (likedCourse) => likedCourse.course_name === selectedCourse.course_name
           )}
           />
               
@@ -204,7 +252,7 @@ const CourseDataPage = ({setCourses, courses}) => {
                 </div>
             )}
            </Paper>
-      <CourseComputer onSelectCourse={selectCourse}
+      <CourseComputer className="step-5-tut" onSelectCourse={selectCourse}
         userID = {userID} />
       </div>
 

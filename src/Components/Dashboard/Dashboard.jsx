@@ -2,12 +2,8 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useSpring, animated } from 'react-spring';
 import "./Dashboard.css";
 import { motion } from "framer-motion";
-import { BookUpload, Search, Trophy, School, Books, ChefHat, Book} from "tabler-icons-react";
+import { School, ChefHat, Book, Settings} from "tabler-icons-react";
 import { API, init_api } from '../../API';
-import { SmallCourse } from '../MyComponents/MyCourses/Course';
-import { SmallCollege } from '../MyComponents/MyColleges/College';
-import { SmallCareer } from '../MyComponents/MyCareers/Career';
-import { Carousel } from 'react-responsive-carousel';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { AuthContext } from '../Auth/AuthContext';
 import { UserContext } from '../../Pages/App';
@@ -15,57 +11,52 @@ import Next4Medal from "./images/next4_medallian.png"
 import Next4Notebook from "./images/next4_notebook.png"
 import { Tabs } from '@mantine/core';
 import Joyride, { STATUS } from 'react-joyride';
-import Next4Career from "./images/career.png"
-import Next4College from "./images/college.png"
-import Next4Course from "./images/course.png"
+import Next4Career from "./images/career_icon.png"
+import Next4Course from "./images/course_icon_up.png"
 import { useDisclosure } from '@mantine/hooks';
-import { Modal, Collapse, Paper } from '@mantine/core';
-import { Icon, Book2, Backpack, Ballpen, Checklist, Check, Medal, Settings, CircleCheck } from "tabler-icons-react";
-import { MediumCareerCarousel, MediumCollegeCarousel, MediumComponentCarousel, MediumCourseCarousel } from './helpers/LikedComponentCarousel';
+import { Modal, Collapse, Paper,Button } from '@mantine/core';
+import { MediumCareerCarousel, MediumCollegeCarousel, MediumCourseCarousel } from './helpers/LikedComponentCarousel';
 import { useNavigate } from 'react-router';
+import Sparkles from '../Sparkles/Sparkles';
+import Next4MissionControl from "./images/mission_control.png"
+import Next4College from "./images/college_icon.png"
 
 const Dashboard = () => {
   const [showTutorial, setShowTutorial] = useState(false);
-  const [showCourses, setShowCourses] = useState(true);
-const [showColleges, setShowColleges] = useState(false);
-const [showCareers, setShowCareers] = useState(false);
-const { userID, username } = useContext(UserContext)
-const { isAuthenticated } = useContext(AuthContext);
-
-  const [answer, setAnswer] = useState(null);
+const { userID, username, setUserID, setUsername } = useContext(UserContext)
+const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
   const [careerLikedList, setCareerLikedList] = useState([]);
   const [collegeLikedList, setCollegeLikedList] = useState([]);
   const [courseLikedList, setCourseLikedList] = useState([]);
-  const [activeUser, setActiveUser] = useState([]);
   const navigate = useNavigate();
   
   const tutorialSteps = [
     {
-      target: '.step-1',
-      content: 'View your liked courses here.',
+      target: '.step-1-tut',
+      content: "Congratulation on completing the starter tutorial! It's time to do more with MyNext4. See your selected courses here.",
     },
     {
-      target: '.step-2',
+      target: '.step-2-tut',
       content: 'Same goes for colleges.',
     },
     {
-      target: '.step-3',
-      content: '...and careers.',
+      target: '.step-3-tut',
+      content: '...and careers. All of your personalized information is put on this page.',
     },
     {
-      target: '.step-4',
+      target: '.step-4-tut',
       content: "Inspect your personal information here, click to turn on and off.",
     },
     {
-      target: '.step-5',
-      content: "Take and view your completed survey's here.",
+      target: '.step-5-tut',
+      content: "Complete more MyNext4 surveys here. Completing surveys help us write recommendations with higher correlation to you. ",
     },
     {
-      target: '.step-6',
-      content: "See your Next4 awards and achievments here.",
+      target: '.step-6-tut',
+      content: "See your awards and achievments here.",
     },
     {
-      target: '.step-7',
+      target: '.step-7-tut',
       content: 'See settings and customize information here.',
     },
     // ...
@@ -80,10 +71,10 @@ const { isAuthenticated } = useContext(AuthContext);
         console.error('Error marking survey as completed:', error);
       }
     }
-  if (showTutorial === true) {
+  if (showTutorial && userID) {
       setTutorialComplete();
   };
-  }, [showTutorial])
+  }, [userID, showTutorial])
 
   useEffect(() => { 
     init_api();
@@ -96,8 +87,10 @@ const { isAuthenticated } = useContext(AuthContext);
         console.error('Error checking survey completion:', error);
       }
     };
-    checkTutorialCompletion();
-  }, [])
+    if (userID) {
+      checkTutorialCompletion();
+    }
+  }, [userID])
  
 
   const handleJoyrideCallback = (data) => {
@@ -109,80 +102,45 @@ const { isAuthenticated } = useContext(AuthContext);
   };
   
 
-  
-  const MyCarousel = ({ items }) => {
-    const chunks = [];
-    const size = 8;
-  
-    // Split the items array into chunks of size 8
-    for (let i = 0; i < items.length; i += size) {
-      chunks.push(items.slice(i, i + size));
-    }
-  
-    return (
-      <Carousel>
-        {chunks.map((chunk, index) => (
-          <div key={index}>
-            {chunk.map((item, itemIndex) => (
-              <div key={itemIndex}>
-                <div> { items == courseLikedList ? 
-                <SmallCourse course={item} />
-                : items == collegeLikedList ?
-                <SmallCollege college={item} />
-                : <SmallCareer career={item} />
-                }
-              </div>
-              </div>
-            ))}
-          </div>
-        ))}
-      </Carousel>
-    );
-  };
 
   useEffect(() => {
-      
-    const getLikedCourses = async () => {
-        
-        init_api();
-        await API.get(`/api/users/courselist/${userID}/`)
-        .then((response) => {
-            
-            console.log(response.data.liked_list);
-            setCourseLikedList(response.data.liked_list);
-        });
-    }
-    
-    getLikedCourses();
-
-    const getLikedColleges = async () => {
-        
+    if (!userID) return;
+    const fetchData = async () => {
       init_api();
-      await API.get(`/api/users/collegelist/${userID}/`)
-      .then((response) => {
-          
-          console.log(response.data.liked_list);
-          setCollegeLikedList(response.data.liked_list);
-      });
+  
+      try {
+        const [courseResponse, collegeResponse, careerResponse] = await Promise.all([
+          API.get(`/api/users/courselist/${userID}/`),
+          API.get(`/api/users/collegelist/${userID}/`),
+          API.get(`/api/users/careerlist/${userID}/`),
+        ]);
+  
+        setCourseLikedList(courseResponse.data.liked_list);
+        setCollegeLikedList(collegeResponse.data.liked_list);
+        setCareerLikedList(careerResponse.data.liked_list);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+  fetchData();
+   
+  }, [userID]);
+
+
+  function handleSignOut() {
+    // Clear user-related state variables
+    setUserID(null);
+    setUsername(null);
+    setIsAuthenticated(false);
+    window.location.href = "/web/auth/account";
+
+    // Clear authentication token
+
   }
   
-    getLikedColleges();
+    // Optionally, clear other user-specific
   
-    const getLikedCareers = async () => {
-            
-      init_api();
-      await API.get(`/api/users/careerlist/${userID}/`)
-      .then((response) => {
-          
-          console.log(response.data.liked_list);
-          setCareerLikedList(response.data.liked_list);
-      });
-    }
-  
-    getLikedCareers();
- 
-  }, []);
-
  
   const handleCourseClick = () => {
     navigate(`/my/courses/${userID}`)
@@ -213,29 +171,43 @@ const { isAuthenticated } = useContext(AuthContext);
     zIndex: 1,
   };
 
-  
-  const [courseIndex, setCourseIndex] = useState(0);
-  const [collegeIndex, setCollegeIndex] = useState(0);
-  const [careerIndex, setCareerIndex] = useState(0);
-  const handleClick = () => {
-    // Code to run on click
-  };
-
-  const itemsPerContainer = 8;
 
   // Function to get a slice of the array based on the current index and number of items to display
-  const getItems = (list, index) => {
-    const startIndex = index % list.length;
-    const endIndex = startIndex + itemsPerContainer;
-    return list.slice(startIndex, endIndex);
-  };
 
-  const courseComplete = activeUser.course_survey
-    const collegeComplete = activeUser.college_survey
-    const careerComplete = activeUser.career_survey
-
-    console.log(activeUser)
     const [opened, { toggle }] = useDisclosure(true);
+    const [openedAward, { open: openAward, close: closeAward }] = useDisclosure(false);
+    const [openedSurvey, { open: openSurvey, close: closeSurvey }] = useDisclosure(false);
+    const [openedSetting, { open: openSetting, close: closeSetting }] = useDisclosure(false);
+    
+    const DashboardMissions = () => {
+      const [openedMission, { open: openMission, close: closeMission }] = useDisclosure(false);
+      const initialScale = 1;
+      const hoverScale = 1.05;
+    
+      const animationVariants = {
+        initial: { scale: initialScale },
+        hover: { scale: hoverScale },
+      };
+    
+      return (
+        <div>
+        <Modal opened={openedMission} onClose={closeMission} title="???">
+          Coming soon...
+          </Modal>
+        <motion.div
+          className="dashboard-missions"
+          initial="initial"
+          whileHover="hover"
+          animate="initial"
+          onClick={openMission}
+          style={{cursor: 'pointer'}}
+          variants={animationVariants}
+        >
+             <h6 className="animated-gradient-text h4Tag" style={{textAlign: 'center', fontWeight: 800, fontSize: '40px', marginLeft: 0, marginTop: 0, marginBottom: 0, fomtFamily: 'Phudu'}}> Challenge </h6>
+        </motion.div>
+        </div>
+      );
+    };
   return (
     
     isAuthenticated && userID ?
@@ -245,7 +217,27 @@ const { isAuthenticated } = useContext(AuthContext);
 
     <div className="dashboard-container" >
     
-
+    <Modal opened={openedAward} onClose={closeAward} title="Completed Quests">
+  Coming soon...
+</Modal>
+<Modal opened={openedSurvey} onClose={closeSurvey} title="Assigned Surveys">
+  All complete!
+</Modal>
+<Modal opened={openedSetting} onClose={closeSetting} title="Settings">
+  <h4 style={{textAlign: 'center', marginBottom: 5}}> User {username}. Active session ID {userID}</h4>
+  <p style={{textAlign: 'center'}}>MyNext4 LLC ⓒ. Established March 30, 2022. All copyrights reserved. Make your mark with MyNext4.</p>
+  <Button
+              style={{ width: "150px", height: '50px', backgroundColor: 'red', margin: "30px auto 0 auto" }}
+              mt="xl"
+              mb="xl"
+              className="auth-btn"
+              onClick={handleSignOut}
+              size="lg"
+         
+            >
+              Log Out
+            </Button>
+</Modal>
 <Joyride
   steps={tutorialSteps}
   run={showTutorial}
@@ -256,7 +248,7 @@ const { isAuthenticated } = useContext(AuthContext);
   showSkipButton
 />
     <div className="personal-container" >
-    <Paper onClick={toggle} shadow='lg' sx={{
+    <Paper  shadow='lg' sx={{
           backgroundColor: '#57CC99',
 
             marginTop: '0px',
@@ -266,26 +258,28 @@ const { isAuthenticated } = useContext(AuthContext);
             flexDirection: 'column',
             alignItems: 'center'
         }}>
-               <div style={{  position: 'absolute', translate: 'translate(-50%, -50%)', top: 30, left: 50, width: '80px', cursor: 'pointer', height: '80px'}}>
-             <div className="step-4" style={{display: 'flex', justifyContent: 'center', alignItems: 'center', borderRadius: '50%', width: '100%', height: '100%', margin: '5px', backgroundColor: '#38A3A5'}}>
-                    <Book2 color='white' size={48} />
+          <div style={{ display: 'flex', justifyContent: 'center', width: '100%', height: '80px' }}>
+               <div style={{ width: '80px', cursor: 'pointer', height: '80px', marginTop: 30}}>
+                <Sparkles>
+             <div className="step-4-tut" style={{display: 'flex', justifyContent: 'center', alignItems: 'center', borderRadius: '50%', width: '100%', height: '100%', margin: '5px', backgroundColor: '#38A3A5'}}>
+                    <img src={Next4MissionControl} onClick={toggle}  style={{maxWidth: '100%', maxHeight: '100%', borderRadius: '50%', objectFit: 'contain', height: '78px'}}  />
                 </div>
+                </Sparkles>
                 
                 </div>
+                </div>
                 
-              { opened ? '' : <h3 className="animated-gradient-text" style={{fontSize: '24px', position: 'absolute', left: 52.5, top: 165 }}> MyPanel</h3>}
+           
 
 
             <Collapse  in={opened}>
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-            <div>
-     
-        
-    </div>
+          
     
-    <motion.div className="step-5" 
+    <motion.div className="step-5-tut" 
     animate={{ y: [-20, 0], opacity: [0, 1] }}
     whileHover={{ scale: 1.1 }}
+    onClick={openAward}
     style={{
       position: 'relative', 
       backgroundColor: '#22577A', 
@@ -310,16 +304,19 @@ const { isAuthenticated } = useContext(AuthContext);
       left: 0
     }}
     src={Next4Medal}
+  
     animate={{ rotate: 360 }}
     transition={{ duration: 2 }}
   />
 </motion.div>
 
+
 <h5 style={{marginTop:5, fontSize: '16px', color: 'white'}}> MyMedals</h5>
 
-<motion.div className="step-6"
+<motion.div className="step-6-tut"
     animate={{ y: [-20, 0], opacity: [0, 1] }}
     whileHover={{ scale: 1.1 }}
+    onClick={openSurvey}
     style={{
       position: 'relative', 
       backgroundColor: '#57CC99', 
@@ -343,16 +340,20 @@ const { isAuthenticated } = useContext(AuthContext);
       top: 0,
       left: 0
     }}
+
     src={Next4Notebook}
     animate={{ rotate: -360 }}
     transition={{ duration: 2 }}
   />
 </motion.div>
-<h5 style={{marginTop:5, fontSize: '16px', color: 'white'}}> MySurveys</h5>
 
-                <Paper className="step-7"  shadow="xl" style={{ cursor: 'pointer', position: 'absolute', left: 95, bottom: 20,margin: '5px', marginTop: '10px', width: '40px', height: '40px', display: 'flex', borderRadius: '5px', justifyContent: 'center', alignItems: 'center'}}>
-                    <Settings size={32} />
-                </Paper>
+<h5 style={{marginTop:5, fontSize: '16px', color: 'white'}}> MySurveys</h5>
+<div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', height: '90px' }}>
+  <Paper onClick={openSetting} className="step-7-tut" shadow="xl" style={{ marginTop: 10,padding: '13px', cursor: 'pointer', display: 'flex', justifyContent: 'center' }}>
+    <Settings size={36} />
+  </Paper>
+</div>
+
             </div>
 </Collapse>
 
@@ -362,12 +363,12 @@ const { isAuthenticated } = useContext(AuthContext);
 
     <Paper p="md" shadow="lg" className="dashboard-main-area" style={{marginTop: 10}}>
     <div className="shiny-text" style={topDashboardStyle}>{username}</div>
-  <div>
+  <div style={{marginTop: 10}}> 
   <Tabs defaultValue="courses">
     <Tabs.List style={{margin: '45px auto 0', display: 'flex', justifyContent: 'center'}}>
-      <Tabs.Tab value="courses" className="step-1" tabStyle={{ backgroundColor: '#2B2D42', color: 'white' }} style={{ color: 'white' }} icon={<Book size="1.6rem" />}><b>Courses</b></Tabs.Tab>
-      <Tabs.Tab value="colleges" className="step-2" tabStyle={{ backgroundColor: '#2B2D42', color: 'white' }} style={{color: 'white'}} icon={<School size="1.6rem" />}><b>Colleges</b></Tabs.Tab>
-      <Tabs.Tab value="careers" className="step-3" tabStyle={{ backgroundColor: '#2B2D42', color: 'white' }} style={{color: 'white'}} icon={<ChefHat size="1.6rem" />}><b>Careers</b></Tabs.Tab>
+      <Tabs.Tab value="courses" className="step-1 step-1-tut"  style={{ color: 'white' }} icon={<Book size="1.6rem" />}><b>Courses</b></Tabs.Tab>
+      <Tabs.Tab value="colleges" className="step-2 step-2-tut"  style={{color: 'white'}} icon={<School size="1.6rem" />}><b>Colleges</b></Tabs.Tab>
+      <Tabs.Tab value="careers" className="step-3 step-3-tut" style={{color: 'white'}} icon={<ChefHat size="1.6rem" />}><b>Careers</b></Tabs.Tab>
 
     </Tabs.List>
 
@@ -376,29 +377,38 @@ const { isAuthenticated } = useContext(AuthContext);
   <Tabs.Panel value="courses" pt="xs">
   <div className="dashboard-component-container" style={{ position: 'relative' }}>
     <div className="" style={{textAlign: 'left', marginLeft: '70px', fontWeight: 700, fontSize: '24px', color: 'white', marginBottom: 0}}><b>{courseLikedList.length}</b> Total Cards</div>
-  <div style={{marginTop: 15}}>
+  <div style={{marginTop: 5}}>
     <MediumCourseCarousel items={courseLikedList} />
     </div>
-<div className="search-icon-container" style={{ position: 'absolute', borderRadius: '50%', bottom: '50px', left: '50%', transform: 'translateX(-50%)', width: '75px', height: '75px' }}>
-  <div onClick={handleCourseClick} style={{ textAlign: 'center', cursor: 'pointer', border: '1px solid black',  width: '100%',borderRadius: '50%', height: '100%' }}>
-    <img src={Next4Course} style={{ position: 'absolute', width: '100%', height: 'auto', top: 0, left: 0, bottom: 0, right: 0, border: '1px solid gray', borderRadius: '50%', boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)' }} />
+
+<div className="search-icon-container" style={{ position: 'absolute', borderRadius: '50%', bottom: '60px', left: '48%', transform: 'translateX(-50%)', width: '75px', height: '75px' }}>
+
+  <div onClick={handleCourseClick} style={{ textAlign: 'center', cursor: 'pointer',  width: '100%',borderRadius: '50%', height: '100%' }}>
+   
+    <img src={Next4Course} style={{ position: 'absolute', width: '100%', height: 'auto', top: 0, left: 5, bottom: 0, right: 0, border: '1px solid gray', borderRadius: '50%', boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)' }} />
+    
   </div>
-  <h5 style={{textAlign: 'center', fontSize: '16px', marginTop: 10, color: 'white'}}> MyCourses </h5>
+  
+
+  <h5 style={{textAlign: 'center', fontSize: '16px', marginTop: 10, color: 'white'}}> <Sparkles> MyCourses</Sparkles> </h5>
+
 </div>
+
+
 </div>
   </Tabs.Panel>
 
   <Tabs.Panel value="colleges" pt="xs">
   <div className="dashboard-component-container" style={{ position: 'relative' }}>
   <div style={{textAlign: 'left', marginLeft: '70px', fontWeight: 700, fontSize: '24px', color: 'white', marginBottom: 0}}><b>{collegeLikedList.length}</b> Total Cards</div>
-  <div style={{marginTop: 15}}>
+  <div style={{marginTop: 5}}>
     <MediumCollegeCarousel items={collegeLikedList} />
     </div>
-<div className="search-icon-container" style={{ position: 'absolute', borderRadius: '50%', bottom: '50px', left: '50%', transform: 'translateX(-50%)', width: '75px', height: '75px' }}>
-  <div onClick={handleCollegeClick} style={{ textAlign: 'center', cursor: 'pointer', border: '1px solid black',  width: '100%',borderRadius: '50%', height: '100%' }}>
-    <img src={Next4College} style={{ position: 'absolute', width: '100%', height: 'auto', top: 0, left: 0, bottom: 0, right: 0, border: '1px solid gray', borderRadius: '50%', boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)' }} />
+<div className="search-icon-container" style={{ position: 'absolute', borderRadius: '50%', bottom: '60px', left: '48%', transform: 'translateX(-50%)', width: '75px', height: '75px' }}>
+  <div onClick={handleCollegeClick} style={{ textAlign: 'center', cursor: 'pointer',  width: '100%',borderRadius: '50%', height: '100%' }}>
+    <img src={Next4College} style={{ position: 'absolute', width: '100%', height: 'auto', top: 0, left: 5, bottom: 0, right: 0, border: '1px solid gray', borderRadius: '50%', boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)' }} />
   </div>
-  <h5 style={{textAlign: 'center', fontSize: '16px', marginTop: 10, color: 'white'}}> MyColleges </h5>
+  <h5 style={{textAlign: 'center', fontSize: '16px', marginTop: 10, color: 'white'}}> <Sparkles>MyColleges</Sparkles> </h5>
 </div>
 </div>
  </Tabs.Panel>
@@ -406,14 +416,14 @@ const { isAuthenticated } = useContext(AuthContext);
  <Tabs.Panel value="careers" pt="xs">
   <div className="dashboard-component-container" style={{ position: 'relative' }}>
   <div style={{textAlign: 'left', marginLeft: '70px', fontWeight: 700, fontSize: '24px', color: '#FFF', marginBottom: 0}}><b>{careerLikedList.length}</b> Total Cards</div>
-  <div style={{marginTop: 15}}>
+  <div style={{marginTop: 5}}>
     <MediumCareerCarousel items={careerLikedList} />
     </div>
-<div className="search-icon-container" style={{ position: 'absolute', borderRadius: '50%', bottom: '50px', left: '50%', transform: 'translateX(-50%)', width: '75px', height: '75px' }}>
-  <div onClick={handleCareerClick} style={{ textAlign: 'center', cursor: 'pointer', border: '1px solid black',  width: '100%',borderRadius: '50%', height: '100%' }}>
-    <img src={Next4Career} style={{ position: 'absolute', width: '100%', height: 'auto', top: 0, left: 0, bottom: 0, right: 0, border: '1px solid gray', borderRadius: '50%', boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)' }} />
+<div className="search-icon-container" style={{ position: 'absolute', borderRadius: '50%', bottom: '60px', left: '48%', transform: 'translateX(-50%)', width: '75px', height: '75px' }}>
+  <div onClick={handleCareerClick} style={{ textAlign: 'center', cursor: 'pointer',  width: '100%',borderRadius: '50%', height: '100%' }}>
+    <img src={Next4Career} style={{ position: 'absolute', width: '100%', height: 'auto', top: 0, left: 5, bottom: 0, right: 0, border: '1px solid gray', borderRadius: '50%', boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)' }} />
   </div>
-  <h5 style={{textAlign: 'center', fontSize: '16px', marginTop: 10, color: 'white'}}> MyCareers </h5>
+  <h5 style={{textAlign: 'center', fontSize: '16px', marginTop: 10, color: 'white'}}> <Sparkles>MyCareers</Sparkles> </h5>
 </div>
 </div>
   
@@ -424,16 +434,6 @@ const { isAuthenticated } = useContext(AuthContext);
 
 </div>
 </Paper>
-    <div className="dashboard-right">
-
-        <div className='dashboard-miss-container'>
-      <div className="dashboard-missions">
-      <h6 className="animated-gradient-text h4Tag" style={{textAlign: 'center', fontWeight: 800, fontSize: '40px', marginLeft: 0, marginTop: 0, marginBottom: 0, fomtFamily: 'Phudu'}}> Challenge </h6>
-      </div>
-
-      </div>
- 
-      </div>
 
 
     </div>

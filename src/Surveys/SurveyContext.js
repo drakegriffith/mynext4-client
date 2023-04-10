@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect, createContext } from "react";
+import React, { useState, useEffect, createContext } from "react";
 
 export const SurveyContext = createContext({});
 
@@ -17,7 +17,6 @@ export const SurveyProvider = ({ children }) => {
   return (
     <SurveyContext.Provider
       value={{
-        surveysCompleted,
         isCourseCompleted,
         setIsCourseCompleted,
         isCollegeCompleted,

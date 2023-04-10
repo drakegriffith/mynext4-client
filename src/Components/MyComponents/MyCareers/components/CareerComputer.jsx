@@ -19,7 +19,7 @@ export const CareerComputer = ({ onSelectCareer }) => {
         }
         return chunks;
       };
-      const careerChunks = chunkArray(careerFilteredList, 8);
+      const careerChunks = chunkArray(careerFilteredList, 6);
 
     useEffect(() => {
   
@@ -192,7 +192,7 @@ export const CareerComputer = ({ onSelectCareer }) => {
           <div key={chunkIndex} className="carousel-slide">
             <ul className="my-component-list">
               {chunk.map((name, id) => (
-                <li key={chunkIndex * 8 + id} className="my-component-list-item" >
+                <li key={chunkIndex * 6 + id} className="my-component-list-item" >
                   <SmallCareer career={name} onSelect={() => onSelectCareer(name)} showHeart={false}/>
                 </li>
               ))}

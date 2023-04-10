@@ -1,15 +1,14 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import "./MyCourses.css";
 import { Card, Divider, Modal } from "@mantine/core";
-import {  Book, Search, TrashX  } from "tabler-icons-react";
+import {  Book, Search  } from "tabler-icons-react";
 import { motion, AnimatePresence } from 'framer-motion';
-import { InfoCircle, Trash, Heart,Calculator, Check, LetterX, InfoCircleFilled } from 'tabler-icons-react';
-import { API, init_api } from "../../../API";
+import { InfoCircle, FileInfo, Trash, Heart,Calculator, Check, LetterX } from 'tabler-icons-react';
+import { API } from "../../../API";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { COURSE_ATTRIBUTES } from './courseAttributes';
 import { Link, useNavigate } from "react-router-dom";
 
-import { Navigate } from "react-router-dom";
 // Small 
 
 export const SmallCourse = ({course, onSelect, showHeart, searchValue, onDelete, isLiked  }) => {
@@ -43,15 +42,15 @@ export const SmallCourse = ({course, onSelect, showHeart, searchValue, onDelete,
   <div className="delete-modal-content">
     <p>Do you want to delete this course?</p>
     <div className="delete-modal-actions">
-      <Check size={24} className="check-icon" onClick={handleDelete} />
+      <Check size={24} style={{cursor: 'pointer'}} onClick={handleDelete} />
       <LetterX size={24} className="cancel-icon" onClick={handleCancel} />
     </div>
   </div>
 </Modal>
 <div style={{display: 'flex', textAlign: 'center', justifyContent: 'center'}}>
-<div className="small-career-container">
+<div className="small-component-container">
       <div className="icon-wrapper"><Book /></div>
-      <div style={{marginRight: 'auto'}}>{course.course_name}</div>
+      <div style={{ textAlign: 'center', fontWeight: 500}}>{course.course_name}</div>
         <div>
         </div>
         {
@@ -65,7 +64,7 @@ export const SmallCourse = ({course, onSelect, showHeart, searchValue, onDelete,
   )
 }
 <div className="icon-container" onClick={handleClick}>
-      <Link to={searchValue && course && course.id ? `explore/courses/${course.id}` : "#"}>
+      <Link to={searchValue && course && course.id ? `/explore/courses/${course.id}` : "#"}>
         <InfoCircle className="icon" size={24} />
       </Link>
     </div>
@@ -74,45 +73,6 @@ export const SmallCourse = ({course, onSelect, showHeart, searchValue, onDelete,
       </div>
     );
 };
-
-
-   
-
-
-
-// Buttons
-
-const buttonVariants = {
-  hover: {
-    scale: 1.1,
-  },
-  tap: {
-    scale: 0.9,
-    transition: { duration: 0.2 },
-  },
-};
-
-const useButtonHandler = (handler) => {
-  return useCallback(() => {
-    handler();
-  }, [handler]);
-};
-
-const DeleteButton = ({ children, onClick }) => {
-  const handleDelete = useButtonHandler(onClick)
-  return (
-    <motion.button
-      onClick={handleDelete}
-      variants={buttonVariants}
-      whileHover="hover"
-      whileTap="tap"
-      className="button"
-    >
-      {children}
-    </motion.button>
-  );
-};
-
 
 
 function getMatchingAttributes(course) {
@@ -168,15 +128,14 @@ const ScoreBar = ({ onSelect, setScoreBarVisible }) => {
 
 
 const CourseSkillsList = ({ learnSkills, large }) => {
-  // Split the learnSkills string into an array of individual skills
-  const skillsArray = learnSkills.split(";");
+  // Check if learnSkills is null or undefined, and return an empty array if it is
+  const skillsArray = (learnSkills || '').split(";");
 
   return (
     <ul>
       {skillsArray.map((skill, index) => (
         <li className="course-skill-list" style={{ display: 'flex', alignItems: 'center', textAlign: 'center', justifyContent: 'center'}}key={index}>
-
-          <p className="course-skill-list" style={{fontSize: large ? '12px' : '8px'}}><b>*</b>{skill.trim()}</p>
+          <p className="course-skill-list" style={{fontSize: large ? '16px' : '10px'}}><b>*</b>{skill.trim()}</p>
         </li>
       ))}
     </ul>
@@ -207,12 +166,17 @@ export const MediumCourseActions = ({ onLargeClick, onDelete, onLike, course, la
 
   return (
     <div className="medium-component-actions">
+      {scoreBarVisible && 
+      <div>
+        {isLiked && <h4 style={{textAlign: 'center', color: '#EDF2F4', marginBottom: 0}}> Update college score. </h4>}
+      <ScoreBar onSelect={handleSelect} setScoreBarVisible={setScoreBarVisible} />
+      </div>}
       <motion.div
         className="medium-component-card"
         onClick={toggleVisibility}
       >
          <MediumCourse 
-                            key={index}
+                        
                             largeCourseRef={largeCourseRef}
                             course={course}
                           
@@ -220,11 +184,7 @@ export const MediumCourseActions = ({ onLargeClick, onDelete, onLike, course, la
                          
                             />
       </motion.div>
-      {scoreBarVisible && 
-      <div>
-        {isLiked && <h4 style={{textAlign: 'center', color: '#EDF2F4', marginBottom: 0}}> Update college score. </h4>}
-      <ScoreBar onSelect={handleSelect} setScoreBarVisible={setScoreBarVisible} />
-      </div>}
+      
       <AnimatePresence>
         
         {submitted && (
@@ -278,6 +238,7 @@ export const LargeCourseActions = ({ onLargeClick, onDelete, onLike, course, lar
   const [selectedScore, setSelectedScore] = useState(null);
   const [scoreBarVisible, setScoreBarVisible] = useState(false);
   const [visible, setVisible] = useState(false);
+  const navigate = useNavigate();
 
   const handleSelect = (score) => {
     setSelectedScore(score);
@@ -289,6 +250,10 @@ export const LargeCourseActions = ({ onLargeClick, onDelete, onLike, course, lar
     }, 2000);
     onLike(course, score);
   };
+
+  const handleLinkCollege = () => {
+    navigate(`/explore/courses/${course.id}`)
+  }
 
   
   const toggleVisibility = () => {
@@ -339,14 +304,9 @@ export const LargeCourseActions = ({ onLargeClick, onDelete, onLike, course, lar
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
           >
-           <button className="action-button" onClick={() => onLargeClick(course)}>
-  <motion.div whileHover={{ scale: 1.1 }}>
-    <InfoCircle className="info-icon" size={24} />
-  </motion.div>
-</button>
-<button className="action-button" onClick={() => onDelete(course)}>
-  <motion.div whileHover={{ x: [0, -3, 3, -3, 3, 0] }} transition={{ duration: 0.3 }}>
-    <Trash className="trash-icon" size={24} />
+  <button className="action-button" onClick={handleLinkCollege}>
+  <motion.div whileHover={{ y: [0, -3, 3, -3, 3, 0] }} transition={{ duration: 0.3 }}>
+    <FileInfo className="trash-icon" size={24} />
   </motion.div>
 </button>
 <button className="action-button" onClick={() => setScoreBarVisible(!scoreBarVisible)}>
@@ -457,41 +417,7 @@ const CoursePrerequisites = React.memo(({ prerequisites }) => {
 // Medium 
 export const MediumCourse = ({course, coursePage, onDelete, onLargeClick, setView, setSelectedCourse}) => {
   const [displayedTooltip, setDisplayedTooltip] = useState(null);
-
-  const [activeTab, setActiveTab] = useState("money");
-    const [showSAT, setShowSAT] = useState(false);
-    const [endpoints, setEndpoints] = useState([]);
   
-    const handleUpdateEndpoints = (newEndpoints) => {
-      setEndpoints(newEndpoints);
-    };
-
-    const handleMaximize = () => {
-      onLargeClick();
-      setView('large');
-      setSelectedCourse(course);
-    };
-
-  
-function handleDelete() {
-  onDelete();
-};
-const linkStyle = {
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  top: 0,
-  textDecoration: 'none', // remove underline
-  
-  outline: 'none',
-  backgroundColor: '#2B2D42',
-  color: "#FFF",
-
-  borderRadius: '5px',
-
-  padding: '3px', // remove outline
-};
-
 const navigate = useNavigate();
 const handleLinkClick = (course) => (event) => {
   event.preventDefault();
@@ -541,9 +467,11 @@ return (
 
 </Card.Section>
 <Divider style={{marginBottom: 5, marginTop: 5}} />
+{/*
 <div style={{textAlign: 'center', fontWeight: 400, fontSize: '13px', marginBottom: 4, color: 'gray'}}> Course Concepts </div>
 <p style={{textAlign: 'center', fontSize: '10px', marginBottom: 5}}>TBD</p>
         <Divider />
+*/}
         <div className="course-field-tag" style={{textAlign: 'center', fontWeight: 400, fontSize: '12px', marginBottom: 4, marginTop: 4, color: 'gray'}}> Learn a Lot</div>
   { course && <CourseSkillsList className="course-skill-list" learnSkills={course.learn_skills} /> }
   <Divider className="course-field-tag" style={{marginTop: 6, marginBottom: 4}} />
@@ -564,13 +492,6 @@ return (
 
 export const LargeCourse = ({ course, onDelete, handleLiked}) => {
   const [displayedTooltip, setDisplayedTooltip] = useState(null);
-  const [endpoints, setEndpoints] = useState([]);
-  const [value, setValue] = useState(0);
-
-
-  const handleUpdateEndpoints = (newEndpoints) => {
-    setEndpoints(newEndpoints);
-  };
 
     return course ? (
         <div className="large-component">

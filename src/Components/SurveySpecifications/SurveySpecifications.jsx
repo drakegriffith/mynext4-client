@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { SurveyContext } from "../../SurveyContext";
+import { SurveyContext } from "../../Surveys/SurveyContext";
 import { Check } from "tabler-icons-react";
 import { UserContext } from "../../Pages/App";
 import { useNavigate } from "react-router";
@@ -8,9 +8,10 @@ import WarpButton from "./WarpButton";
 import { API, init_api } from "../../API";
 import Joyride, { STATUS } from 'react-joyride';
 import { CircleX } from "tabler-icons-react";
+import Sparkles from "../Sparkles/Sparkles";
+
 function SurveySpecifications() {
   const [showTutorial, setShowTutorial] = useState(true);
-  const [showTutorialAfter, setTutorialAfter] = useState(true);
   const surveyContext = useContext(SurveyContext);
   const { userID } = useContext(UserContext);
   const navigate = useNavigate();
@@ -20,7 +21,6 @@ function SurveySpecifications() {
     const checkCollegeCompletion = async () => {
       try {
         const response = await API.get(`/check-college-survey/${userID}/`);
-        console.log("COLLEGE" + response.data.collegeCompleted)
         surveyContext.setIsCollegeCompleted(response.data.collegeCompleted);
       } catch (error) {
         console.error('Error checking survey completion:', error);
@@ -30,9 +30,8 @@ function SurveySpecifications() {
     const checkCourseCompletion = async () => {
       try {
         const response = await API.get(`/check-course-survey/${userID}/`);
-        console.log(response.data)
         surveyContext.setIsCourseCompleted(response.data.courseCompleted);
-        console.log(surveyContext.isCourseCompleted)
+
       } catch (error) {
         console.error('Error checking survey completion:', error);
       }
@@ -51,13 +50,13 @@ function SurveySpecifications() {
     checkCollegeCompletion();
     checkCourseCompletion();
 
-  }, [userID]);
+  }, [userID, surveyContext]);
   
   useEffect(() => {
     if (surveyContext.isCareerCompleted && surveyContext.isCollegeCompleted && surveyContext.isCourseCompleted) {
       surveyContext.setSurveysCompleted(true);
     }
-  }, [])
+  }, [surveyContext])
 
   const buttonStyles = {
     padding: "15px 20px",
@@ -74,13 +73,7 @@ function SurveySpecifications() {
     marginBottom: "10px",
   };
 
-  const titleStyles = {
-    fontSize: "32px",
-    fontWeight: "bold",
-    marginBottom: "20px",
-    color: "#333",
-  };
-  
+
   function handleSurveyClick(path) {
     navigate(path);
   }
@@ -100,51 +93,24 @@ function SurveySpecifications() {
     }
   };
   
-  const handleJoyrideCallbackAfter = (data) => {
-    const { status } = data;
   
-    if ([STATUS.FINISHED, STATUS.SKIPPED].includes(status)) {
-      setShowTutorial(false);
-    }
-  };
-  
-
-  const tutorialStepsAfter = [
-    {
-      target: '.step-2',
-      content: "Congratulations on completing your survey's. Your account is now accessible upon click.",
-    },
-  
-  
-    // ...
-  ];
   const tutorialSteps = [
     {
-      target: '.step-1',
-      content: "Welcome to MyNext4. Activate your account after completing three composite survey's on courses, colleges, and careers.",
+      target: '.step-1-tut',
+      content: "Welcome to MyNext4. Activate your account after completing three composite survey's on courses, colleges, and careers. We use these survey's to help us write more accurate recommendations for you, and to ensure you enjoy a personalized experience with MyNext4 rather than one of randomness.",
     },
-  
-  
     // ...
   ];
 
   
   return (
-
- 
-
-    surveyContext.surveysCompleted ? 
+    <div className={`${surveyContext.surveyCompleted ? 'survey-background' : ''}`}>
+    {surveyContext.surveysCompleted ? 
+    <div id="survey-page">
         <div style={{display: 'flex', justifyContent: 'center', marginTop: 200}}>
-          <Joyride
-  steps={tutorialStepsAfter}
-  run={showTutorialAfter}
-  callback={handleJoyrideCallbackAfter}
-  continuous
-  scrollToFirstStep
-  showProgress
-  showSkipButton
-/>
-          <WarpButton className="step-2" />
+         
+          <WarpButton />
+        </div>
         </div>
         :
   
@@ -159,7 +125,8 @@ function SurveySpecifications() {
   showProgress
   showSkipButton
 />
-      <h1 className="shiny-text step-1" style={{ marginTop: "100px", marginBottom: "10px", fontSize: '36px' }}><b>Make MyNext4 Yours</b></h1>
+      <h1 className="shiny-text step-1-tut" style={{ marginTop: "100px", padding: '20px', backgroundColor: '#FFF', borderRadius: '5px', marginBottom: "5px", fontSize: '36px' }}><Sparkles><b>Make MyNext4 Yours</b></Sparkles></h1>
+      <h4 style={{ padding: '10px', backgroundColor: '#FFF', borderRadius: '5px 5px 5px 5px', marginBottom: "5px", fontSize: '20px',textAlign: 'center', width: '100px' }}> Click the <span style={{color:'red'}}>red</span> circle above for aid while completing the tutorial. </h4>
       <h2 style={{ marginBottom: "15px" }}>{`${(surveyContext.isCourseCompleted + surveyContext.isCollegeCompleted + surveyContext.isCareerCompleted)}/3 surveys complete`}</h2>
 
       <div style={{ display: "flex", flexDirection: "row" }}>
@@ -191,7 +158,7 @@ function SurveySpecifications() {
                     style={buttonStyles}
                     onClick={() => handleSurveyClick(survey.path)}
                   >
-                    Complete {survey.name}
+                    Complete <b>{survey.name}</b>
                   </button>
                   </div>
                 )}
@@ -209,7 +176,7 @@ function SurveySpecifications() {
                     style={buttonStyles}
                     onClick={() => handleSurveyClick(survey.path)}
                   >
-                    Complete {survey.name}
+                    Complete <b>{survey.name}</b>
                   </button>
                   </div>
                 )}
@@ -228,7 +195,7 @@ function SurveySpecifications() {
                     style={buttonStyles}
                     onClick={() => handleSurveyClick(survey.path)}
                   >
-                    Complete {survey.name}
+                    Complete<b> {survey.name}</b>
                   </button>
                     </div>
                 )}
@@ -238,6 +205,9 @@ function SurveySpecifications() {
         ))}
             </div>
             </div>
+}
+            </div>
+    
    
   )
                 }

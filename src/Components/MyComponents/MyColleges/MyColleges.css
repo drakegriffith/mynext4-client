@@ -1,6 +1,5 @@
 
 
-
 .college-icon-wrapper {
     position: relative;
     display: inline-block;
@@ -34,9 +33,23 @@
     display: block;
   }
   
+  .component-attribute-lg:hover .college-pre-token-tooltip {
+    display: block;
+  
+  }
+  
   .grade-card {
     position: relative;
   }
+
+  .college-icon-wrapper {
+    display: flex;
+    width: 50px;
+    height: 50px;
+    align-items: center;
+    position: relative;
+  }
+
   .college-icon-wrapper::after {
     content: "";
     position: absolute;

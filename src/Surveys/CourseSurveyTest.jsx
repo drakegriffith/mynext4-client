@@ -1,14 +1,14 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
 import { API } from '../API';
 import { init_api } from '../API';
 import { AuthContext } from '../Components/Auth/AuthContext';
 import { UserContext } from '../Pages/App';
-import { SurveyContext } from '../SurveyContext';
+import { SurveyContext } from './SurveyContext';
 import { useNavigate } from 'react-router-dom';
 import { motion } from "framer-motion";
 import styles from "./Surveys.module.css";
 
-function CourseSurveyTest({}) {
+function CourseSurveyTest() {
     init_api()
     const { isAuthenticated } = useContext(AuthContext)
     const { userID } = useContext(UserContext);
@@ -24,41 +24,36 @@ function CourseSurveyTest({}) {
         setAnswer(parseInt(event.target.value, 10));
     }
 
-    const fetchSurveyQuestions = async () => {
-       ;
+    const fetchSurveyQuestions = useCallback(async () => {
         try {
             const promise = API.get(`/api/survey/course/${id}/`);
             promise.then((response) => {
                 const res = response.data;
-                console.log(res)
                 setQuestions(res);
-            });
-            
+            }); 
         } catch (error) {
             console.error(error);
         }
-    };
+    },[id]);
 
 
     useEffect(() => {
         setSubmittedAnswer(answer)
-       
     }, [answer])
 
-    const getNextQuestion = async () => {
+    const getNextQuestion = useCallback(async () => {
         try {
-            const response = await API.get(`/api/survey/course/${id + 1}/`);
-            const data = response.data;
+            await API.get(`/api/survey/course/${id + 1}/`);  
         } catch (error) {
             setComplete(true);
-        }
-        
-      }
-    useEffect(() => {
+        };
+      },[id]);
+
+      useEffect(() => {
         getNextQuestion();
-        fetchSurveyQuestions()
-        },[id]);
-   
+        fetchSurveyQuestions();
+      }, [id, getNextQuestion, fetchSurveyQuestions]);
+      
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -144,7 +139,7 @@ function CourseSurveyTest({}) {
          onChange={handleChange}
          id="no"
        />
-       <label htmlFor="no" className={styles.radioBtnLabel}>No</label>
+       <label htmlFor="no" className={styles.radioBtnLabel}>False</label>
        <input
          className={styles.radioBtn}
          type="radio"
@@ -154,18 +149,18 @@ function CourseSurveyTest({}) {
          onChange={handleChange}
          id="yes"
        />
-       <label htmlFor="yes" className={styles.radioBtnLabel}>Yes</label>
+       <label htmlFor="yes" className={styles.radioBtnLabel}>True</label>
      </label>
      
                  <button className={styles.button} type="submit">
-                 Submit
+                 Next
                  </button>
              </form>
              </motion.div>
                
                : 
                isAuthenticated && userID ?
-               <div style={{ display: 'flex', marginTop: 300, justifyContent: 'center', marginTop: 200 }}>
+               <div style={{ display: 'flex', marginTop: 300, justifyContent: 'center' }}>
                <button className={styles.finalSubmit} onClick={handleFinalSubmit}>Submit</button>
              </div>
                : 

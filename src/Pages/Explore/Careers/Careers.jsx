@@ -1,36 +1,34 @@
 
-import { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import "./Careers.css";
-import { Carousel } from "react-responsive-carousel";
-import { Card } from "@mantine/core";
-import { Spoiler, Modal, Button, Paper } from '@mantine/core';
-import ListItem from "./Components/ListItems";
 import { API, init_api } from "../../../API";
-import { useSelector } from "react-redux";
-import { setAutoFreeze } from "immer";
 import { useParams } from "react-router-dom";
-import { Chart } from "react-google-charts"
-import { MediumCareer } from "../../../Components/MyComponents/MyCareers/Career";
+import {  MediumCareer } from "../../../Components/MyComponents/MyCareers/Career";
 
 function Careers() {
     const [career, setCareer] = useState("");
-    const [data, setData] = useState("");
-    const [stateNames, setStateNames] = useState([]);
+    /*
     const [knowledge, setKnowledge] = useState([]);
     const [skills, setSkills] = useState([]);
     const [abilities, setAbilities] = useState([]);
-    const [techSkills, setTechSkills] = useState([]);
+
     const [tasks, setTasks] = useState([]);
-    const [characteristics, setCharachteristics] = useState([]);
+    const [careerCodes, setCareerCodes] = useState([]);
+    const [correlatedCareers, setCorrelatedCareers] = useState([]);
+    const [careerData, setCareerData] = useState([]);
+    const [stateNames, setStateNames] = useState([]);
+    const [characteristics, setCharacteristics] = useState([]);
     const [industryData, setIndustryData] = useState([]);
     const [statePercentages, setStatePercentages] = useState([]);
     const [baseInfo, setBaseInfo] = useState([]);
+    const [techSkills, setTechSkills] = useState([]);
     const [salary, setSalary] = useState([]);
-    const [careerCodes, setCareerCodes] = useState([]);
-    const [correlatedCareers, setCorrelatedCareers] = useState([]);
+*/
 
-    const id = useParams();
+    const { id } = useParams();
 
+
+    /*
     useEffect(() => {
 
         const fetchData = async () => {
@@ -40,7 +38,7 @@ function Careers() {
                 console.log("RESPONSE")
                 console.log(response.data.explore_more.careers.career)
                 setCareerCodes(response.data.explore_more.careers.career)
-                setData(response.data);
+                //setData(response.data);
               
                 getKnowledge(response);
                 
@@ -209,130 +207,6 @@ function Careers() {
             ];
 
             */
-
-            const industryDataTemp = [];
-
-            for (var i = 0; i < response.data.where_do_they_work.industry.length; i++) {
-                var tempObj = {
-                    "name (approximation)": response.data.where_do_they_work.industry[i].title,
-                    "percentage (approximation)": response.data.where_do_they_work.industry[i].percent_employed
-                };
-
-                industryDataTemp.push(tempObj);
-
-            }
-            
-            setIndustryData(industryDataTemp);
-        }
-
-        const getStatePercentages = (response) => {
-            const statePercentagesTemp = [
-                {
-                    "name": "Above average specializiation",
-                    "percentage": response.data.check_out_my_state.above_average.state.length
-                }, 
-        
-                {
-                    "name": "Average Specialization",
-                    "percentage": response.data.check_out_my_state.average.state.length
-                },
-        
-                {
-                    "name": "Below average specialization",
-                    "percentage": response.data.check_out_my_state.below_average.state.length
-                }
-            ];
-
-            setStatePercentages(statePercentagesTemp);
-        }
-
-        const getBaseInfo = (response) => {
-            const baseInfoTemp = [
-                response.data.career.title,
-                response.data.career.what_they_do,
-                response.data.career.code
-            ];
-
-            setBaseInfo(baseInfoTemp);
-        }
-        
-        const getSalary = (response) => {
-            const salaryTemp = [
-                response.data.job_outlook.salary.annual_10th_percentile,
-                response.data.job_outlook.salary.annual_median,
-                response.data.job_outlook.salary.annual_90th_percentile,
-                response.data.job_outlook.salary.hourly_10th_percentile,
-                response.data.job_outlook.salary.hourly_median,
-                response.data.job_outlook.salary.hourly_90th_percentile
-            ];
-
-            setSalary(salaryTemp);
-        }
-
-        
-        fetchData();
-        
-
-
-    }, []);
-
-    
-    
-    const [modal1Opened, setModal1Opened] = useState(false);
-
-    
-
-    
-
-    const exploreMoreNames = [
-        "Civil Engineering Technologists & Technicians",
-        "Construction & Building Inspectors",
-        "Construction Managers"
-    ];
-
-    const exploreMoreDescriptions = [
-        "Civil engineering technologists and technicians help civil engineers plan, design, and build highways, bridges, utilities, and other infrastructure projects. They also help to plan, design, and build commercial, industrial, residential, and land development projects.",
-        "Performs limited professional trade and/or certification inspections of new, existing, and damaged residential and commercial structures for conformance to codes, amendments, ordinances, regulations, specifications, and standards.",
-        "Construction managers, often called general contractors or project managers, coordinate and supervise a variety of projects, including building public, residential, commercial, and industrial structures as well as roads and bridges."
-    ]
-
-    const Item = (props) => {
-        return (    
-            <Spoiler
-            maxHeight={18}
-            showLabel="Show More"
-            hideLabel="Hide label"
-            className="tasks-Careers">
-                {props.text}
-            </Spoiler>
-        );
-            
-    };
-
-
-    const tempItems = tasks.map((data) => {
-        return (<ListItem text = {data}></ListItem>);
-    });
-
-    const knowledgeMapped = knowledge.map((data) => {
-        return <ListItem text = {data}></ListItem>
-    });
-
-    const skillsMapped = skills.map((data) => {
-        return <ListItem text = {data}></ListItem>
-    });
-
-    const abilitiesMapped = abilities.map((data) => {
-        return <ListItem text = {data} > </ListItem>
-    })
-
-    useEffect(() => {
-        console.log(careerCodes)
-        const codes = careerCodes.map((career) => career.code);
-        console.log(codes);
-        setCorrelatedCareers(codes)
-        console.log(correlatedCareers)
-    }, [])
     
 
     /*
@@ -367,6 +241,8 @@ function Careers() {
         );
       }
       */
+
+      /*
      
     
       const Circle = ({ stateName }) => {
@@ -446,7 +322,7 @@ function Careers() {
         );
       };
 
-      
+      {/*
       const getCareer = useCallback(async (onet_id) => {
         init_api();
         const response  = await API.get(`api/careers/get_career/${onet_id}/`)
@@ -461,11 +337,156 @@ function Careers() {
         getCareer(onet_id);
         
       }, []);
+    */
 
+
+      const collegeNameStyle = {
+        position: 'absolute',
+        top: '30px',
+        left: '50%',
+        transform: 'translateX(-50%)',
+        fontWeight: 500,
+        backgroundColor: '#2B2D42',
+        color: 'white',
+        height: '40px',
+        lineHeight: '40px',
+        fontSize: '22px',
+        padding: '0px 30px',
+        borderRadius: '20px',
+        textAlign: 'center',
+        zIndex: 1,
+      };
+    
+      const containerStyle = {
+        position: 'relative',
+        marginTop: 65,
+        height: '80vh',
+      };
+    
+      const backgroundStyle = {
+        backgroundColor: '#2B2D42',
+        marginBottom: 30,
+        height: '55px',
+        width: '100%',
+      };
+    
+      
+    
+      const medalStyle = {
+        fontWeight: 400,
+        padding: '10px',
+        backgroundColor: '#8D99AE',
+        backgroundImage: 'linear-gradient(to bottom, #8D99AE, #2B2D42)',
+        textAlign: 'center',
+        color: 'white',
+        marginTop: 10,
+        fontSize: '16px',
+        marginBottom: 4,
+        boxShadow: '0 0 4px #BFBFBF',
+        transform: 'translateZ(4px)',
+      };
+
+      const getCareer = useCallback(async (id) => {
+        try {
+          init_api();
+          const response = await API.get(`api/careers/get_career/${id}/`);
+        console.log(response.data)
+          setCareer(response.data);
+        } catch (error) {
+          console.error(error);
+        }
+      }, []);
+    
+    
+    
+      useEffect(() => {
+        if (id) {
+          getCareer(id);
+        }
+      }, [id, getCareer]);
+
+
+
+      const SimilarCareers = React.memo(({ industry }) => {
+        const [careerData, setCareerData] = useState([]);
+      
+        const search = async (industry) => {
+          let result = null;
+          await API.get(`/api/explore/career/industry/${industry}/`)
+            .then((response) => {
+              result = response.data.careers;
+            })
+            .catch((error) => {
+              console.error("Error fetching career data:", error);
+            });
+          return result;
+        };
+      
+        useEffect(() => {
+          const fetchCareerData = async () => {
+            const fetchedCareers = await search(industry);
+    
+           
+            if (!fetchedCareers || fetchedCareers.length === 0) {
+              setCareerData(["N/A"]);
+              return;
+            }
+      
+            setCareerData(fetchedCareers);
+         
+          };
+      
+          fetchCareerData();
+        }, [industry]);
+       
+        
+
+
+      
+        return (
+          <div className="similar-careers">
+             {careerData.length === 0
+        ? "N/A"
+        : careerData.map((career, index) =>
+            career === "N/A" ? (
+              <div key={index}>{career}</div>
+            ) : (
+              <MediumCareer careerPage={true} key={index} career={career} />
+            )
+          )}
+          </div>
+        );
+      });
+
+   
       
 
     return (
+
+    
+        <div style={containerStyle}>
+        <div style={backgroundStyle}></div>
+        <div style={{width: '250px', height: '265px', margin: '0 auto 50px auto'}}>
+        <MediumCareer careerPage={true} career={career} />
+        </div>
+        <div className="shiny-text" style={collegeNameStyle}>{career.career_name}</div>
+        <div style={medalStyle}> In an <b>identical industry</b> ({career.industry}) </div>
+        <div style={{display: 'flex', marginTop:0, justifyContent: 'center'}}>
+
         
+    <SimilarCareers industry={career.industry} />
+
+
+      
+      </div>
+        </div>
+
+    )
+      
+      
+
+        
+        /*
                     <div style = {{
                             textAlign: 'center',
                             marginTop: 50,
@@ -516,7 +537,7 @@ function Careers() {
                     </div>
                     </div>
                     </Carousel>
-                   {/* <CorrelatedCareers onetIds={correlatedCareers}  /> */}
+
 
                     <div style={{width: '80%', margin: '0 auto 0 auto', marginTop: 30, height: '320px',backgroundColor: '#2B2D42', borderRadius: '5px', padding: '10px'}}>
                     <h1 style={{color: '#fff'}}>Task Types </h1>
@@ -539,8 +560,13 @@ function Careers() {
                   
                     
                     </div>
+                        */
+
+                       
+                
+                    
         
-    );
+
 };
 
 export default Careers;

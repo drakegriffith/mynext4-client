@@ -3,7 +3,6 @@ import {createRoot} from 'react-dom/client';
 import './index.css';
 import App from './Pages/App';
 import { BrowserRouter } from 'react-router-dom';
-import { init_api } from './API';
 
 const root = createRoot(document.getElementById('root'));
 root.render(

@@ -4,11 +4,12 @@ import "./MyCareers.css"
 import { Card, Divider, Progress, Modal } from "@mantine/core";
 import  { TruckDelivery, BuildingCottage, ReportSearch, ClipboardList, Wallet, ChartInfographic, Businessplan, ZoomCode, ChartBar, VirusSearch, Shield, Radar, BuildingBridge, Bulb, WindowMaximize, Settings, BuildingCommunity, CalendarTime, Leaf, Droplet, BuildingFactory, Radioactive, Biohazard, Firetruck, Sunglasses, MilitaryAward, ReportMoney, MailOpened, CreditCard, Tractor, FishHook, BuildingFactory2, Broadcast, CarCrash, AirConditioning, CircleTriangle, BuildingWarehouse, ReceiptRefund, UserCheck, FileDatabase, DeviceDesktop, School, Stethoscope, Vaccine, Nurse, Ambulance, BuildingCarousel, WorldLongitude, Assembly, CurrencyEthereum, GasStation, DeviceFloppy, Heartbeat, Cash, ReportMedical, EggFried, FileMusic } from "tabler-icons-react";
 import { motion, AnimatePresence } from 'framer-motion';
-import { InfoCircle, Wood, ReportAnalytics, Poo, Cut, Paint, Track, Sailboat, Tir, UserPlus, Database, Skull, Trash, Heart, Check, LetterX, Bus, Train, Car,  Ad2, Truck, HomeDown, Lock, ScanEye, ChartPie3, Send } from 'tabler-icons-react';
+import { InfoCircle, FileInfo, Wood, Search,ReportAnalytics, Poo, Cut, Paint, Track, Sailboat, Tir, UserPlus, Database, Skull, Trash, Heart, Check, LetterX, Bus, Train, Car,  Ad2, Truck, HomeDown, Lock, ScanEye, ChartPie3, Send } from 'tabler-icons-react';
 import {  User, Book2, Building, Meat, Book, Calculator, Ad, Eyeglass2, Home, Code, Bolt, Robot, Disc, Atom, Map2, Diamond, Movie, Music, News, FlameOff, Flame, Spade, Gavel, Growth } from "tabler-icons-react";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { CAREER_ATTRIBUTES } from './careerAttributes';
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const iconMapping = {
     "ReportAnalytics": <ReportAnalytics size={32} />,
@@ -146,28 +147,28 @@ export const SmallCareer = ({career, onSelect,search, searchValue, showHeart, on
   hideCloseButton
 >
   <div className="delete-modal-content">
-    <p>Delete career card?</p>
+    <p>Do you want to delete this career?</p>
     <div className="delete-modal-actions">
-      <Check size={24} className="check-icon" onClick={handleDelete} />
+      <Check size={24}style={{cursor: 'pointer'}} onClick={handleDelete} />
       <LetterX size={24} className="cancel-icon" onClick={handleCancel} />
     </div>
   </div>
 </Modal>
       <div className="small-career-container">
       <div className="icon-wrapper">{icon}</div>
-      <div className="career-tooltip">{career.career_name}</div>
+      <div className="">{career.career_name}</div>
         <div>
         {
   showHeart && (
-    <Heart
+    <Trash
       size={24}
-      className={`heart-icon ${isLiked ? 'heart-liked' : ''}`}
+      style={{cursor: 'pointer'}}
       onClick={() => setShowModal(true)}
     />
   )
 }
 <div className="icon-container" onClick={handleClick}>
-      <Link to={searchValue && career && career.onet_id ? `/explore/careers/${career.onet_id}` : "#"}>
+      <Link to={searchValue && career && career.onet_id ? `/explore/careers/${career.id}` : "#"}>
         <InfoCircle className="icon" size={24} />
       </Link>
     </div>
@@ -286,6 +287,11 @@ export const MediumCareerActions = ({ onLargeClick, onDelete, onLike, career, la
 
   return (
     <div className="medium-component-actions">
+       {scoreBarVisible && 
+      <div>
+        {isLiked && <h4 style={{textAlign: 'center', color: '#EDF2F4', marginBottom: 0}}> Update career score. </h4>}
+      <ScoreBar onSelect={handleSelect} setScoreBarVisible={setScoreBarVisible} />
+      </div>}
       <motion.div
         className="medium-component-card"
         onClick={toggleVisibility}
@@ -296,11 +302,7 @@ export const MediumCareerActions = ({ onLargeClick, onDelete, onLike, career, la
                             career={career}
                             />
       </motion.div>
-      {scoreBarVisible && 
-      <div>
-        {isLiked && <h4 style={{textAlign: 'center', color: '#EDF2F4', marginBottom: 0}}> Update career score. </h4>}
-      <ScoreBar onSelect={handleSelect} setScoreBarVisible={setScoreBarVisible} />
-      </div>}
+     
       <AnimatePresence>
         {submitted && (
           <motion.div
@@ -353,7 +355,7 @@ export const LargeCareerActions = ({ onLargeClick, onDelete, onLike, career, lar
   const [selectedScore, setSelectedScore] = useState(null);
   const [scoreBarVisible, setScoreBarVisible] = useState(false);
   const [visible, setVisible] = useState(false);
-
+  const navigate = useNavigate();
   const handleSelect = (score) => {
     setSelectedScore(score);
     setScoreBarVisible(false);
@@ -370,6 +372,10 @@ export const LargeCareerActions = ({ onLargeClick, onDelete, onLike, career, lar
     setVisible(!visible);
   };
 
+  const handleLinkCareer = () => {
+    navigate(`/explore/careers/${career.id}`)
+  }
+
   return (
     <div className="large-component-actions">
       <motion.div
@@ -377,7 +383,7 @@ export const LargeCareerActions = ({ onLargeClick, onDelete, onLike, career, lar
         onClick={toggleVisibility}
       >
          <LargeCareer
-                            key={index}
+                        
                             largeCareerRef={largeCareerRef}
                             career={career}
                             />
@@ -411,14 +417,9 @@ export const LargeCareerActions = ({ onLargeClick, onDelete, onLike, career, lar
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
           >
-           <button className="action-button" onClick={() => onLargeClick(career)}>
-  <motion.div whileHover={{ scale: 1.1 }}>
-    <InfoCircle className="info-icon" size={24} />
-  </motion.div>
-</button>
-<button className="action-button" onClick={() => onDelete(career)}>
-  <motion.div whileHover={{ x: [0, -3, 3, -3, 3, 0] }} transition={{ duration: 0.3 }}>
-    <Trash className="trash-icon" size={24} />
+  <button className="action-button" onClick={handleLinkCareer}>
+  <motion.div whileHover={{ y: [0, -3, 3, -3, 3, 0] }} transition={{ duration: 0.3 }}>
+    <FileInfo className="trash-icon" size={24} />
   </motion.div>
 </button>
 <button className="action-button" onClick={() => setScoreBarVisible(!scoreBarVisible)}>
@@ -426,6 +427,7 @@ export const LargeCareerActions = ({ onLargeClick, onDelete, onLike, career, lar
     <Heart className={`heart-icon ${isLiked ? 'heart-liked' : ''}`} size={24} />
   </motion.div>
 </button>
+         
               
           </motion.div>
         )}
@@ -435,36 +437,28 @@ export const LargeCareerActions = ({ onLargeClick, onDelete, onLike, career, lar
 };
 
 // Medium 
-export const MediumCareer = ({career, onDelete, onLargeClick, setView, setSelectedCareer}) => {
+export const MediumCareer = ({career, careerPage, onDelete, onLargeClick, setView, setSelectedCareer}) => {
  
-  function animate() {
-   
-    onDelete();
-  }
-  const [activeTab, setActiveTab] = useState("money");
-    const [showSAT, setShowSAT] = useState(false);
-    const [endpoints, setEndpoints] = useState([]);
-
-    const handleUpdateEndpoints = (newEndpoints) => {
-      setEndpoints(newEndpoints);
-    };
-
-    const handleMaximize = () => {
-      onLargeClick();
-      setView('large');
-      setSelectedCareer(career);
-    };
-
-function handleDelete() {
-  animate();
+const navigate = useNavigate();
+const handleLinkClick = (career) => (event) => {
+  event.preventDefault();
+  navigate(`/explore/careers/${career.id}`);
 };
 
-
 return (
-<Card className="my-component" shadow="sm" padding="lg" radius="md" withBorder >
+<Card className={careerPage ? "my-individual-component" : "my-component"} shadow="sm" padding="lg" radius="md" withBorder >
   <Card.Section className="component-medium-top-shelf" style={{padding: '10px'}}> 
-  <h5 className="career-medium-name shiny-text" style={{display: 'flex', justifyContent: 'center', alignItems: 'center',padding: '5px', textAlign: 'center', color: '#2B2D42',marginBottom: 0}}> <b>{career.career_name} </b></h5>
+  <h5 className="career-medium-name shiny-text" style={{fontSize: '16px', display: 'flex', justifyContent: 'center', alignItems: 'center',padding: '5px', textAlign: 'center', color: '#2B2D42',marginBottom: 0}}> <b>{career.career_name} </b></h5>
+  { !careerPage &&
+  <div style={{position: 'absolute', right: 5, top: 5}}>
+    <a href={`/explore/careers/${career.id}`} onClick={handleLinkClick(career)}>
+      
+       <Search />
+      </a>
+      </div>
+}
   </Card.Section>
+   
   <Divider style={{marginBottom: 5}} />
   <Card.Section style={{display: 'flex', justifyContent: 'left', width: '100%', margin: '3px auto 3px auto', height: '25px',  marginBottom: 0}}>
  {getMatchingAttributes(career).map((attribute) => {
@@ -476,15 +470,15 @@ return (
       >
         {attribute.icon}
       </div>
-      <div className="attribute-tooltip">{attribute.label}</div>
+  
     </div>
   );
 })}
 </Card.Section>
 <Divider style={{marginBottom: 0, marginTop: 5}} />
 
-<h5 className="career-bottom-container-1-head" style={{margin: '5px 0 2.0px 0', textAlign: 'center', color: 'gray', fontWeight: 500}}>Additional Attributes</h5>
-<h4 className="career-bottom-container-text" style={{textAlign: 'center', margin: '5px 0 0 0', color:'gray'}}>Education</h4>
+<h5 className="career-bottom-container-1-head" style={{margin: '8px 0 2.0px 0', textAlign: 'center', color: 'gray', fontWeight: 500}}>Additional Attributes</h5>
+<h4 className="career-bottom-container-text" style={{textAlign: 'center', margin: '10px 0 0 0', color:'gray'}}>Education</h4>
 <div className="career-bottom-container-1">
     
      <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '10px'}}> 
@@ -492,12 +486,12 @@ return (
         <p className="career-bottom-container-education" >{career.education}</p>
      </div>
     </div>
-    <h4 className="career-bottom-container-text" style={{textAlign: 'center', margin: '5px 0 0 0', color:'gray'}}>Median Salary</h4>
+    <h4 className="career-bottom-container-text" style={{textAlign: 'center', margin: '15px 0 0 0', color:'gray'}}>Median Salary</h4>
 <div className="career-bottom-container-1">
     
      <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '10px'}}> 
         <Cash size={24} />
-        <p className="career-bottom-container-education" >{career.median_salary}</p>
+        <p className="career-bottom-container-education" >$<b>{career.median_salary}</b></p>
      </div>
     </div>
           </Card>
@@ -534,8 +528,8 @@ export const LargeCareer = ({ career, onDelete, handleLiked}) => {
         </div>
         <hr style={{marginTop: 10, marginBottom: 5}}/>
         <div style={{fontWeight: 400, fontSize: '13px', marginBottom: 8, color: 'gray'}}> Description </div>
-        <h6> {career.description} </h6>
-        <hr />
+        <p style={{fontSize: '16px', fontWeight: 400}}> {career.description} </p>
+        <hr style={{marginTop: 12}} />
         <div style={{fontWeight: 400, fontSize: '13px', marginBottom: 0, marginTop: 4, color: 'gray'}}> Institute Insights </div>
     
         <div  style={{justifyContent: 'left', width: '100%',height: '50px',textAlign: 'center', fontSize: '14px', fontWeight: 400, marginTop: 5, marginBottom: 15, display: 'flex'}}>
@@ -564,21 +558,23 @@ export const LargeCareer = ({ career, onDelete, handleLiked}) => {
     <div style={{textAlign: 'center', height: '100px', padding: '5px', width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
     <div style={{ width: '50%', height: '100%', margin: '5px', border: '.5px solid #363636', borderRadius: '2px'}}>
       <h4 style={{margin: '5px 0 0 0'}}>Education</h4>
-     <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '10px'}}> 
+     <div style={{display: 'flex', justifyContent: 'space-around', alignItems: 'center', padding: '10px'}}> 
         <Building size={32} />
-        {career.education}
+        <b>{career.education}</b>
      </div>
     </div>
 
     <div style={{width: '50%', height: '100%', margin: '5px', border: '.5px solid #363636', borderRadius: '2px'}}>
     <h4 style={{margin: '5px 0 0 0'}}>Median Salary</h4>
-    <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '10px'}}> 
+    <div style={{display: 'flex', justifyContent: 'space-around', alignItems: 'center', padding: '10px'}}> 
         <Cash size={32} />
-        {career.median_salary}
+       <b> ${career.median_salary}</b>
      </div>
     </div>
     </div>
     <hr style={{marginTop: 10}}/>
+    <div style={{fontWeight: 400, marginTop: 10, fontSize: '13px', marginBottom: 5, color: 'gray'}}> Recommended Route </div>
+    <h4 style={{marginTop: 10}}> Coming Soon. </h4>
     </div>
        
     

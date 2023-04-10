@@ -1,19 +1,15 @@
-import React, { useState, useEffect, useContext } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
 import { API } from '../API';
-import { init_api } from '../API';
-import { useSelector } from 'react-redux';
-import { useLocation, useParams } from "react-router";
 import { AuthContext } from '../Components/Auth/AuthContext';
 import { UserContext } from '../Pages/App';
 import { useNavigate } from 'react-router-dom';
 import styles from "./Surveys.module.css";
 import { motion } from "framer-motion";
-import { SurveyContext } from '../SurveyContext';
+import { SurveyContext } from './SurveyContext';
 
-function CareerSurveyTest({ }) {
+function CareerSurveyTest() {
     const { isAuthenticated } = useContext(AuthContext)
-    const { userID, setUserID } = useContext(UserContext);
+    const { userID } = useContext(UserContext);
     const [answer, setAnswer] = useState(null);
     const [complete, setComplete] = useState(false);
     const navigate = useNavigate();
@@ -47,7 +43,7 @@ function CareerSurveyTest({ }) {
         setAnswer(parseInt(event.target.value, 10));
     }
 
-    const fetchSurveyQuestions = async () => {
+    const fetchSurveyQuestions = useCallback(async () => {
        ;
         try {
             const promise = API.get(`/api/survey/career/${id}/`);
@@ -60,28 +56,26 @@ function CareerSurveyTest({ }) {
         } catch (error) {
             console.error(error);
         }
-    };
+    },[id]);
 
     useEffect(() => {
-        setSubmittedAnswer(answer)
-       
+        setSubmittedAnswer(answer);
     }, [answer])
 
-    const getNextQuestion = async () => {
+    const getNextQuestion =  useCallback(async () => {
         try {
-            const response = await API.get(`/api/survey/career/${id + 1}/`);
-            const data = response.data;
+            await API.get(`/api/survey/career/${id + 1}/`);
         } catch (error) {
             setComplete(true)
             
         }
         
-      }
+      },[id]);
+
     useEffect(() => {
         getNextQuestion();
         fetchSurveyQuestions()
-        },[id]);
-   
+        },[id, getNextQuestion, fetchSurveyQuestions]);
 
 
     const handleSubmit = async (event) => {
@@ -168,7 +162,7 @@ function CareerSurveyTest({ }) {
     onChange={handleChange}
     id="no"
   />
-  <label htmlFor="no" className={styles.radioBtnLabel}>No</label>
+  <label htmlFor="no" className={styles.radioBtnLabel}>False</label>
   <input
     className={styles.radioBtn}
     type="radio"
@@ -178,18 +172,18 @@ function CareerSurveyTest({ }) {
     onChange={handleChange}
     id="yes"
   />
-  <label htmlFor="yes" className={styles.radioBtnLabel}>Yes</label>
+  <label htmlFor="yes" className={styles.radioBtnLabel}>True</label>
 </label>
 
             <button className={styles.button} type="submit">
-            Submit
+            Next
             </button>
         </form>
         </motion.div>
           
             : 
             isAuthenticated && userID ?
-            <div style={{ display: 'flex', marginTop: 300, justifyContent: 'center', marginTop: 200 }}>
+            <div style={{ display: 'flex', marginTop: 300, justifyContent: 'center' }}>
             <button className={styles.finalSubmit} onClick={handleFinalSubmit}>Submit</button>
           </div>
             : 

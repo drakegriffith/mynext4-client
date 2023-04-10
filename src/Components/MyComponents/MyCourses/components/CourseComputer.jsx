@@ -1,34 +1,58 @@
 
 import React from "react";
 import { API, init_api } from "../../../../API";
-import { Paper, Slider, MantineProvider} from '@mantine/core';
-import { UserContext } from "../../../../Pages/App";
-import { useState, useEffect, useContext } from "react"
-
+import { Paper } from '@mantine/core';
+import { useState, useEffect } from "react"
 import { SmallCourse } from "../Course";
 import { Carousel } from "react-responsive-carousel";
 import { Search } from "tabler-icons-react";
 
 
 export const CourseComputer = ({onSelectCourse }) => {
-  
-    const {userID} = useContext(UserContext)
     const [view, setView] = useState('Filter');
     const [courseFilteredList, setCourseFilteredList] = useState([]);
     const [filterVal, setFilterVal] = useState('Search');
     const [prevSearchLength, setPrevSearchLength] = useState(0);
-  
     
-    const chunkArray = (array, size) => {
-        const chunks = [];
-        for (let i = 0; i < array.length; i += size) {
-          chunks.push(array.slice(i, i + size));
-        }
-        return chunks;
+    const getNumberOfColleges = () => {
+      if (window.innerWidth >= 1000) {
+        return 6;
+      }
+      if (window.innerWidth <= 999) {
+        return 4; // Number of colleges to display for large screens
+      } else if (window.innerWidth >= 768) {
+        return 1; // Number of colleges to display for medium screens
+      } else {
+        return 4; // Number of colleges to display for small screens
+      }
+    };
+  
+    // Now you can use getNumberOfColleges inside useState
+    const [numberOfColleges, setNumberOfColleges] = useState(getNumberOfColleges());
+  
+    useEffect(() => {
+      const handleResize = () => {
+        setNumberOfColleges(getNumberOfColleges());
       };
-      const courseChunks = chunkArray(courseFilteredList, 8);
+  
+      window.addEventListener('resize', handleResize);
+  
+      return () => {
+        window.removeEventListener('resize', handleResize);
+      };
+    }, []);
+  
+    // Your existing code
+    const chunkArray = (array, size) => {
+      const chunks = [];
+      for (let i = 0; i < array.length; i += size) {
+        chunks.push(array.slice(i, i + size));
+      }
+      return chunks;
+    };
+    const courseChunks = chunkArray(courseFilteredList, numberOfColleges);
+  
 
-      
     useEffect(() => {
   
       const getList = async() => {
@@ -93,7 +117,7 @@ export const CourseComputer = ({onSelectCourse }) => {
         
       } else if (searchVal.length > 1) {
         
-        if (searchVal.length % 2 == 0) {
+        if (searchVal.length % 2 === 0) {
           init_api();
           await API.get(`/api/search/course/${searchVal}/`)
           .then((response) => {
@@ -115,7 +139,7 @@ export const CourseComputer = ({onSelectCourse }) => {
         <div className="componentMiddleHeaderText"><b> See Courses </b> </div>
           <div className="componentcomputer-filter">
             
-           { view == "Filter" ? (<select id="collegecomputer-filter-select" onChange={filter}>
+           { view === "Filter" ? (<select id="collegecomputer-filter-select" onChange={filter}>
               <option value = "Search">Filter</option>
               <optgroup label="Difficulty">
                   <option value = "1">1</option>
@@ -154,7 +178,7 @@ export const CourseComputer = ({onSelectCourse }) => {
         </div>
 
         
-       {view == "Filter" && filterVal != "Search" &&
+       {view === "Filter" && filterVal !== "Search" &&
         
           
         <div>
@@ -182,7 +206,7 @@ export const CourseComputer = ({onSelectCourse }) => {
       </Carousel>
       </div>
       }
-       {view == "Filter" && filterVal == "Search" &&
+       {view === "Filter" && filterVal === "Search" &&
           <div className="search-career-container" >
           <div style={{display: 'flex', justifyContent: 'space-around', alignItems: 'center' }}>
           

@@ -18,7 +18,7 @@ export const CollegeComputer = ({  onSelectCollege }) => {
       }
       return chunks;
     };
-    const collegeChunks = chunkArray(collegeFilteredList, 8);
+    const collegeChunks = chunkArray(collegeFilteredList, 6);
 
     useEffect(() => {
   
@@ -28,12 +28,8 @@ export const CollegeComputer = ({  onSelectCollege }) => {
           || filterVal === "40"
           || filterVal === "50"
         ) {
-    
-            init_api();
             await API.get(`api/explore/college/acceptance/${filterVal}/`)
             .then((response) => {
-              console.log(response.data);
-              
               setCollegeFilteredList(response.data.colleges);
             });
           } else if (filterVal === "1000"
@@ -41,122 +37,111 @@ export const CollegeComputer = ({  onSelectCollege }) => {
                     || filterVal === "1300"
                     || filterVal === "1450") {
     
-            init_api();
+         
             await API.get(`api/explore/college/sat_average/${filterVal}/`)
             .then((response) => {
-              console.log(response.data.colleges)
               setCollegeFilteredList(response.data.colleges);
             });
-          } else if (filterVal === "all_A_hard"
-                    || filterVal === "all_B_hard"
-                    || filterVal === "all_C_hard"
+          } else if (filterVal === "all_A_overall"
+                    || filterVal === "all_B_overall"
+                    || filterVal === "all_C_overall"
                    ) {
     
-                      init_api();
-                      await API.get(`api/explore/college/rank/hardest/${filterVal}/`)
+                     
+                      await API.get(`api/explore/college/rank/overall/${filterVal}/`)
                       .then((response) => {
 
-                        setCollegeFilteredList(response.data.careers);
+                        setCollegeFilteredList(response.data.colleges);
                       });
-                    } else if (filterVal === "value_10"
-                    || filterVal === "value_25"
-                    || filterVal === "value_50"
-                   ) {
-    
-                      init_api();
-                      await API.get(`api/explore/college/rank/value/${filterVal}/`)
-                      .then((response) => {
-                      
-                        setCollegeFilteredList(response.data.careers);
-                      }); 
-                     } else if (filterVal === "life_10"
-                    || filterVal === "life_25"
-                    || filterVal === "life_50"
-                   ) {
-    
-                      init_api();
-                      await API.get(`api/explore/college/rank/student_life/${filterVal}/`)
-                      .then((response) => {
-                        setCollegeFilteredList(response.data.careers);
-                      });
-                    } else if (filterVal === "greek_10"
-                    || filterVal === "greek_25"
-                    || filterVal === "greek_50"
-                   ) {
-    
-                      init_api();
-                      await API.get(`api/explore/college/rank/greek_life/${filterVal}/`)
-                      .then((response) => {
-                        setCollegeFilteredList(response.data.careers);
-                      });
-                    } else if (filterVal === "best_10"
-                    || filterVal === "best_25"
-                    || filterVal === "best_50"
-                   ) {
-    
-                      init_api();
-                      await API.get(`api/explore/college/rank/best/${filterVal}/`)
-                      .then((response) => {
-                        setCollegeFilteredList(response.data.careers);
-                      });
-                    } else if (filterVal === "athletic_10"
-                    || filterVal === "athletic_25"
-                    || filterVal === "athletic_50"
-                   ) {
-    
-                      init_api();
-                      await API.get(`api/explore/college/rank/athletics/${filterVal}/`)
-                      .then((response) => {
-                        setCollegeFilteredList(response.data.careers);
-                      });
-                    } else if (filterVal === "campus_10"
-                    || filterVal === "campus_25"
-                    || filterVal === "campus_50"
-                   ) {
-    
-                      init_api();
-                      await API.get(`api/explore/college/rank/campus/${filterVal}/`)
-                      .then((response) => {
-                        setCollegeFilteredList(response.data.careers);
-                      });
-                
-                    } else if (filterVal === "prof_10"
-                    || filterVal === "prof_25"
-                    || filterVal === "prof_50"
-                   ) {
-    
-                      init_api();
-                      await API.get(`api/explore/college/rank/professors/${filterVal}/`)
-                      .then((response) => {
-                        setCollegeFilteredList(response.data.careers);
-                      });
-                    } else if (filterVal === "food_10"
-                    || filterVal === "food_25"
-                    || filterVal === "food_50"
-                   ) {
-    
-                      init_api();
-                      await API.get(`api/explore/college/rank/food/${filterVal}/`)
-                      .then((response) => {
-                        setCollegeFilteredList(response.data.careers);
-                      });
-                    }
-                    else if (filterVal === "all_A_academic"
+                    } else if (filterVal === "all_A_academic"
                     || filterVal === "all_B_academic"
                     || filterVal === "all_C_academic"
                    ) {
     
-                      init_api();
-                      await API.get(`api/explore/college/rank/academics/${filterVal}/`)
+                   
+                      await API.get(`api/explore/college/rank/academic/${filterVal}/`)
                       .then((response) => {
-                        setCollegeFilteredList(response.data.careers);
+                      
+                        setCollegeFilteredList(response.data.colleges);
+                      }); 
+                     } else if (filterVal === "all_A_diversity"
+                    || filterVal === "all_B_diversity"
+                    || filterVal === "all_C_diversity"
+                   ) {
+    
+                     
+                      await API.get(`api/explore/college/rank/diversity/${filterVal}/`)
+                      .then((response) => {
+                        setCollegeFilteredList(response.data.colleges);
+                      });
+                    } else if (filterVal === "all_A_athletic"
+                    || filterVal === "all_B_athletic"
+                    || filterVal === "all_C_athletic"
+                   ) {
+    
+                   
+                      await API.get(`api/explore/college/rank/athletics/${filterVal}/`)
+                      .then((response) => {
+                        setCollegeFilteredList(response.data.colleges);
+                      });
+                    } else if (filterVal === "all_A_student_life"
+                    || filterVal === "all_B_student_life"
+                    || filterVal === "all_C_student_life"
+                   )  {
+    
+              
+                      await API.get(`api/explore/college/rank/student_life/${filterVal}/`)
+                      .then((response) => {
+                        setCollegeFilteredList(response.data.colleges);
+                      });
+                    } else if (filterVal === "all_A_campus"
+                    || filterVal === "all_B_campus"
+                    || filterVal === "all_C_campus"
+                   ) {
+    
+                      await API.get(`api/explore/college/rank/campus/${filterVal}/`)
+                      .then((response) => {
+                        setCollegeFilteredList(response.data.colleges);
                       });
                 
-                    } else {
-                      setCollegeFilteredList([]);
-                    }
-        }
-        
+                    } else if (filterVal === "all_A_party"
+                    || filterVal === "all_B_party"
+                    || filterVal === "all_C_party"
+                   ) {
+                    await API.get(`api/explore/college/rank/party/${filterVal}/`)
+                    .then((response) => {
+                      setCollegeFilteredList(response.data.colleges);
+                    });
+
+                   } else if (filterVal === "all_A_value"
+                   || filterVal === "all_B_value"
+                   || filterVal === "all_C_value"
+                  ) {
+                   await API.get(`api/explore/college/rank/value/${filterVal}/`)
+                   .then((response) => {
+                     setCollegeFilteredList(response.data.colleges);
+                   });
+
+                   } else if (filterVal === "all_A_student_life"
+                  || filterVal === "all_B_student_life"
+                  || filterVal === "all_C_student_life"
+                 ) {
+                  await API.get(`api/explore/college/rank/student_life/${filterVal}/`)
+                  .then((response) => {
+                    setCollegeFilteredList(response.data.colleges);
+                  });
+
+                } else if (filterVal === "all_A_food"
+                || filterVal === "all_B_food"
+                || filterVal === "all_C_food"
+               ) {
+                await API.get(`api/explore/college/rank/food/${filterVal}/`)
+                .then((response) => {
+                  setCollegeFilteredList(response.data.colleges);
+                });
+
+                };
+              };
         getList();
       }, [filterVal]);
 
@@ -164,8 +149,6 @@ export const CollegeComputer = ({  onSelectCollege }) => {
         setFilterVal(e.target.value);
       }
 
-      
-    
       const search = async(e) => {
         var searchVal = e.target.value;
         searchVal = searchVal.charAt(0).toUpperCase() + searchVal.slice(1);
@@ -175,17 +158,15 @@ export const CollegeComputer = ({  onSelectCollege }) => {
           
         } else if (searchVal.length > 1) {
           
-          if (searchVal.length % 2 == 0) {
+          if (searchVal.length % 2 === 0) {
             init_api();
             await API.get(`/api/search/college/${searchVal}/`)
-            .then((response) => {
-              
+            .then((response) => { 
               setCollegeFilteredList(response.data.colleges);
-              console.log(response.data.colleges)
               
             });
-          }
-        }
+          };
+        };
         setPrevSearchLength(searchVal.length);
       }
 
@@ -197,7 +178,7 @@ export const CollegeComputer = ({  onSelectCollege }) => {
         <div className="my-component-header-text"><b> See Colleges </b> </div>
           <div className="collegecomputer-filter">
             
-           { view == "Filter" ? (<select id="collegecomputer-filter-select" onChange={filter}>
+           { view === "Filter" ? (<select id="collegecomputer-filter-select" onChange={filter}>
               <option value = "Search">Filter</option>
               <optgroup label="Acceptance Rates (<)">
                   <option value = "10">10</option>
@@ -215,30 +196,51 @@ export const CollegeComputer = ({  onSelectCollege }) => {
                 <option value = "1450"> 1450</option>
               </optgroup>
   
-              <optgroup label = "Hardest Ranks ">
-                <option value = "all_A_academic">Top 10</option>
-                <option value = "all_B_academic">Top 25</option>
-                <option value = "all_C_academic">Top 50</option>
+              <optgroup label = "Overall Ranks ">
+                <option value = "all_A_overall">All A Grade</option>
+                <option value = "all_B_overall">All B Grade</option>
+                <option value = "all_C_overall">All C Grade</option>
     
               </optgroup>
               
-              <optgroup label = "Value Ranks ">
-                <option value = "value_10">Top 10</option>
-                <option value = "value_25">Top 25</option>
-                <option value = "value_50">Top 50</option>
-    
-              </optgroup>
-              
-              <optgroup label = "Student life Ranks ">
-                <option value = "life_10">Top 10</option>
-                <option value = "life_25">Top 25</option>
-                <option value = "life_50">Top 50</option>
-    
-              </optgroup>
               <optgroup label = "Academic Ranks ">
-                <option value = "all_A_academic">Top 10</option>
-                <option value = "all_B_academic">Top 25</option>
-                <option value = "all_C_academic">Top 50</option>
+                <option value = "all_A_academic">All A Grade</option>
+                <option value = "all_B_academic">All B Grade</option>
+                <option value = "all_C_academic">All C Grade</option>
+    
+              </optgroup>
+
+              <optgroup label = "Student Life Ranks ">
+                <option value = "all_A_student_life">All A Grade</option>
+                <option value = "all_B_student_life">All B Grade</option>
+                <option value = "all_C_student_life">All C Grade</option>
+    
+              </optgroup>
+            
+              <optgroup label = "Diversity Ranks ">
+                <option value = "all_A_diversity">All A Grade</option>
+                <option value = "all_B_diversity">All B Grade</option>
+                <option value = "all_C_diversity">All C Grade</option>
+    
+              </optgroup>
+              
+              <optgroup label = "Value Grade ">
+                <option value = "all_A_value">All A Grade</option>
+                <option value = "all_B_value">All B Grade</option>
+                <option value = "all_C_value">All C Grade</option>
+    
+              </optgroup>
+              <optgroup label = "Athletic Grade ">
+                <option value = "all_A_athletic">All A Grade</option>
+                <option value = "all_B_athletic">All B Grade</option>
+                <option value = "all_C_athletic"> All C Grade </option>
+    
+              </optgroup>
+
+              <optgroup label = "Food Grade ">
+                <option value = "all_A_food">All A Grade</option>
+                <option value = "all_B_food">All B Grade</option>
+                <option value = "all_C_food"> All C Grade </option>
     
               </optgroup>
             </select>
@@ -253,7 +255,7 @@ export const CollegeComputer = ({  onSelectCollege }) => {
           
         </div>
         
-       {view == "Filter" && filterVal != "Search" &&
+       {view === "Filter" && filterVal !== "Search" &&
         
       <div>
         <div style={{textAlign: 'center', color: 'white', fontWeight: 500}}><b>{collegeFilteredList.length} </b>items rendered</div>
@@ -282,7 +284,7 @@ export const CollegeComputer = ({  onSelectCollege }) => {
       }
      
   
-          {view == "Filter" && filterVal == "Search" &&
+          {view === "Filter" && filterVal === "Search" &&
           <div className="search-career-container" >
           <div style={{display: 'flex', justifyContent: 'space-around', alignItems: 'center' }}>
           

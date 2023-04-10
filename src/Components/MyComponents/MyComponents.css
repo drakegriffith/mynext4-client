@@ -5,13 +5,13 @@
     box-sizing: border-box;
    
   }
-  
-  @import url('https://fonts.googleapis.com/css2?family=Phudu:wght@300;400;500;600;700;800;900&display=swap');
+
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap');
   
   body {
     background-image: linear-gradient(to bottom right, #f2f2f2, #e6e6e6);
     background-attachment: fixed;
-    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-family: 'DM Sans', Arial, sans-serif;
     margin: 0;
     padding: 0;
   }
@@ -106,7 +106,7 @@
     width: 16vw;
     border: 2.5px solid #8D99AE;
   
-    height: 330px;
+    height: 360px;
     background-color: #fff;
     border-radius: 4px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
@@ -397,28 +397,24 @@
   }
   
  
-  
+  .small-component-container {
+    margin: 0 auto 0 auto;
+    position: relative;
+    width: 100%;
+    height: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    transform: translateY(0);
+  }
   
   /* Media queries for width */
   /* Small screens */
-  
-  .cash-container {
-    border: 1px solid black;
-    position: relative;
-    width: 300px;
-    height: 150px;
-    transform-style: preserve-3d;
-    transform: rotateX(60deg) rotateZ(45deg);
-  }
-  
-  .cash {
-    position: absolute;
-    width: 18px;
-    height: 18px;
-    background-color: green;
-    box-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.5);
-    transform-origin: bottom;
-  }
   
   
   
@@ -457,7 +453,7 @@
       height: 180px;
     }
     .component-medium-name {
-      font-size: 12px;
+      font-size: 13px;
       padding: 8px;
       height: 30px;
       
@@ -528,7 +524,7 @@
     }
     .large-component {
       margin-top: 10px;
-      height: 380px;
+      height: 420px;
     }
     .grade-container {
       
@@ -542,7 +538,7 @@
       height: 180px;
     }
     .component-medium-name {
-      font-size: 12px;
+      font-size: 16px;
       padding: 8px;
       height: 40px;
     }
@@ -569,6 +565,9 @@
   
   /* Large screens */
   @media screen and (min-width: 1025px) {
+    .course-skill-list {
+      font-size: 22px;
+    }
     .component-overall-container {
       margin: 8.5% 3% 0 3%;
     }
@@ -594,7 +593,7 @@
     }
     .large-component {
       margin-top: 0;
-      height: 420px;
+      height: 460px;
     }
     .grade-container {
       
@@ -609,10 +608,10 @@
     }
     .my-individual-component {
       width: 100%;
-      height: 220px;
+      height: 300px;
     }
     .component-medium-name {
-      font-size: 12px;
+      font-size: 16px;
       height:35px;
       padding: 12px;
     }
@@ -640,7 +639,7 @@
     }
     .college-medium-name {
       padding: 5px;
-      font-size: 12px;
+      font-size: 13px;
       height: 30px;
       
     }
@@ -662,7 +661,7 @@
       margin: 0;
     }
     .large-component {
-      height: 520px;
+      height: 550px;
     }
     .component-attribute {
       width: 50px;
@@ -689,14 +688,10 @@
       height: 300px;
     }
     
-    .component-medium-name {
-      font-size: 18px;
-      padding: 8px;
-      height:40px;
-    }
+
     .college-medium-name {
       padding: 4px;
-      font-size: 14px;
+      font-size: 18px;
       height: 40px;
       
     }
@@ -745,11 +740,11 @@
   }
   
   .my-component-list-item:hover {
-    background-color: #ddd;
+    background-color: #C7F9CC;
   }
   
   .my-component-list-item-selected {
-    background-color: #ddd;
+    background-color: #C7F9CC;
   }
   
   

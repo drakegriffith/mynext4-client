@@ -5,7 +5,7 @@ import { UserContext } from "../../Pages/App"; // Make sure to import these cont
 import { ChevronDown } from "tabler-icons-react";
 import { motion, AnimatePresence } from 'framer-motion';
 import SearchBar from "./SearchBar";
-import Next4Logo from "./icon.png"
+import Next4Logo from "./images/icon.png"
 import "./NavBar.css"
 
 function Next4Nav() {
@@ -21,8 +21,8 @@ function Next4Nav() {
     { label: 'MyAccount', path: `/my/account/${userID}` },
     { label: 'MyCourses', path: `/my/courses/${userID}` },
     { label: 'MyColleges', path: `/my/colleges/${userID}`},
-    { label: 'MyCareers', path: `my/careers/${userID}` },
-    { label: 'Sign Out', path: '/mods' },
+    { label: 'MyCareers', path: `/my/careers/${userID}` },
+    { label: 'MyMissions', path: `/my/account/${userID}` },
   ];
 
   const renderDropdownItems = () => {
@@ -36,10 +36,13 @@ function Next4Nav() {
   return (
     <nav className="navbar">
       <div style={{display: 'flex', justifyContent: 'space-around', alignItems: 'center'}}>
+     
+        <div style={{display: 'flex', alignItems: 'center'}}>
+        <img src={Next4Logo} alt="LLC Logo" style={{width: '46px', height: '50px'}} />
         <Link className="brand" to="/">
-          MyNext4
+          <b>MyNext4</b>
         </Link>
-        <img src={Next4Logo} style={{width: '34px', height: '36px'}} />
+        </div>
         </div>
         <div className="nav-links">
           <Link className="nav-link" to="/more">

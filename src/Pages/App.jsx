@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState, createContext } from "react";
+import React, { useState, createContext } from "react";
 import { Route, Routes } from "react-router-dom";
 import Landing from "../Components/Landing/Landing";
 import Dashboard from "../Components/Dashboard/Dashboard";
@@ -15,10 +15,12 @@ import Courses from "./Explore/Courses/Courses";
 import CareerSurveyTest from "../Surveys/CareerSurveyTest"
 import Register from "../Components/Auth/Register"
 import { AuthProvider } from "../Components/Auth/AuthContext";
-import { SurveyProvider } from "../SurveyContext";
+import { SurveyProvider } from "../Surveys/SurveyContext";
 import AccountActivation from "../AccountActivation"
 import SurveySpecifications from "../Components/SurveySpecifications/SurveySpecifications"
 import Next4Nav from "../Components/Nav/Next4Nav"
+import InitialAnimation from "../InitialAnimation"
+import "../global.css"
 /*
 Testing push request
 */
@@ -27,18 +29,28 @@ export const UserContext = createContext(null);
 function App() {
   const [userID, setUserID] = useState(null);
   const [username, setUsername] = useState('');
+  const [dateJoined, setDateJoined] = useState('');
+
+  const [showAnimation, setShowAnimation] = useState(true);
+
+  const handleAnimationEnd = () => {
+    setShowAnimation(false);
+  };
+
 
  
   
     return (
       
-      <UserContext.Provider value={{userID, setUserID, username, setUsername }}>
+      <UserContext.Provider value={{userID, setUserID, username, setUsername, dateJoined, setDateJoined }}>
       <AuthProvider>
         <SurveyProvider>
+        {showAnimation && <InitialAnimation onAnimationEnd={handleAnimationEnd} />}
     
 
   
   <Next4Nav userID={userID} />
+  
         <React.Fragment>
           <Routes>
           <Route path="/activate/:uid/:token" element={<AccountActivation />} />

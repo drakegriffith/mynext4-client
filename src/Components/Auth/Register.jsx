@@ -49,7 +49,7 @@ const Register = () => {
   return (
     <div className="register-container">
       <Paper elevation={5} shadow='xl' className="auth-container">
-        <h1 className="auth-title">Register</h1>
+        <h1 className="auth-title animated-text-gradient">Make MyNext4 Yours</h1>
         <form onSubmit={onSubmit} className="auth-form">
           <div className="form-group">
             <label htmlFor="accountType">Account Type:</label>

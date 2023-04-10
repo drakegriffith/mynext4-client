@@ -5,16 +5,15 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { MediumCareerActions, LargeCareerActions } from "../../Components/MyComponents/MyCareers/Career";
 import { API, init_api } from '../../API';
 import { Paper } from "@mantine/core";
-
-
-import { useLocation, useParams } from "react-router";
 import { MyCareers } from "../../Components/MyComponents/MyCareers/components/MyCareers";
 import { CareerComputer } from "../../Components/MyComponents/MyCareers/components/CareerComputer"
 import { UserContext } from "../App";
 import ShowcaseTabButton from "../../Components/MyComponents/helpers/ShowcaseTabButton";
 import { AuthContext } from "../../Components/Auth/AuthContext";
+import Joyride, { STATUS } from 'react-joyride';
 
 const CareerDataPage = ({setCareers, careers}) => {
+  const [showTutorialCards, setShowTutorialCards] = useState(false);
     const [selectedCareer, setSelectedCareer] = useState(null);
     const [selectedCareers, setSelectedCareers] = useState([]);
     const [view, setView] = useState("large");
@@ -34,8 +33,6 @@ const CareerDataPage = ({setCareers, careers}) => {
           return true;
         } else {
           // Call handleDeleteCareerFeedback for every duplicate career that was not added to the uniqueList
-          const careerToRemove = list[firstIndex];
-        
           return false;
         }
       });
@@ -43,24 +40,48 @@ const CareerDataPage = ({setCareers, careers}) => {
       return uniqueList;
     };
 
-  
-
-
     useEffect(() => {
-      
       const getLikedList = async () => {
-          
-          init_api();
-          await API.get(`/api/users/careerlist/${userID}/`)
+        init_api();
+        await API.get(`/api/users/careerlist/${userID}/`)
           .then((response) => {
-              
-              console.log(response.data.liked_list);
-              setCareerLikedList(response.data.liked_list);
+            setCareerLikedList(response.data.liked_list);
           });
       }
-      
-      getLikedList();
-    }, []);
+    
+      if (userID) {
+        getLikedList();
+      }
+    }, [userID]);
+    
+    useEffect(() => {
+      const setTutorialCardsComplete = async () => {
+        try {
+          await API.post(`/mark-completed-tutorial-cards/${userID}/`);
+        } catch (error) {
+          console.error('Error marking survey as completed:', error);
+        }
+      }
+    
+      if (showTutorialCards && userID) {
+        setTutorialCardsComplete();
+      };
+    }, [showTutorialCards, userID])
+    
+    useEffect(() => {
+      const checkTutorialCompletion = async () => {
+        try {
+          const response = await API.get(`/check-tutorial-complete-cards/${userID}/`);
+          setShowTutorialCards(!response.data.tutorialStatusCards)
+        } catch (error) {
+          console.error('Error checking survey completion:', error);
+        }
+      };
+    
+      if (userID) {
+        checkTutorialCompletion();
+      }
+    }, [userID]);
     
     
   const addCareer = useCallback(
@@ -111,6 +132,41 @@ const CareerDataPage = ({setCareers, careers}) => {
           );
     };
   
+    const handleJoyrideCallback = (data) => {
+      const { status } = data;
+    
+      if ([STATUS.FINISHED, STATUS.SKIPPED].includes(status)) {
+        setShowTutorialCards(false);
+      }
+    };
+
+   
+
+
+    const tutorialSteps = [
+      {
+        target: '.step-1-tut',
+        content: 'Welcome to your personalized component page! This is where you can add, analyze, and compare cards with one another.',
+      },
+      {
+        target: '.step-2-tut',
+        content: 'View your liked component list and your newly receieved recommendations here!',
+      },
+      {
+        target: '.step-3-tut',
+        content: 'Choose component cards to compare or independantly inspect one with our showcase feature.',
+      },
+      {
+        target: '.step-4-tut',
+        content: "Switch between single or multi-mode with one click.",
+      },
+      {
+        target: '.step-5-tut',
+        content: "Search for component cards using the see feature. Filter and find the best choices for you.",
+      },
+      // ...
+    ];
+
     const selectCareer = useCallback(
         (career) => {
           if (view === "large") {
@@ -143,40 +199,31 @@ const CareerDataPage = ({setCareers, careers}) => {
       setSelectedCareer(career);
     },
     []
+
+  
   );
+    
+
       
-  
-    function getCookie(name) {
-      let cookieValue = null;
-  
-      if (document.cookie && document.cookie !== '') {
-          const cookies = document.cookie.split(';');
-          for (let i = 0; i < cookies.length; i++) {
-              const cookie = cookies[i].trim();
-  
-              // Does this cookie string begin with the name we want?
-              if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-  
-                  break;
-              }
-          }
-      }
-  
-      return cookieValue;
-  }
-  
- 
+
 
     return (
       isAuthenticated &&
-      <div className="component-overall-container">
-    
-          
-        <MyCareers onSelectCareer={selectCareer} removeDuplicates={removeDuplicates} setCareers={setCareerLikedList}  careers = {careerLikedList}/>
-        <Paper withBorder shadow="xl" p="md" sx={{position: 'relative', width: "40%", top: -30, height:'82vh', margin: '0 1.5% 0 1.5%', backgroundColor: '#57CC99', border: '.5px solid #C7F9CC' ,borderRadius: '5px' , zIndex: 1}}>
+      <div className="component-overall-container step-1-tut">
+        <Joyride
+        steps={tutorialSteps}
+        run={showTutorialCards}
+        callback={handleJoyrideCallback}
+        continuous
+        scrollToFirstStep
+        showProgress
+        showSkipButton
+      />
+        
+        <MyCareers className="step-2-tut" onSelectCareer={selectCareer} removeDuplicates={removeDuplicates} setCareers={setCareerLikedList}  careers = {careerLikedList}/>
+        <Paper withBorder className="step-3-tut" shadow="xl" p="md" sx={{position: 'relative', width: "40%", top: -30, height:'82vh', margin: '0 1.5% 0 1.5%', backgroundColor: '#57CC99', border: '.5px solid #C7F9CC' ,borderRadius: '5px' , zIndex: 1}}>
         <div className="componentMiddleHeader" style={{marginBottom: 15}}>
-            <div className="my-component-header-text" ><b> Showcase Careers</b> </div>
+            <div className="my-component-header-text step-4-tut" ><b> Showcase Careers</b> </div>
             <AnimatePresence>
         {errorMessage && (
           <motion.div
@@ -195,14 +242,13 @@ const CareerDataPage = ({setCareers, careers}) => {
                 </div>
             {view === "large" ? (
           <LargeCareerActions 
-          
           largeCareerRef={largeCareerRef}
           career={selectedCareer}
           onDelete={() => deleteCareer()}
           onLargeClick={() => handleLarge(selectedCareer)}
           onLike = {addCareer}
-          isLiked={careerLikedList.some(
-    (likedCareer) => likedCareer.career_name === selectedCareer
+          isLiked={selectedCareer && careerLikedList.some(
+    (likedCareer) => likedCareer.career_name === selectedCareer.career_name
           )}
           />
               
@@ -227,7 +273,7 @@ const CareerDataPage = ({setCareers, careers}) => {
         )}
         
         </Paper>
-        <CareerComputer onSelectCareer={selectCareer}
+        <CareerComputer className='step-5-tut'  onSelectCareer={selectCareer}
         userID = {userID}/>
         
         </div>

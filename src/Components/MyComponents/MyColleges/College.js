@@ -2,8 +2,8 @@ import React, { useState, useEffect, useCallback } from "react";
 import "../MyComponents.css"
 import "./MyColleges.css"
 import { Card, Divider, Progress, Modal } from "@mantine/core";
-import { Star, Medal, User, Book2,  Eraser, ThumbUp, ArrowsMaximize, BallFootball, Award, Building, Meat, Confetti,  MoodWrrr, MoodUnamused, MoodAnnoyed2, MoodSmileBeam, LayoutBottombar, SoccerField, Search } from "tabler-icons-react";
-import { motion, AnimatePresence } from 'framer-motion';
+import { Star, Medal, User, Book2,  Eraser, ThumbUp, ArrowsMaximize, BallFootball, Award, Building, Meat, Confetti,  MoodWrrr, MoodUnamused, MoodAnnoyed2, MoodSmileBeam, LayoutBottombar, SoccerField, Search, FileInfo } from "tabler-icons-react";
+import { motion, AnimatePresence, AnimationType } from 'framer-motion';
 import { InfoCircle, Trash, Heart, Check, LetterX, InfoCircleFilled } from 'tabler-icons-react';
 import { Link, useNavigate } from "react-router-dom";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
@@ -11,7 +11,7 @@ import { Carousel } from 'react-responsive-carousel';
 import {shuffle} from "lodash"
 import { gsap } from "gsap";
 import { COLLEGE_ATTRIBUTES } from './collegeAttributes';
-import next4Logo from "../../Nav/icon.png"
+import next4Logo from "../../Nav/images/icon.png"
 import ScoreBar from "../helpers/ScoreBar";
 
 // Small 
@@ -45,26 +45,30 @@ export const SmallCollege = ({college, onSelect, showHeart, searchValue, onDelet
   hideCloseButton
 >
   <div className="delete-modal-content">
-    <p>Delete college card?</p>
+    <p>Do you want to delete this college?</p>
     <div className="delete-modal-actions">
-      <Check size={24} className="check-icon" onClick={handleDelete} />
+      <Check size={24} style={{cursor: 'pointer'}} onClick={handleDelete} />
       <LetterX size={24} className="cancel-icon" onClick={handleCancel} />
     </div>
   </div>
 </Modal>
-<div className="small-career-container">
+<div style={{display: 'flex',  textAlign: 'center', justifyContent: 'center'}}>
+<div style={{width:''}}className="small-component-container">
       <div className="college-icon-wrapper">{college.abbrev_name}</div>
-      <div className="career-tooltip">{college.college_name}</div>
+      <div className="">{college.college_name}</div>
         <div>
+          
+        
         {
   showHeart && (
-    <Heart
+    <Trash
       size={24}
-      className={`heart-icon ${isLiked ? 'heart-liked' : ''}`}
+      style={{cursor: 'pointer'}}
       onClick={() => setShowModal(true)}
     />
   )
 }
+
 <div className="icon-container" onClick={handleClick}>
       <Link to={searchValue && college && college.id ? `/explore/colleges/${college.id}` : "#"}>
         <InfoCircle className="icon" size={24} />
@@ -72,33 +76,14 @@ export const SmallCollege = ({college, onSelect, showHeart, searchValue, onDelet
       
     </div>
 </div>
+</div>
       </div>
       </div>
+      
     );
 };
 
 
-   
-
-
-
-// Buttons
-
-const buttonVariants = {
-  hover: {
-    scale: 1.1,
-  },
-  tap: {
-    scale: 0.9,
-    transition: { duration: 0.2 },
-  },
-};
-
-const useButtonHandler = (handler) => {
-  return useCallback(() => {
-    handler();
-  }, [handler]);
-};
 
 
 function getMatchingAttributes(college) {
@@ -150,7 +135,6 @@ function getMatchingAttributes(college) {
 }
 
 const getGradeColor = (grade) => {
-  console.log("I WORK WELL")
   const trimmedGrade = grade.trim();
   switch (trimmedGrade) {
     case "A+":
@@ -209,6 +193,11 @@ export const MediumCollegeActions = ({ onLargeClick, onDelete, onLike, college, 
 
   return (
     <div className="medium-component-actions">
+        {scoreBarVisible && 
+      <div>
+        {isLiked && <h4 style={{textAlign: 'center', color: '#EDF2F4', marginBottom: 0}}> Update college score. </h4>}
+      <ScoreBar onSelect={handleSelect} setScoreBarVisible={setScoreBarVisible} />
+      </div>}
       <motion.div
         className="medium-component-card"
         onClick={toggleVisibility}
@@ -222,11 +211,7 @@ export const MediumCollegeActions = ({ onLargeClick, onDelete, onLike, college, 
                          
                             />
       </motion.div>
-      {scoreBarVisible && 
-      <div>
-        {isLiked && <h4 style={{textAlign: 'center', color: '#EDF2F4', marginBottom: 0}}> Update college score. </h4>}
-      <ScoreBar onSelect={handleSelect} setScoreBarVisible={setScoreBarVisible} />
-      </div>}
+    
       <AnimatePresence>
         
         {submitted && (
@@ -280,6 +265,7 @@ export const LargeCollegeActions = ({ onLargeClick, onDelete, onLike, college, l
   const [selectedScore, setSelectedScore] = useState(null);
   const [scoreBarVisible, setScoreBarVisible] = useState(false);
   const [visible, setVisible] = useState(false);
+  const navigate = useNavigate();
 
   const handleSelect = (score) => {
     setSelectedScore(score);
@@ -292,6 +278,9 @@ export const LargeCollegeActions = ({ onLargeClick, onDelete, onLike, college, l
     onLike(college, score);
   };
 
+  const handleLinkCollege = () => {
+    navigate(`/explore/colleges/${college.id}`)
+  }
   
   const toggleVisibility = () => {
     setVisible(!visible);
@@ -304,7 +293,7 @@ export const LargeCollegeActions = ({ onLargeClick, onDelete, onLike, college, l
         onClick={toggleVisibility}
       >
          <LargeCollege 
-                            key={index}
+                           
                             largeCollegeRef={largeCollegeRef}
                             college={college}
                           
@@ -341,14 +330,10 @@ export const LargeCollegeActions = ({ onLargeClick, onDelete, onLike, college, l
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
           >
-           <button className="action-button" onClick={() => onLargeClick(college)}>
-  <motion.div whileHover={{ scale: 1.1 }}>
-    <InfoCircle className="info-icon" size={24} />
-  </motion.div>
-</button>
-<button className="action-button" onClick={() => onDelete(college)}>
-  <motion.div whileHover={{ x: [0, -3, 3, -3, 3, 0] }} transition={{ duration: 0.3 }}>
-    <Trash className="trash-icon" size={24} />
+       
+<button className="action-button" onClick={handleLinkCollege}>
+  <motion.div whileHover={{ y: [0, -3, 3, -3, 3, 0] }} transition={{ duration: 0.3 }}>
+    <FileInfo className="trash-icon" size={24} />
   </motion.div>
 </button>
 <button className="action-button" onClick={() => setScoreBarVisible(!scoreBarVisible)}>
@@ -377,14 +362,7 @@ export const MediumCollege = ({college, collegePage,  onDelete, onLargeClick, se
     { label: 'Party Grade', grade: college.party_grade },
   ];
   
- 
-  const [activeTab, setActiveTab] = useState("money");
-    const [showSAT, setShowSAT] = useState(false);
-    const [endpoints, setEndpoints] = useState([]);
 
-    const handleUpdateEndpoints = (newEndpoints) => {
-      setEndpoints(newEndpoints);
-    };
 
     const handleMaximize = () => {
       onLargeClick();
@@ -394,17 +372,9 @@ export const MediumCollege = ({college, collegePage,  onDelete, onLargeClick, se
     const navigate = useNavigate();
 const handleLinkClick = (course) => (event) => {
   event.preventDefault();
-  navigate(`/Courses/${course.id}`);
+  navigate(`/explore/colleges/${course.id}`);
 };
 
-
-  
-function handleDelete() {
-  onDelete();
-};
-function pascalCase(str) {
-  return str.charAt(0).toUpperCase() + str.slice(1);
-}
 
 return (
 <Card className={collegePage ? "my-individual-component" : "my-component"} shadow="sm" padding="lg" radius="md" withBorder >
@@ -412,7 +382,7 @@ return (
   <h4 className="college-medium-name shiny-text" style={{display: 'flex', justifyContent: 'center', alignItems: 'center', textAlign: 'center', marginBottom: 0, color: '#2B2D42'}}> <b>{college.college_name} </b></h4>
   { !collegePage &&
   <div style={{position: 'absolute', right: 5, top: 5}}>
-    <a href={`/Colleges/${college.id}`} onClick={handleLinkClick(college)}>
+    <a href={`/explore/colleges${college.id}`} onClick={handleLinkClick(college)}>
       
        <Search />
       </a>
@@ -430,7 +400,7 @@ return (
         style={{ backgroundColor: attribute.color }}
       >
         {attribute.icon}
-        {/*<span className="college-attribute-label">{attribute.label}</span>*/}
+      
       </div>
     );
   })}
@@ -456,27 +426,38 @@ return (
     }}>
       {college && college_grades.map((grade, index) => (
 
-       <div className="grade-container">
-       <div className="grade-card "
+<div className="grade-container">
+<div
+  className="grade-card"
   onMouseEnter={() => setDisplayedTooltip(grade.label)}
-  onMouseLeave={() => setDisplayedTooltip(null)}>
-         <div key={index} className={`grade-front component-attribute`} style={{ backgroundColor: getGradeColor(grade.grade) }}>
-           {grade.grade}
+  onMouseLeave={() => setDisplayedTooltip(null)}
+>
+  <div className="rotation-container">
+    <div
+      key={index}
+      className={`grade-front component-attribute`}
+      style={{ backgroundColor: getGradeColor(grade.grade) }}
+    >
+      {grade.grade}
+    </div>
+    <div
+      className="grade-back"
+      style={{ backgroundColor: getGradeColor(grade.grade) }}
+    >
+      <img style={{ width: "36px", height: "36px" }} src={next4Logo} />
+    </div>
+  </div>
+  {displayedTooltip === grade.label && (
+    <div className="college-pre-token-tooltip">{grade.label}</div>
+  )}
+</div>
+</div>
 
-     
-         </div>
-         <div className="grade-back" style={{ backgroundColor: getGradeColor(grade.grade) }}>
-         <img style={{width: '36px', height: '36px'}}src= {next4Logo} />
-         </div>
-         {displayedTooltip === grade.label && (
-        <div className="college-pre-token-tooltip">{grade.label}</div>
-      )}
-        
-       </div>
-
-     </div>
       ))}
-      
+       
+    </div>
+    <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+    <h4 style={{marginTop: 15, textAlign: 'center'}}> Average Tuition: ${college.cost}  </h4>
     </div>
 
           </Card>
@@ -488,17 +469,17 @@ return (
 
 // Large 
 
-export const LargeCollege = ({ college, onDelete, handleLiked}) => {
+export const LargeCollege = React.memo(function LargeCollege({ college, onDelete, handleLiked}) {
   const [endpoints, setEndpoints] = useState([]);
   const [displayedTooltip, setDisplayedTooltip] = useState(null);
+  const [displayedTooltipAttrs, setDisplayedTooltipAttrs] = useState(null);
 
-  console.log("COLLEGE")
+
   console.log(college)
   const [value, setValue] = useState(0);
   let college_grades = [];
 
   if (college) {
-    console.log("YES!")
     college_grades = [
       { label: 'Academic Grade', grade: college.academic_grade },
       { label: 'Diversity Grade', grade: college.diversity_grade },
@@ -509,47 +490,43 @@ export const LargeCollege = ({ college, onDelete, handleLiked}) => {
     ];
   }
 
-  
-  useEffect(() => {
-    // Update the value to simulate incoming money
-    const interval = setInterval(() => {
-      setValue((prevValue) => prevValue + 100);
-    }, 100);
 
-    return () => clearInterval(interval);
-  }, []);
-
-  const handleUpdateEndpoints = (newEndpoints) => {
-    setEndpoints(newEndpoints);
-  };
 
     return college ? (
         <div className="large-component">
-          <div style={{fontWeight: 600}} className="large-component-top-container shiny-text">
+          <div style={{fontWeight: 600, marginBottom: 5}} className="large-component-top-container shiny-text">
             {college.college_name}
       
         </div>
-        <hr style={{marginTop: 5, marginBottom: 5}}/>
-        <div style={{fontWeight: 400, fontSize: '13px', marginBottom: 8, color: 'gray'}}> Description </div>
+       {/* <hr style={{marginTop: 5, marginBottom: 5}}/>*/}
+       {/* <div style={{fontWeight: 400, fontSize: '13px', marginBottom: 8, color: 'gray'}}> Description </div>*/}
         <hr />
         <div style={{fontWeight: 400, fontSize: '13px', marginBottom: 0, marginTop: 4, color: 'gray'}}> Institute Insights </div>
     
         <div style={{justifyContent: 'left', width: '100%',height: '50px',textAlign: 'center', fontSize: '14px', fontWeight: 400, marginTop: 5, marginBottom: 15, display: 'flex'}}>
         {getMatchingAttributes(college).map((attribute) => {
     return (
+      <div>
       <div
         className="component-attribute-lg"
-       
-        style={{ backgroundColor: attribute.color , marginRight: '5px'}}
+        onMouseEnter={() => setDisplayedTooltipAttrs(attribute.label)}
+        onMouseLeave={() => setDisplayedTooltipAttrs(null)}
+        style={{ backgroundColor: attribute.color , textAlign: 'center', marginRight: '5px'}}
       >
         {attribute.icon}
-        {/*<span className="college-attribute-label">{attribute.label}</span>*/}
+       
+      
       </div>
+      {attribute.label && (
+        <div className="" style={{width: '50px', fontWeight: 600, fontSize: '12px', textAlign: 'center', margin: '0 auto 0 auto'}}>{attribute.label}</div>
+      )}
+      </div>
+      
     );
   })}
             
         </div>
-        <hr />
+        <hr style={{marginTop: 50}} />
         <div style={{textAlign: 'center', fontSize: '14px', fontWeight: 400, marginTop: 5, marginBottom: 10}}>
         <div style={{fontWeight: 400, marginTop: 0, fontSize: '13px', marginBottom: 3, color: 'gray'}}><b> MyNext4 Scores </b></div>
       
@@ -608,7 +585,7 @@ export const LargeCollege = ({ college, onDelete, handleLiked}) => {
     </div>
     <div style={{width: '50%', height: '100%', margin: '5px', border: '.5px solid #363636', borderRadius: '2px'}}>
         <Carousel>
-          <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+          <div style={{display: 'flex', flexDirection: 'column', padding: '5px', justifyContent: 'center', alignItems: 'center'}}>
             <div>
           <b>{college.sat_scores_average}</b> is the average SAT accepted at this instition.
           </div>
@@ -620,7 +597,7 @@ export const LargeCollege = ({ college, onDelete, handleLiked}) => {
           </div>
 
           </div>
-          <div style={{padding: '5px',display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+          <div style={{padding: '5px',display: 'flex', flexDirection: 'column',padding: '5px', justifyContent: 'center', alignItems: 'center'}}>
             <div>
           <b>{college.act_scores_average}</b> is the average ACT accepted at this instition.
           </div>
@@ -641,4 +618,4 @@ export const LargeCollege = ({ college, onDelete, handleLiked}) => {
     
         </div>
     ) : null;
-};
+});

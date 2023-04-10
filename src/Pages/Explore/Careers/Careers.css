@@ -201,3 +201,24 @@
     font-size: 24px;
     font-weight: bold;
 }
+
+.similar-careers {
+    padding: 10px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Adjust the minmax value based on the desired minimum width for each item */
+    gap: 20px;
+  }
+  
+  @media screen and (min-width: 768px) {
+    .similar-careers {
+      grid-template-columns: repeat(5, 1fr);
+    }
+  }
+
+
+  
+  .medium-career {
+    flex-basis: 20%;
+    margin-bottom: 20px;
+  }
+  

@@ -1,18 +1,16 @@
 import { API, init_api } from "../../../../API"
 import { useCallback } from "react";
-import { init_API_College_AI, API_College_AI } from "../../../../API_College_AI"
-import { Paper, Slider, MantineProvider} from '@mantine/core';
-import React, { useEffect, useState, useRef, useContext} from "react";
-import { SmallCollege, MediumCollege, MediumCollegeActions, LargeCollege, Button } from "../College";
-import { useParams } from "react-router";
+import { Paper, Tabs} from '@mantine/core';
+import React, { useEffect, useState, useContext} from "react";
+import { SmallCollege } from "../College";
+import { Home2,  ThumbUp } from "tabler-icons-react"
 import { UserContext } from "../../../../Pages/App";
 import { Carousel } from "react-responsive-carousel";
 import "../../MyComponents.css"
-import MyTabButton from "../../helpers/MyTabButton";
+
 
 export const MyColleges = ({  onSelectCollege, setColleges, colleges }) => {
   const [recommendedColleges, setRecommendedColleges] = useState([]);
-  const [activeTab, setActiveTab] = useState("home");
   const { userID } = useContext(UserContext);
 
   function removeCollege(collegeObject) {
@@ -23,27 +21,15 @@ export const MyColleges = ({  onSelectCollege, setColleges, colleges }) => {
 
     const getRecommendedColleges = useCallback(async () => {
       init_api();
-    
       const response = await API.get(`/api/college/recommendations/view/${userID}/`);
-      console.log("RECOMMENDED");
-      console.log(response.data);
       setRecommendedColleges(response.data);
     }, [userID]);
 
     useEffect(() => {
       getRecommendedColleges();
     }, [getRecommendedColleges]);
-    function removeCollege(college) {
-      const updatedList = colleges.filter(item => item.college_id !== college)
-      console.log(updatedList)
-      setColleges(updatedList);
-      handleDeleteCollegeFeedback(college);
-    }
-
 
     const handleDeleteCollegeFeedback = async (college) => {
-      
-
       try {
         init_api();
         API.post('/api/users/collegelist/delete/', {
@@ -59,11 +45,6 @@ export const MyColleges = ({  onSelectCollege, setColleges, colleges }) => {
       }
     }
 
-    
-
-   
-  
-
     const chunkArray = (array, size) => {
       const chunks = [];
       for (let i = 0; i < array.length; i += size) {
@@ -71,15 +52,10 @@ export const MyColleges = ({  onSelectCollege, setColleges, colleges }) => {
       }
       return chunks;
     };
-    const collegeRecChunks = chunkArray(recommendedColleges, 8);
-    const collegeColChunks = chunkArray(colleges, 8);
-    
-    
+    const collegeRecChunks = chunkArray(recommendedColleges, 6);
+    const collegeColChunks = chunkArray(colleges, 6);
   
-    const handleTabClick = (tab) => {
-      setActiveTab(tab);
-      console.log(activeTab)
-    };
+    
   
     return (
       <Paper shadow="xl" p="md" sx={{ borderRadius: '5px' ,width: "25%", backgroundColor: '#57CC99', border: '.5px solid #C7F9CC' , zIndex: 1 }}>
@@ -87,12 +63,15 @@ export const MyColleges = ({  onSelectCollege, setColleges, colleges }) => {
       <div className="my-component-header-text">
         <b>My Colleges</b>
       </div>
-      <MyTabButton activeTab={activeTab} onChange={handleTabClick} />
     </div>
-  
-        {activeTab === 'home' && (
+    <Tabs default="home">
+    <Tabs.List style={{margin: '10px auto 0',borderRadius: '5px',backgroundColor: '#fff', display: 'flex', justifyContent: 'center'}}>
+    <Tabs.Tab value="home" className="step-1" style={{color: '#2B2D42'}} icon={<Home2 size="1.6rem" />}><b>Home</b></Tabs.Tab>
+      <Tabs.Tab value="recommendations" className="step-2"  style={{color: '#2B2D42'}} icon={<ThumbUp size="1.6rem" />}><b>Recommendations</b></Tabs.Tab>
+   </Tabs.List>
+   <Tabs.Panel value="home" pt="xl">
         
-          <ul className="my-component-list">
+  
             <Carousel
         showArrows={true}
         showStatus={false}
@@ -115,12 +94,10 @@ export const MyColleges = ({  onSelectCollege, setColleges, colleges }) => {
           </div>
         ))}
       </Carousel>
-            </ul>
-        )
-      }
-  
-  {activeTab === "recommended" && (
-      <ul className="my-component-list">
+      </Tabs.Panel>
+      
+      <Tabs.Panel value="recommendations" pt="xs">
+ 
            <Carousel
         showArrows={true}
         showStatus={false}
@@ -135,7 +112,6 @@ export const MyColleges = ({  onSelectCollege, setColleges, colleges }) => {
             <ul className="my-component-list">
               {chunk.map((name, id) => (
                 <li key={chunkIndex * 8 + id} className="my-component-list-item" >
-                  <p> {name.college_name} </p>
                   <SmallCollege college={name} onSelect={() => onSelectCollege(name)} showHeart={false}/>
                 </li>
               ))}
@@ -143,8 +119,10 @@ export const MyColleges = ({  onSelectCollege, setColleges, colleges }) => {
           </div>
         ))}
       </Carousel>
-      </ul>
-    )}
+ 
+    
+      </Tabs.Panel>
+      </Tabs>
   
 
       </Paper>

@@ -10,10 +10,11 @@ import { CollegeComputer } from "../../Components/MyComponents/MyColleges/compon
 import { UserContext } from "../App";
 import ShowcaseTabButton from "../../Components/MyComponents/helpers/ShowcaseTabButton";
 import { AuthContext } from "../../Components/Auth/AuthContext";
-
+import Joyride, { STATUS } from 'react-joyride';
 // MyCollege Template
 
 const CollegeDataPage = ({setColleges, colleges}) => {
+  const [showTutorialCards, setShowTutorialCards] = useState(false);
   const [selectedCollege, setSelectedCollege] = useState(null); // Large view
   const [selectedColleges, setSelectedColleges] = useState([]); // Medium view
   const [view, setView] = useState("large");
@@ -22,16 +23,53 @@ const CollegeDataPage = ({setColleges, colleges}) => {
   const { userID } = useContext(UserContext)
   const [errorMessage, setErrorMessage] = useState(null);
   const { isAuthenticated } = useContext(AuthContext);
-  const getLikedList = useCallback(async () => {
-    init_api();
-    const response = await API.get(`/api/users/collegelist/${userID}/`);
+  
+      
+    useEffect(() => {
+      const getLikedList = async () => {
+        init_api();
+        await API.get(`/api/users/collegelist/${userID}/`)
+          .then((response) => {
+            setCollegeLikedList(response.data.liked_list);
+          });
+      }
+    
+      if (userID) {
+        getLikedList();
+      }
+    }, [userID]);
+    
+    useEffect(() => {
+      const setTutorialCardsComplete = async () => {
+        try {
+          await API.post(`/mark-completed-tutorial-cards/${userID}/`);
+        } catch (error) {
+          console.error('Error marking survey as completed:', error);
+        }
+      }
+    
+      if (showTutorialCards && userID) {
+        setTutorialCardsComplete();
+      };
+    }, [showTutorialCards, userID])
+    
+    useEffect(() => {
+      const checkTutorialCompletion = async () => {
+        try {
+          const response = await API.get(`/check-tutorial-complete-cards/${userID}/`);
+          setShowTutorialCards(!response.data.tutorialStatusCards)
+        } catch (error) {
+          console.error('Error checking survey completion:', error);
+        }
+      };
+    
+      if (userID) {
+        checkTutorialCompletion();
+      }
+    }, [userID]);
+    
 
-    setCollegeLikedList(response.data.liked_list);
-  }, [userID]);
 
-  useEffect(() => {
-    getLikedList();
-  }, [getLikedList]);
 
  
   const addCollege = useCallback(
@@ -48,7 +86,6 @@ const CollegeDataPage = ({setColleges, colleges}) => {
           user_id: userID,
           score: score,
         }).then(() => {
-          console.log("ADDED");
           setCollegeLikedList([...collegeLikedList, { ...college, score }]);
         });
       } else {
@@ -103,16 +140,54 @@ const CollegeDataPage = ({setColleges, colleges}) => {
     },
     [view, selectedColleges]
   );
+
+  const handleJoyrideCallback = (data) => {
+    const { status } = data;
+  
+    if ([STATUS.FINISHED, STATUS.SKIPPED].includes(status)) {
+      setShowTutorialCards(false);
+    }
+  };
+
+  
+ 
+  const tutorialSteps = [
+    {
+      target: '.step-1-tut',
+      content: 'Welcome to your personalized component page! This is where you can add, analyze, and compare cards with one another.',
+    },
+    {
+      target: '.step-2-tut',
+      content: 'View your liked component list and your newly receieved recommendations here!',
+    },
+    {
+      target: '.step-3-tut',
+      content: 'Choose component cards to compare or independantly inspect one with our showcase feature.',
+    },
+    {
+      target: '.step-4-tut',
+      content: "Switch between single or multi-mode with one click.",
+    },
+    {
+      target: '.step-5-tut',
+      content: "Search for component cards using the see feature. Filter and find the best choices for you.",
+    },
+    // ...
+  ];
+
   
 
 
 
   const handleLarge = useCallback(
+
     (college) => {
       setView("large");
       setSelectedCollege(college);
     },
-    []
+  
+    [],
+    console.log(selectedCollege)
   );
 
   const handleTabClick = (tab) => {
@@ -124,12 +199,20 @@ const CollegeDataPage = ({setColleges, colleges}) => {
     isAuthenticated && 
       
      
-    <div className="component-overall-container">
-     
-      <MyColleges onSelectCollege={selectCollege} setColleges= {setCollegeLikedList} colleges={collegeLikedList} />
-      <Paper withBorder shadow="xl" p="md" sx={{position: 'relative', width: "40%", top: -30, height:'82vh', margin: '0 1.5% 0 1.5%', backgroundColor: '#57CC99', border: '.5px solid #C7F9CC' ,borderRadius: '5px' , zIndex: 1}}>
+    <div className="component-overall-container step-1-tut">
+       <Joyride
+        steps={tutorialSteps}
+        run={showTutorialCards}
+        callback={handleJoyrideCallback}
+        continuous
+        scrollToFirstStep
+        showProgress
+        showSkipButton
+      />
+      <MyColleges className="step-2-tut" onSelectCollege={selectCollege} setColleges= {setCollegeLikedList} colleges={collegeLikedList} />
+      <Paper className="step-3-tut" withBorder shadow="xl" p="md" sx={{position: 'relative', width: "40%", top: -30, height:'82vh', margin: '0 1.5% 0 1.5%', backgroundColor: '#57CC99', border: '.5px solid #C7F9CC' ,borderRadius: '5px' , zIndex: 1}}>
         <div className="componentMiddleHeader">
-            <div className="my-component-header-text"><b> Showcase Colleges</b> </div>
+            <div className="my-component-header-text step-4-tut"><b> Showcase Colleges</b> </div>
             <AnimatePresence>
         {errorMessage && (
           <motion.div
@@ -153,8 +236,8 @@ const CollegeDataPage = ({setColleges, colleges}) => {
           onDelete={() => deleteCollege()}
           onLargeClick={() => handleLarge(selectedCollege)}
           onLike = {addCollege}
-          isLiked={collegeLikedList.some(
-            (likedCollege) => likedCollege.college_name === selectedCollege
+          isLiked={selectedCollege && collegeLikedList.some(
+            (likedCollege) => likedCollege.college_name === selectedCollege.college_name
           )}
           />
               
@@ -177,7 +260,7 @@ const CollegeDataPage = ({setColleges, colleges}) => {
                 </div>
             )}
            </Paper>
-      <CollegeComputer onSelectCollege={selectCollege}
+      <CollegeComputer className="step-5-tut" onSelectCollege={selectCollege}
         userID = {userID} />
       </div>
 

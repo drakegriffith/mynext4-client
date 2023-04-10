@@ -3,11 +3,15 @@
     margin: 0;
     box-sizing: border-box;
    
+
+    
 }
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap');
   body {
     background-image: linear-gradient(to bottom right, #f2f2f2, #e6e6e6);
     background-attachment: fixed;
-    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-family: 'DM Sans', Arial, sans-serif;
     margin: 0;
     padding: 0;
   }
@@ -22,8 +26,6 @@
   padding: 100px;
   margin: 8.5% auto 0 auto;
 
-  
- 
 
 }
 
@@ -37,7 +39,50 @@
 
 }
 
+@media screen and (min-width: 0px) and (max-width: 641px) {
+  .dashboard-container {
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+    padding: 100px;
+    margin: 8.5% auto 0 auto;
+  }
+}
+@media screen and (min-width: 641px) and (max-width: 1324px) {
+  .dashboard-container {
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+    padding: 100px;
+    margin: 10.5% auto 0 auto;
+  }
 
+}
+
+.step-1:hover,
+.step-2:hover,
+.step-3:hover {
+  background-color: #80ED99!important;
+  /* You can also change other styles on hover */
+}
+@media screen and (min-width: 1325px) {
+  .dashboard-container {
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+    padding: 100px;
+    margin: 8.5% auto 0 auto;
+  
+  
+  }
+
+}
 /* hide horizontal scroll bar for small screens */
 @media screen and (min-width: 100px) {
   body {
@@ -178,8 +223,8 @@
   display: flex;
   flex-direction: column;
   border-radius: 4px;
-  padding: 16px;
-  width: 42.5vw;
+  padding: 4px;
+  width: 49.5vw;
   height: 69vh;
 }
 
@@ -224,20 +269,20 @@
 }
 
 .dashboard-missions {
-  border-radius: 3px; 
+  border-radius: 3px;
   text-align: center;
-  padding:20px;
-
-
-  height: 700px;
+  padding: 20px;
+  
+  height: 100%;
   width: inherit;
   background: url('./images/mynext4_map.png') center center / cover no-repeat;
-  background-position: center 0px;
+  background-position: center;
   background-color: #FFF;
   position: relative;
   overflow: hidden;
   animation: glow 4s infinite;
 }
+
 
 .dashboard-missions-see {
  cursor: pointer;
@@ -524,7 +569,7 @@ border: 1px solid black;
     height: 550px;
   }
   .dashboard-right {
-    height: 450px;
+    height: 550px;
   }
   .dashboard-miss-container {
     height: 400px;

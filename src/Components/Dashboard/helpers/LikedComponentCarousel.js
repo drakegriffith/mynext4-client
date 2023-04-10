@@ -12,8 +12,8 @@ export const MediumCollegeCarousel = ({ items }) => {
     const slide = (
         <div key={i} className="centered-slide">
         <div className="slide-container">
-          {slideItems.map(item => (
-            <MediumCollege college={item} />
+          {slideItems.map((item, index) => (
+            <MediumCollege key={item.id} college={item} />
           ))}
         </div>
       </div>
@@ -35,8 +35,8 @@ export const MediumCareerCarousel = ({ items }) => {
       const slide = (
         <div key={i} className="centered-slide">
         <div className="slide-container">
-          {slideItems.map(item => (
-            <MediumCareer career={item} />
+          {slideItems.map((item,index)=> (
+            <MediumCareer key={item.id} career={item} />
           ))}
         </div>
       </div>
@@ -59,8 +59,8 @@ export const MediumCareerCarousel = ({ items }) => {
       const slide = (
         <div key={i} className="centered-slide">
         <div className="slide-container">
-          {slideItems.map(item => (
-            <MediumCourse course={item} />
+          {slideItems.map((item, index) => (
+            <MediumCourse key={item.id} course={item} />
           ))}
         </div>
       </div>

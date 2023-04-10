@@ -1,12 +1,13 @@
 import React, { useCallback, useEffect, useState, useContext } from "react";
 import { SmallCareer, MediumCareer, LargeCareer} from "../Career";
 import { API, init_api } from '../../../../API';
-import { Home2, Bookmarks, ThumbUp } from "tabler-icons-react"
+import { Home2,  ThumbUp } from "tabler-icons-react"
 import { useLocation, useParams } from "react-router";
 import { UserContext } from "../../../../Pages/App";
 import { Paper } from "@mantine/core";
 import { Carousel } from "react-responsive-carousel";
 import { Tabs } from '@mantine/core';
+import Sparkles from "../../../Sparkles/Sparkles";
 
 
 
@@ -16,10 +17,7 @@ export const MyCareers = ({  onSelectCareer, setCareers, careers, removeDuplicat
   const { userID } = useContext(UserContext);
     const getRecommendedCareers = useCallback(async () => {
       init_api();
-    
       const response = await API.get(`/api/career/recommendations/view/${userID}/`);
-      console.log("RECOMMENDED");
-      console.log(response.data);
       setRecommendedCareers(response.data);
     }, [userID]);
 
@@ -30,8 +28,6 @@ export const MyCareers = ({  onSelectCareer, setCareers, careers, removeDuplicat
 
     function removeCareer(careerObject) {
       const updatedList = careers.filter(item => item.id !== careerObject.id);
-      console.log("UPDATED LIST")
-    
       setCareers(updatedList);
       handleDeleteCareerFeedback(careerObject);
     }
@@ -63,8 +59,8 @@ export const MyCareers = ({  onSelectCareer, setCareers, careers, removeDuplicat
       }
       return chunks;
     };
-    const careerRecChunks = chunkArray(recommendedCareers, 8);
-    const careerColChunks = chunkArray(careers, 8);
+    const careerRecChunks = chunkArray(recommendedCareers, 6);
+    const careerColChunks = chunkArray(careers, 6);
     
     const handleTabClick = (tab) => {
       setActiveTab(tab);
@@ -83,14 +79,14 @@ export const MyCareers = ({  onSelectCareer, setCareers, careers, removeDuplicat
       
     </div>
     <Tabs default="home">
-    <Tabs.List style={{margin: '10px auto 0', display: 'flex', justifyContent: 'center'}}>
+    <Tabs.List style={{margin: '10px auto 0',borderRadius: '5px',backgroundColor: '#fff', display: 'flex', justifyContent: 'center'}}>
     <Tabs.Tab value="home" className="step-1" style={{color: '#2B2D42'}} icon={<Home2 size="1.6rem" />}><b>Home</b></Tabs.Tab>
       <Tabs.Tab value="recommendations" className="step-2"  style={{color: '#2B2D42'}} icon={<ThumbUp size="1.6rem" />}><b>Recommendations</b></Tabs.Tab>
    </Tabs.List>
   
       <Tabs.Panel value="home" pt="xl">
         
-          <ul className="my-component-list">
+         
             <Carousel
         showArrows={true}
         showStatus={false}
@@ -104,21 +100,22 @@ export const MyCareers = ({  onSelectCareer, setCareers, careers, removeDuplicat
           <div key={chunkIndex} className="carousel-slide">
             <ul className="my-component-list">
               {chunk.map((name, id) => (
-                <li key={chunkIndex * 8 + id} className="my-component-list-item" >
+                <li key={chunkIndex * 6 + id} className="my-component-list-item" >
                 
                   <SmallCareer onDelete={() => removeCareer(name)} career={name} onSelect={() => onSelectCareer(name)} isLiked={true} showHeart={true}/>
+                
                 </li>
               ))}
             </ul>
           </div>
         ))}
       </Carousel>
-            </ul>
+          
             </Tabs.Panel>
      
   
   <Tabs.Panel value="recommendations" pt="xs">
-      <ul className="my-component-list">
+   
            <Carousel
         showArrows={true}
         showStatus={false}
@@ -132,16 +129,17 @@ export const MyCareers = ({  onSelectCareer, setCareers, careers, removeDuplicat
           <div key={chunkIndex} className="carousel-slide">
             <ul className="my-component-list">
               {chunk.map((name, id) => (
-                <li key={chunkIndex * 8 + id} className="my-component-list-item" >
-                  <p> {name.career_name} </p>
+                <li key={chunkIndex * 6 + id} className="my-component-list-item" >
+        
                   <SmallCareer career={name} onSelect={() => onSelectCareer(name)} showHeart={true}/>
+     
                 </li>
               ))}
             </ul>
           </div>
         ))}
       </Carousel>
-      </ul>
+
       </Tabs.Panel>
       </Tabs>
       

@@ -5,6 +5,37 @@ html, body {
     font-family: 'Phudu', cursive;
 }
 
+#survey-page {
+  background-image: linear-gradient(135deg, #22577a 0%, #57cc99 50%, #80ed99 100%);
+  background-size: 300% 300%;
+  animation: gradient-animation 5s linear infinite;
+  height: 100vh;
+  margin: 0;
+  overflow: hidden;
+}
+
+.survey-background {
+  background-image: linear-gradient(135deg, #22577a 0%, #57cc99 50%, #80ed99 100%);
+  background-size: 300% 300%;
+  animation: gradient-animation 5s linear infinite;
+  height: 100vh;
+  margin: 0;
+  overflow: hidden;
+}
+
+/* Keyframes for gradient animation */
+@keyframes gradient-animation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -13,7 +44,7 @@ html, body {
 
 
 /* Base styles for the button */
-.btn-glow {
+.btnGlow {
   display: inline-block;
   font-size: 24px;
   text-align: center;
@@ -34,12 +65,12 @@ html, body {
 }
 
 /* Add glowing effect on hover */
-.btn-glow:hover {
+.btnGlow:hover {
   box-shadow: 0 0 10px #57CC99, 0 0 20px #57CC99, 0 0 30px #57CC99, 0 0 40px #57CC99;
 }
 
 /* Add popping effect on active state */
-.btn-glow:active {
+.btnGlow:active {
   transform: scale(0.98);
   box-shadow: 0 0 5px #57CC99, 0 0 10px #57CC99, 0 0 15px #57CC99, 0 0 20px #57CC99;
 }

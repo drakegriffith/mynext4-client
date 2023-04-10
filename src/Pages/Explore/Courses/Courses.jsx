@@ -1,27 +1,20 @@
 import {useParams} from 'react-router';
 import React, { useCallback, useEffect, useState } from "react";
-import { Book, Calculator } from "tabler-icons-react"
 import { init_api, API } from '../../../API';
 import './Courses.css';
 import { MediumCourse } from '../../../Components/MyComponents/MyCourses/Course';
-import { Button } from "@mantine/core";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router";
 
 export const Courses = () => {
     const [course, setCourse] = useState("");
-    const navigate = useNavigate();
-    const { id}  = useParams();
-    const [data, setData] = useState({});
-    const [unitNames, setUnitNames] = useState([]);
-    const [unitDescriptions, setUnitDescriptions] = useState([]);
-    const [resourceName, setResourceName] = useState([]);
-    const [resourceLink, setResourceLink] = useState([]);
-
+    
+    const { id }  = useParams();
+  
     const CoursePrerequisites = React.memo(({ prerequisites }) => {
         
         const [courseData, setCourseData] = useState([]);
-        const [displayedCourseName, setDisplayedCourseName] = useState(null);
+  
         console.log(courseData)
         
         
@@ -41,12 +34,7 @@ export const Courses = () => {
             });
           return result;
         };
-        const iconMapping = {
-            Book: <Book size={32} />,
-            Calculator: <Calculator size={32} />,
-          };
-        
-        
+      
           useEffect(() => {
             
             const fetchCourseData = async () => {
@@ -72,26 +60,13 @@ export const Courses = () => {
             fetchCourseData();
           }, [prerequisites]);
 
-          const linkStyle = {
-            textDecoration: 'none', // remove underline
-            color: 'inherit', // inherit text color
-            display: 'flex',
-            alignItems: 'center', // center the text vertically
-            justifyContent: 'center', // center the text horizontally
-            outline: 'none',
-            backgroundColor: '#2B2D42',
-            color: "#FFF",
-            marginTop: '10px',
-            borderRadius: '5px',
-            fontSize: '14px',
-            padding: '3px', // remove outline
-          };
+        
 
           const navigate = useNavigate();
 
           const handleLinkClick = (courseX, event) => {
             event.preventDefault();
-            navigate(`/Courses/${courseX.id}`);
+            navigate(`/explore/courses/${courseX.id}`);
           };
          
 
@@ -101,7 +76,7 @@ export const Courses = () => {
                 <span style={{textAlign: 'center'}}>N/A</span>
               ) : (
                 courseData.map((courseX, index) => {
-                  const iconName = courseX.abbrev_icon.trim();
+                 
                   const style = {
             
                     margin: '15px',
@@ -112,8 +87,6 @@ export const Courses = () => {
                       key={index}
                       className=""
                       style={style}
-                      onMouseEnter={() => setDisplayedCourseName(courseX.course_name)}
-                      onMouseLeave={() => setDisplayedCourseName(null)}
                     >
                         <div style={{width: '200px'}}>
                       <MediumCourse coursePage={true} course={courseX} />
@@ -138,17 +111,14 @@ export const Courses = () => {
         setCourse(response.data);
       }, []);
   
-
-      console.log(course)
       useEffect(() => {
-    
-    
-        getCourse(id);
-        
-      }, [id]);
+        if (id) {
+          getCourse(id);
+        }
+      }, [id, getCourse]);
         
 
-
+/*
     useEffect(() => {
         const getUnitData = async() => {
             init_api();
@@ -185,6 +155,7 @@ export const Courses = () => {
         getUnitData();
         getResourceData();
     }, [data]);
+    */
 
     const courseNameStyle = {
         position: 'absolute',
@@ -224,9 +195,8 @@ export const Courses = () => {
         backgroundImage: 'linear-gradient(to bottom, #8D99AE, #2B2D42)',
         textAlign: 'center',
         color: 'white',
-        marginTop: 0,
+        marginBottom: 10,
         fontSize: '16px',
-        marginBottom: 4,
         boxShadow: '0 0 4px #BFBFBF',
         transform: 'translateZ(4px)',
       };
@@ -235,20 +205,23 @@ export const Courses = () => {
     return (
         <div style={containerStyle}>
       <div style={backgroundStyle}></div>
-      <div style={{width: '250px', height: '265px', margin: '0 auto 10px auto'}}>
+      <div style={{width: '250px', height: '265px', margin: '0 auto 50px auto'}}>
       <MediumCourse coursePage={true} course={course} />
       </div>
-      <div style={medalStyle}> Common Course <b>Units</b> </div>
-      <h4 style={{textAlign: 'center'}}> Coming soon! </h4>
+      {/*<div style={medalStyle}> Common Course <b>Units</b> </div>
+      <h4 style={{textAlign: 'center', marginBottom: 5}}> Coming soon! </h4>*/}
+     
       <div className="shiny-text" style={courseNameStyle}>{course.course_name}</div>
-            <div style={medalStyle} > Recommended <b>Prerequisites</b> </div>
+            <div style={medalStyle} > Recommended <b>Prerequisites</b> (In order of completion) </div>
    
     <CoursePrerequisites prerequisites={course.prerequisites} />
- 
+   {/*
     <div style={medalStyle}> Recommended <b>Resources</b> </div>
     <h4 style={{textAlign: 'center'}}> Coming soon! </h4>
-  
-        </div>
+    
+    */}
+    </div>
+       
     );
 };
 

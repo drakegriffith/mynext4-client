@@ -48,29 +48,16 @@ export const Colleges = () => {
             fetchCollegeData();
         }, [similar_colleges]);
 
-        const linkStyle = {
-            textDecoration: "none",
-            color: "inherit",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            outline: "none",
-            backgroundColor: "#2B2D42",
-            color: "#FFF",
-            marginTop: "10px",
-            borderRadius: "5px",
-            fontSize: "14px",
-            padding: "3px",
-        };
+    
 
         const navigate = useNavigate();
 
         const handleLinkClick = (college) => (event) => {
             event.preventDefault();
-            navigate(`/Courses/${college.id}`);
+            navigate(`/explore/colleges/${college.id}`);
           }; 
         return (
-            <div style={{ display: "flex", justifyContent: "center", height: "270px", marginBottom: "80px" }}>
+            <div style={{ display: "flex", justifyContent: "center", height: "270px", marginBottom: "90px" }}>
             {collegeData.length > 0 && collegeData[0] === "N/A" ? (
                 <span style={{ textAlign: "center" }}>N/A</span>
             ) : (
@@ -88,7 +75,7 @@ export const Colleges = () => {
                     <div style={{ width: "200px" }}>
                         <MediumCollege collegePage={true} college={college} />
 
-                        <Link to={`/Colleges/${college.id}`} onClick={(event) => handleLinkClick(college, event)} style={{display: 'flex', justifyContent: 'center', flexDirection: 'column'}}>
+                        <Link to={`/explore/colleges/${college.id}`} onClick={(event) => handleLinkClick(college, event)} style={{display: 'flex', justifyContent: 'center', flexDirection: 'column'}}>
                <p style={{marginTop: 3,color: 'black', textAlign: 'center'}}>Move to </p> <b style={{color: 'black', textAlign: 'center'}}>{college.college_name}</b>
 </Link>
                     </div>
@@ -114,9 +101,10 @@ const getCollege = useCallback(async (id) => {
 
 
   useEffect(() => {
-    getCollege(id);
-  }, [id]);
-
+    if (id) {
+      getCollege(id);
+    }
+  }, [id, getCollege]);
 
 const collegeNameStyle = {
     position: 'absolute',
@@ -168,7 +156,7 @@ const collegeNameStyle = {
   return (
 <div style={containerStyle}>
       <div style={backgroundStyle}></div>
-      <div style={{width: '250px', height: '265px', margin: '0 auto 10px auto'}}>
+      <div style={{width: '250px', height: '265px', margin: '0 auto 50px auto'}}>
       <MediumCollege collegePage={true} college={college} />
       </div>
      
@@ -177,9 +165,10 @@ const collegeNameStyle = {
             <div style={medalStyle} > Similar <b>Schools</b> </div>
    
     <SimilarColleges similar_colleges={college.similar_colleges} />
- 
+ {/*
     <div style={medalStyle}> Accepted Student <b>Archives</b> </div>
     <h4 style={{textAlign: 'center'}}> Coming soon! </h4>
+  */}
     
         </div>
 

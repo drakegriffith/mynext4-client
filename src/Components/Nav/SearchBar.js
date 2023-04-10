@@ -1,16 +1,12 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { Carousel } from "react-responsive-carousel";
-import { AuthContext } from "../Auth/AuthContext"; // Make sure to import this context from the correct location
 import { SmallCareer } from "../MyComponents/MyCareers/Career"; // Make sure to import this component from the correct location
 import { SmallCollege } from "../MyComponents/MyColleges/College"; // Make sure to import this component from the correct location
 import { SmallCourse } from "../MyComponents/MyCourses/Course"; // Make sure to import this component from the correct location
-import { useNavigate } from "react-router";
 import { API, init_api } from "../../API";
 import "./NavBar.css"
 
 const SearchBar = () => {
-    const { auth } = useContext(AuthContext)
-    const [menuOpen, setMenuOpen] = useState(false);
     const [searchType, setSearchType] = useState('global');
     const [searchVal, setSearchVal] = useState("");
     const [showResults, setShowResults] = useState(false);
@@ -166,9 +162,13 @@ const SearchBar = () => {
     };
     
 
-    const handleSearchTypeChange = (e) => {
+    const handleSearchTypeChange = async (e) => {
         setSearchType(e.target.value);
-    };
+        if (searchVal.length > 1) {
+          const event = { target: { value: searchVal } };
+          await search(event);
+        }
+      };
     return (
         <div className="search-bar">
           <select
@@ -177,9 +177,9 @@ const SearchBar = () => {
             className="searchTypeSelect"
           >
             <option value="">Show All</option>
-            <option value="Careers">Career Search</option>
-            <option value="Courses">Course Search</option>
-            <option value="Colleges">College Search</option>
+            <option value="career">Career Search</option>
+            <option value="course">Course Search</option>
+            <option value="college">College Search</option>
           </select>
           <input
             onChange={search}

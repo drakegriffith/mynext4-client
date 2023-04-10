@@ -3,38 +3,28 @@ import { SmallCourse } from "../Course";
 import { API, init_api } from "../../../../API";
 import { UserContext } from "../../../../Pages/App";
 import { Paper } from "@mantine/core";
+import { Home2, ThumbUp } from "tabler-icons-react"
 import { Carousel } from "react-responsive-carousel";
-import MyTabButton from "../../helpers/MyTabButton";
+import { Tabs } from '@mantine/core';
 import "../../MyComponents.css"
 
 export const MyCourses = ({ onSelectCourse, setCourses, courses, removeDuplicates}) => {
     const [recommendedCourses, setRecommendedCourses] = useState([]);
-    const [activeTab, setActiveTab] = useState("home");
     const { userID } = useContext(UserContext)
-    const [hasReceivedRecommendations, setHasReceivedRecommendations] = useState(false);
-
 
     const getRecommendations = useCallback(async () => {
       init_api();
       await API.post(`/mark-recommendations-completed/${userID}/`);
       const response = await API.get(`/api/course/recommendations/view/${userID}/`);
       setRecommendedCourses(response.data);
+
     }, [userID]);
 
     useEffect(() => {
-      const checkRecommendationStatus = async () => {
-        init_api();
-        const response = await API.get(`/check-recommendations/${userID}/`);
-        setHasReceivedRecommendations(response.data.recommendStatus);
-        if (response.data.recommendStatus) {
-          getRecommendations();
-        }
-      };
-  
-      checkRecommendationStatus();
-    }, [userID, getRecommendations]);
+      getRecommendations();
+    },[userID, getRecommendations])
 
-  
+    
     function removeCourse(courseObject) {
       const updatedList = courses.filter(item => item.id !== courseObject.id);
       setCourses(updatedList);
@@ -66,27 +56,25 @@ export const MyCourses = ({ onSelectCourse, setCourses, courses, removeDuplicate
       }
       return chunks;
     };
-    const courseRecChunks = chunkArray(recommendedCourses, 8);
-    const courseCouChunks = chunkArray(courses, 8);
-    console.log(courseCouChunks)
+    const courseRecChunks = chunkArray(recommendedCourses, 6);
 
-    const handleTabClick = (tab) => {
-      setActiveTab(tab);
-      console.log(activeTab)
-    };
+    const courseCouChunks = chunkArray(courses, 6);
+
     return (
       <Paper shadow="xl" p="md" sx={{borderRadius: '5px' ,width: "25%", backgroundColor: '#57CC99', border: '.5px solid #C7F9CC' , zIndex: 1 }}>
       <div className="my-component-header">
     <div className="my-component-header-text">
       <b>My Courses</b>
     </div>
-    <div>
-    <MyTabButton activeTab={activeTab} onChange={handleTabClick} />
     </div>
-  </div>
+    <Tabs default="home">
+    <Tabs.List style={{borderRadius: '5px',backgroundColor: '#fff',margin: '10px auto 0', display: 'flex', justifyContent: 'center'}}>
+    <Tabs.Tab value="home" className="step-1" style={{color: '#2B2D42'}} icon={<Home2 size="1.6rem" />}><b>Home</b></Tabs.Tab>
+      <Tabs.Tab value="recommendations" className="step-2"  style={{color: '#2B2D42'}} icon={<ThumbUp size="1.6rem" />}><b>Recommendations</b></Tabs.Tab>
+   </Tabs.List>
 
-      {activeTab === 'home' && (
-      
+    
+   <Tabs.Panel value="home" pt="xl">
 
           <Carousel
       showArrows={true}
@@ -103,19 +91,21 @@ export const MyCourses = ({ onSelectCourse, setCourses, courses, removeDuplicate
             {chunk.map((name, id) => (
               <li key={chunkIndex * 8 + id} className="my-component-list-item" >
               
-                <SmallCourse onDelete={() => removeCourse(name)} isLiked={true} course={name} onSelect={() => onSelectCourse(name)} showHeart={true}/>
+                <SmallCourse key={id} onDelete={() => removeCourse(name)} isLiked={true} course={name} onSelect={() => onSelectCourse(name)} showHeart={true}/>
               </li>
             ))}
           </ul>
         </div>
       ))}
     </Carousel>
+
+    </Tabs.Panel>
+      
   
-      )
-    }
 
-{activeTab === "recommended" && (
 
+    <Tabs.Panel value="recommendations" pt="xs">
+   
          <Carousel
       showArrows={true}
       showStatus={false}
@@ -129,9 +119,8 @@ export const MyCourses = ({ onSelectCourse, setCourses, courses, removeDuplicate
         <div key={chunkIndex} className="carousel-slide">
           <ul className="my-component-list">
             {chunk.map((name, id) => (
-              <li key={chunkIndex * 8 + id} className="my-component-list-item" >
-                <p> {name.course_name} </p>
-                <SmallCourse course={name} onSelect={() => onSelectCourse(name)} showHeart={true}/>
+              <li key={chunkIndex * 6 + id} className="my-component-list-item" >
+                <SmallCourse key={id} course={name} onSelect={() => onSelectCourse(name)} showHeart={true}/>
               </li>
             ))}
           </ul>
@@ -139,7 +128,8 @@ export const MyCourses = ({ onSelectCourse, setCourses, courses, removeDuplicate
       ))}
     </Carousel>
 
-  )}
+    </Tabs.Panel>
+      </Tabs>
     </Paper>
   
   );

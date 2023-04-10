@@ -1,21 +1,16 @@
 import {
   Paper,
-  createStyles,
   TextInput,
   PasswordInput,
-  Checkbox,
   Button,
-  Title,
-  Text,
-  Anchor,
 } from "@mantine/core";
 import "./Auth.css";
-import React, { useState, useEffect, useContext, createContext } from "react";
-import { Navigate, useParams } from "react-router-dom";
+import React, { useState, useEffect, useContext } from "react";
+import { Navigate } from "react-router-dom";
 import { init_api, API } from "../../API";
 import { AuthContext } from "./AuthContext";
 import { UserContext } from "../../Pages/App";
-import { SurveyContext } from "../../SurveyContext";
+import { SurveyContext } from "../../Surveys/SurveyContext";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
@@ -23,56 +18,61 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { isAuthenticated, setIsAuthenticated, token, setToken } = useContext(AuthContext);
-  const { userID, setUserID, setUsername } = useContext(UserContext);
+  const { userID, setUserID, setUsername, setDateJoined } = useContext(UserContext);
   const [surveysCompleted, setSurveysCompleted] = useState(false);
-  const [id, setID] = useState(0);
   const surveyContext = useContext(SurveyContext)
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const [tempUserID, setTempUserID] = useState('');
   function handleRegister() {
     navigate("/web/auth/create")
   }
 
-  
-
   const loginPressed = async () => {
-    init_api();
-    const res = await API.post("/auth/jwt/create", {
-      email: email,
-      password: password
-    });
-    const token = res.data.access;
-    console.log('clicked');
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `JWT ${res.data.access}`,
-        'Accept': 'application/json'
-      }
-    };
-    await API.get("/auth/users/me/", config).then(async (response) => {
-      setUserID(response.data.id);
-      setUsername(response.data.username);
-   
-      await API.get(`/check_initial_surveys/${response.data.id}/`).then((response) => {
-        console.log(response)
-        setSurveysCompleted(response.data.initalSurveys);
-      })
-      console.log(surveysCompleted)
+    try {
+      init_api();
+      const res = await API.post("/auth/jwt/create", {
+        email: email,
+        password: password
+      });
   
-    });
-
-    setToken(token);
-    setIsAuthenticated(true);
-    console.log(isAuthenticated);
+      const token = res.data.access;
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `JWT ${res.data.access}`,
+          'Accept': 'application/json'
+        }
+      };
+  
+      await API.get("/auth/users/me/", config).then(async (response) => {
+        setUserID(response.data.id);
+        setUsername(response.data.username);
+        setDateJoined(response.data.date_joined);
+  
+        await API.get(`/check_initial_surveys/${response.data.id}/`).then((response) => {
+          setSurveysCompleted(response.data.initalSurveys);
+        });
+      });
+  
+      setToken(token);
+      setIsAuthenticated(true);
+      setErrorMessage(""); // Clear any previous error message upon successful login
+    } catch (error) {
+      console.error("Error during login:", error);
+      if (error.response && error.response.status === 400) {
+        setErrorMessage("Invalid email or password.");
+      } else {
+        setErrorMessage("An error occurred while logging in. Please try again.");
+      }
+    }
   };
+  
 
   useEffect(() => {
     init_api();
     const checkCollegeCompletion = async () => {
       try {
         const response = await API.get(`/check-college-survey/${userID}/`);
-        console.log("COLLEGE" + response.data.collegeCompleted)
         surveyContext.setIsCollegeCompleted(response.data.collegeCompleted);
       } catch (error) {
         console.error('Error checking survey completion:', error);
@@ -82,9 +82,7 @@ const Login = () => {
     const checkCourseCompletion = async () => {
       try {
         const response = await API.get(`/check-course-survey/${userID}/`);
-        console.log(response.data)
         surveyContext.setIsCourseCompleted(response.data.courseCompleted);
-        console.log(surveyContext.isCourseCompleted)
       } catch (error) {
         console.error('Error checking survey completion:', error);
       }
@@ -99,9 +97,11 @@ const Login = () => {
       }
     };
 
-    checkCareerCompletion();
-    checkCollegeCompletion();
-    checkCourseCompletion();
+    if (userID) {
+      checkCareerCompletion();
+      checkCollegeCompletion();
+      checkCourseCompletion();
+    }
 
   }, [userID]);
   
@@ -115,7 +115,7 @@ const Login = () => {
     <div className="login-container">
       <div style={{ margin: 0 }}>
         <Paper  elevation={5} radius={0} p="60px 180px" shadow="xl">
-        <h1 className="auth-title">Log In</h1>
+        <h1 className="auth-title">Sign Into MyNext4 </h1>
 
           <TextInput
             label="Email address"
@@ -138,9 +138,11 @@ const Login = () => {
           />
           <div style={{ display: "flex", justifyContent: "center" }}>
             <Button
-              style={{ width: "250px", margin: "30px auto 0 auto" }}
+              style={{ width: "250px", backgroundColor: '#57CC99', margin: "30px auto 0 auto" }}
               mt="xl"
               mb="xl"
+              className="auth-btn"
+              
               size="lg"
               onClick={loginPressed}
             >
@@ -148,7 +150,12 @@ const Login = () => {
             </Button>
           </div>
           <h5 style={{marginTop: 20,textAlign: 'center'}}> No account created? Make one with us <span onClick={handleRegister} style={{fontWeight: 800, color:'purple', marginTop: 10, cursor: 'pointer'}}><i>here</i></span></h5>
+          {errorMessage && (
+        <div className="error-message">
+          <p>{errorMessage}</p>
+        </div>)}
         </Paper>
+        
       </div>
       <div className="root-login">
         {isAuthenticated && surveysCompleted && <Navigate to={`/my/account/${userID}`} />}

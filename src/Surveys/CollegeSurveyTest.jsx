@@ -1,13 +1,13 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
 import { API, init_api } from '../API';
 import { AuthContext } from '../Components/Auth/AuthContext';
 import { UserContext } from '../Pages/App';
 import { useNavigate } from 'react-router-dom';
 import styles from "./Surveys.module.css";
 import { motion } from "framer-motion";
-import { SurveyContext } from '../SurveyContext';
+import { SurveyContext } from './SurveyContext';
 
-function CollegeSurveyTest({ }) {
+function CollegeSurveyTest() {
     init_api();
     const { userID } = useContext(UserContext)
     const { isAuthenticated } = useContext(AuthContext)
@@ -31,13 +31,13 @@ function CollegeSurveyTest({ }) {
         };
       
         checkSurveyCompletion();
-      }, [userID]);
+      }, [userID, surveyContext]);
 
     const handleChange = (event) => {
         setAnswer(parseInt(event.target.value, 10));
     }
 
-    const fetchSurveyQuestions = async () => {
+    const fetchSurveyQuestions = useCallback(async () => {
        ;
         try {
             const promise = API.get(`/api/survey/college/${id}/`);
@@ -50,26 +50,26 @@ function CollegeSurveyTest({ }) {
         } catch (error) {
             console.error(error);
         }
-    };
+    },[id]);
 
     useEffect(() => {
         setSubmittedAnswer(answer)
        
     }, [answer])
 
-    const getNextQuestion = async () => {
+    const getNextQuestion = useCallback(async () => {
         try {
-            const response = await API.get(`/api/survey/college/${id + 1}/`);
-            const data = response.data;
+            await API.get(`/api/survey/college/${id + 1}/`);
         } catch (error) {
             setComplete(true);
         }
-        
-      }
+
+      },[id]);
+
     useEffect(() => {
         getNextQuestion();
         fetchSurveyQuestions()
-        },[id]);
+        },[id, getNextQuestion, fetchSurveyQuestions]);
    
 
 
@@ -150,7 +150,7 @@ function CollegeSurveyTest({ }) {
     onChange={handleChange}
     id="no"
   />
-  <label htmlFor="no" className={styles.radioBtnLabel}>No</label>
+  <label htmlFor="no" className={styles.radioBtnLabel}>False</label>
   <input
     className={styles.radioBtn}
     type="radio"
@@ -160,18 +160,18 @@ function CollegeSurveyTest({ }) {
     onChange={handleChange}
     id="yes"
   />
-  <label htmlFor="yes" className={styles.radioBtnLabel}>Yes</label>
+  <label htmlFor="yes" className={styles.radioBtnLabel}>True</label>
 </label>
 
             <button className={styles.button} type="submit">
-            Submit
+            Next
             </button>
         </form>
         </motion.div>
           
           : 
           isAuthenticated && userID ?
-          <div style={{ display: 'flex', marginTop: 300, justifyContent: 'center', marginTop: 200 }}>
+          <div style={{ display: 'flex', marginTop: 300, justifyContent: 'center' }}>
           <button className={styles.finalSubmit} onClick={handleFinalSubmit}>Submit</button>
         </div>
           : 
