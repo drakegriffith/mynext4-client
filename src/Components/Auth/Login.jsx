@@ -34,12 +34,12 @@ const Login = () => {
     setLoading(true);
     console.log('Calling getNewToken...');
     try {
-      getNewToken(() => {
+      const newToken = await getNewToken();
         console.log('getNewToken callback called');
         const config = {
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`,
+            'Authorization': `Bearer ${newToken}`,
             'Accept': 'application/json'
           }
         };
@@ -65,7 +65,7 @@ const Login = () => {
           }
 
         });
-      });
+
     } catch (error) {
       console.error("Error during login:", error);
       if (error.response && error.response.status === 400) {
