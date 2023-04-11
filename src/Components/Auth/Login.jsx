@@ -35,7 +35,7 @@ const Login = () => {
       const config = {
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${tempToken}`,
+          'Authorization': `JWT ${tempToken}`,
           'Accept': 'application/json'
         }
       };
