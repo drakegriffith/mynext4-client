@@ -35,12 +35,13 @@ const Login = () => {
         password: password
       });
   
+      console.log(res)
       const token = res.data.access;
       init_api();
       const config = {
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `JWT ${res.data.access}`,
+          'Authorization': `JWT ${token}`,
           'Accept': 'application/json'
         }
       };
