@@ -32,8 +32,10 @@ const Login = () => {
   const loginPressed = async (e) => {
     e.preventDefault();
     setLoading(true);
+    console.log('Calling getNewToken...');
     try {
       getNewToken(() => {
+        console.log('getNewToken callback called');
         const config = {
           headers: {
             'Content-Type': 'application/json',
@@ -41,8 +43,10 @@ const Login = () => {
             'Accept': 'application/json'
           }
         };
-  
+        
+        console.log('Making API call with token:', token);
         API.get("/auth/users/me/", config).then(async (response) => {
+          console.log('API call success:', response);
           setUserID(response.data.id);
           setUsername(response.data.username);
           setDateJoined(response.data.date_joined);
