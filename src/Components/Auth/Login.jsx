@@ -14,6 +14,7 @@ import { SurveyContext } from "../../Surveys/SurveyContext";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  init_api();
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -29,7 +30,7 @@ const Login = () => {
 
   const loginPressed = async () => {
     try {
-      init_api();
+      
       const res = await API.post("/auth/jwt/create", {
         email: email,
         password: password
