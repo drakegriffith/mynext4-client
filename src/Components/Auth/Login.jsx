@@ -49,7 +49,7 @@ const Login = () => {
       const config = {
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `JWT ${token}`,
+          'Authorization': `Bearer ${token}`,
           'Accept': 'application/json'
         }
       };
