@@ -24,6 +24,7 @@ const Login = () => {
   const surveyContext = useContext(SurveyContext)
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [tempToken, setTempToken] = useState("");
 
   function handleRegister() {
     navigate("/web/auth/create")
@@ -44,7 +45,7 @@ const Login = () => {
           }
         };
         
-        console.log('Making API call with token:', newToken);
+        console.log('Making API call with token:', tempToken || newToken);
         API.get("/auth/users/me/", config).then(async (response) => {
           console.log('API call success:', response);
           setUserID(response.data.id);
@@ -53,7 +54,7 @@ const Login = () => {
           await API.get(`/check_initial_surveys/${response.data.id}/`).then((response) => {
             setSurveysCompleted(response.data.initalSurveys);
           });
-          setToken(token);
+          setToken(tempToken);
           setIsAuthenticated(true);
           setErrorMessage(""); // Clear any previous error message upon successful login
           setLoading(false);
@@ -87,8 +88,8 @@ const Login = () => {
       });
       const newToken = res.data.access;
       console.log("New token:", newToken);
-      setToken(newToken); // Update token value in state
-      console.log('Token state:', token);
+      setTempToken(newToken); // Update token value in state
+      console.log('Token state:', tempToken);
       return newToken;
     } catch (error) {
       console.error("Error during token generation:", error);
