@@ -36,6 +36,7 @@ const Login = () => {
       });
   
       const token = res.data.access;
+      init_api(token);
       const config = {
         headers: {
           'Content-Type': 'application/json',
