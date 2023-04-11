@@ -53,6 +53,14 @@ const Login = () => {
           setIsAuthenticated(true);
           setErrorMessage(""); // Clear any previous error message upon successful login
           setLoading(false);
+
+          const navigate = useNavigate();
+          if (surveyContext.surveysCompleted) {
+            navigate(`/my/account/${userID}`);
+          } else {
+            navigate(`/my/survey-starter/${userID}`);
+          }
+
         });
       });
     } catch (error) {
@@ -63,6 +71,7 @@ const Login = () => {
         setErrorMessage("An error occurred while logging in. Please try again.");
       }
       setLoading(false);
+      
     }
   };
   
@@ -169,10 +178,7 @@ const Login = () => {
     </Paper>
 
   </div>
-  <div className="root-login">
-    {isAuthenticated && surveysCompleted && <Navigate to={`/my/account/${userID}`} />}
-    {isAuthenticated && !surveysCompleted && <Navigate to={`/my/survey-starter/${userID}`} />}
-  </div>
+ 
 </div>
 
   );
