@@ -86,8 +86,10 @@ const Login = () => {
         password: password
       });
       const newToken = res.data.access;
-      setToken(newToken); // Update token value in state
       console.log("New token:", newToken);
+      setToken(newToken); // Update token value in state
+      console.log('Token state:', token);
+      return newToken;
     } catch (error) {
       console.error("Error during token generation:", error);
       // Handle error here, e.g., display an error message
