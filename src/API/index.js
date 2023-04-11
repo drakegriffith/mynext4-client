@@ -4,7 +4,7 @@ export let API;
 
 export function init_api(options) {
   const apiOptions = {
-    baseURL: 'app.mynext4.com',
+    baseURL: '/app.mynext4.com',
     timeout: 30000, // ms
     mode: 'cors',
     headers: {
