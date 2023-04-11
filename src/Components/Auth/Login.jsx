@@ -37,7 +37,7 @@ const Login = () => {
   
       console.log(res)
       const token = res.data.access;
-      init_api();
+     
       const config = {
         headers: {
           'Content-Type': 'application/json',
