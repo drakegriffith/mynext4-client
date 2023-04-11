@@ -23,12 +23,15 @@ const Login = () => {
   const [surveysCompleted, setSurveysCompleted] = useState(false);
   const surveyContext = useContext(SurveyContext)
   const [errorMessage, setErrorMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   function handleRegister() {
     navigate("/web/auth/create")
   }
 
-  const loginPressed = async () => {
+  const loginPressed = async (e) => {
+    e.preventDefault();
+    setLoading(true);
     try {
       
       const res = await API.post("/auth/jwt/create", {
@@ -77,6 +80,7 @@ const Login = () => {
         setErrorMessage("An error occurred while logging in. Please try again.");
       }
     }
+    setLoading(false);
   };
   
 
@@ -136,7 +140,7 @@ const Login = () => {
           value={email}
           style={{ width: "80%", margin: "0 auto 0 auto", textAlign: 'center' }}
           onChange={(event) => {
-            setEmail(event.currentTarget.value);
+            setEmail(event.target.value);
           }}
         />
         <PasswordInput
@@ -146,20 +150,15 @@ const Login = () => {
           style={{ width: "80%", margin: "0 auto 0 auto", textAlign: 'center' }}
           value={password}
           onChange={(event) => {
-            setPassword(event.currentTarget.value);
+            setPassword(event.target.value);
           }}
         />
         <div style={{ display: "flex", justifyContent: "center" }}>
-          <Button
-            style={{ width: "250px", backgroundColor: '#57CC99', margin: "30px auto 0 auto" }}
-            mt="xl"
-            mb="xl"
-            className="auth-btn"
-            size="lg"
-            type="submit"
-          >
-            Log In
-          </Button>
+        <div style={{marginTop: 0,display: 'flex', justifyContent: 'center'}}>
+                    <button className="auth-btn" type="submit" disabled={loading}>
+                    {loading ? 'Loading...' : 'Log In'}
+                    </button>
+                    </div>
         </div>
       </form>
 
