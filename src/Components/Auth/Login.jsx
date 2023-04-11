@@ -39,7 +39,7 @@ const Login = () => {
         const config = {
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${newToken}`,
+            'Authorization': `Bearer ${token}`,
             'Accept': 'application/json'
           }
         };
