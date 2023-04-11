@@ -40,13 +40,14 @@ const Login = () => {
         const config = {
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${newToken}`,
+            'Authorization': `Bearer ${tempToken}`,
             'Accept': 'application/json'
           }
         };
         
-        console.log('Making API call with token:', tempToken || newToken);
+        console.log('Making API call with token:', tempToken);
         API.get("/auth/users/me/", config).then(async (response) => {
+          
           console.log('API call success:', response);
           setUserID(response.data.id);
           setUsername(response.data.username);
