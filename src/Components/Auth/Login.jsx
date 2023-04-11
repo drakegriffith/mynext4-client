@@ -86,6 +86,7 @@ const Login = () => {
         email: email,
         password: password
       });
+      console.log("hi:");
       const newToken = res.data.access;
       console.log("New token:", newToken);
       setTempToken(newToken); // Update token value in state
