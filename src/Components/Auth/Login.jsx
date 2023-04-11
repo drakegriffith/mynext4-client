@@ -33,45 +33,28 @@ const Login = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      
-      const res = await API.post("/auth/jwt/create", {
-        email: email,
-        password: password
-      }).catch((error) => {
-        console.error("Error during token generation:", error);
-        // Handle error here, e.g., display an error message
-      });
+      getNewToken(() => {
+        const config = {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+            'Accept': 'application/json'
+          }
+        };
   
-   
-      const token = res.data.access;
-
-      if (!token) {
-        console.error('Token is not present in the response data');
-        return;
-      }
-     
-      const config = {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-          'Accept': 'application/json'
-        }
-      };
-  
-      await API.get("/auth/users/me/", config).then(async (response) => {
-        setUserID(response.data.id);
-        setUsername(response.data.username);
-        setDateJoined(response.data.date_joined);
-        await API.get(`/check_initial_surveys/${response.data.id}/`).then((response) => {
-          setSurveysCompleted(response.data.initalSurveys);
+        API.get("/auth/users/me/", config).then(async (response) => {
+          setUserID(response.data.id);
+          setUsername(response.data.username);
+          setDateJoined(response.data.date_joined);
+          await API.get(`/check_initial_surveys/${response.data.id}/`).then((response) => {
+            setSurveysCompleted(response.data.initalSurveys);
+          });
+          setToken(token);
+          setIsAuthenticated(true);
+          setErrorMessage(""); // Clear any previous error message upon successful login
+          setLoading(false);
         });
-        
       });
-       
-  
-      setToken(token);
-      setIsAuthenticated(true);
-      setErrorMessage(""); // Clear any previous error message upon successful login
     } catch (error) {
       console.error("Error during login:", error);
       if (error.response && error.response.status === 400) {
@@ -79,10 +62,25 @@ const Login = () => {
       } else {
         setErrorMessage("An error occurred while logging in. Please try again.");
       }
+      setLoading(false);
     }
-    setLoading(false);
   };
   
+
+  const getNewToken = async (callback) => {
+    try {
+      const res = await API.post("/auth/jwt/create", {
+        email: email,
+        password: password
+      });
+      const newToken = res.data.access;
+      setToken(newToken); // Update token value in state
+      console.log("New token:", newToken);
+    } catch (error) {
+      console.error("Error during token generation:", error);
+      // Handle error here, e.g., display an error message
+    }
+  };
 
   useEffect(() => {
     init_api();
