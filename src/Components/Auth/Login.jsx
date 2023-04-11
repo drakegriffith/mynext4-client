@@ -35,8 +35,13 @@ const Login = () => {
         password: password
       });
   
-      console.log(res)
+      console.log(res.data)
       const token = res.data.access;
+
+      if (!token) {
+        console.error('Token is not present in the response data');
+        return;
+      }
      
       const config = {
         headers: {
