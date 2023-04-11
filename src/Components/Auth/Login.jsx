@@ -30,56 +30,55 @@ const Login = () => {
     navigate("/web/auth/create")
   }
 
+  useEffect(() => {
+    if (tempToken) {
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${tempToken}`,
+          'Accept': 'application/json'
+        }
+      };
+      
+      console.log('Making API call with token:', tempToken);
+      API.get("/auth/users/me/", config).then(async (response) => {
+  
+        console.log('API call success:', response);
+        setUserID(response.data.id);
+        setUsername(response.data.username);
+        setDateJoined(response.data.date_joined);
+        await API.get(`/check_initial_surveys/${response.data.id}/`).then((response) => {
+          setSurveysCompleted(response.data.initalSurveys);
+        });
+        setToken(tempToken);
+        setIsAuthenticated(true);
+        setErrorMessage(""); // Clear any previous error message upon successful login
+        setLoading(false);
+  
+        if (surveyContext.surveysCompleted) {
+          navigate(`/my/account/${userID}`);
+        } else {
+          navigate(`/my/survey-starter/${userID}`);
+        }
+  
+      }).catch((error) => {
+        console.error("Error during login:", error);
+        if (error.response && error.response.status === 400) {
+          setErrorMessage("Invalid email or password.");
+        } else {
+          setErrorMessage("An error occurred while logging in. Please try again.");
+        }
+        setLoading(false);
+      });
+    }
+  }, [tempToken]);
+  
   const loginPressed = async (e) => {
     e.preventDefault();
     setLoading(true);
     console.log('Calling getNewToken...');
-    try {
-      const newToken = await getNewToken();
-        console.log('getNewToken callback called');
-        const config = {
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${tempToken}`,
-            'Accept': 'application/json'
-          }
-        };
-        
-        console.log('Making API call with token:', tempToken);
-        API.get("/auth/users/me/", config).then(async (response) => {
-          
-          console.log('API call success:', response);
-          setUserID(response.data.id);
-          setUsername(response.data.username);
-          setDateJoined(response.data.date_joined);
-          await API.get(`/check_initial_surveys/${response.data.id}/`).then((response) => {
-            setSurveysCompleted(response.data.initalSurveys);
-          });
-          setToken(tempToken);
-          setIsAuthenticated(true);
-          setErrorMessage(""); // Clear any previous error message upon successful login
-          setLoading(false);
-
-          if (surveyContext.surveysCompleted) {
-            navigate(`/my/account/${userID}`);
-          } else {
-            navigate(`/my/survey-starter/${userID}`);
-          }
-
-        });
-
-    } catch (error) {
-      console.error("Error during login:", error);
-      if (error.response && error.response.status === 400) {
-        setErrorMessage("Invalid email or password.");
-      } else {
-        setErrorMessage("An error occurred while logging in. Please try again.");
-      }
-      setLoading(false);
-      
-    }
+    await getNewToken();
   };
-  
 
   const getNewToken = async (callback) => {
     try {
