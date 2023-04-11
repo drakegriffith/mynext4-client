@@ -33,9 +33,12 @@ const Login = () => {
       const res = await API.post("/auth/jwt/create", {
         email: email,
         password: password
+      }).catch((error) => {
+        console.error("Error during token generation:", error);
+        // Handle error here, e.g., display an error message
       });
   
-      console.log(res.data)
+   
       const token = res.data.access;
 
       if (!token) {
@@ -55,11 +58,12 @@ const Login = () => {
         setUserID(response.data.id);
         setUsername(response.data.username);
         setDateJoined(response.data.date_joined);
-  
         await API.get(`/check_initial_surveys/${response.data.id}/`).then((response) => {
           setSurveysCompleted(response.data.initalSurveys);
         });
+        
       });
+       
   
       setToken(token);
       setIsAuthenticated(true);
