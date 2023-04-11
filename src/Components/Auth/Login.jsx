@@ -125,55 +125,59 @@ const Login = () => {
 
   return (
     <div className="login-container">
-      <div style={{ margin: 0 }}>
-        <Paper  elevation={5} radius={0} p="60px 180px" shadow="xl">
-        <h1 className="auth-title">Sign Into MyNext4! </h1>
+  <div style={{ margin: 0 }}>
+    <Paper elevation={5} radius={0} p="60px 180px" shadow="xl">
+      <h1 className="auth-title">Sign Into MyNext4! </h1>
 
-          <TextInput
-            label="Email address!"
-            size="md"
-            value={email}
-            style={{ width: "80%", margin: "0 auto 0 auto", textAlign: 'center' }}
-            onChange={(event) => {
-              setEmail(event.currentTarget.value);
-            }}
-          />
-          <PasswordInput
-            label="Password"
-            mt="md"
-            size="md"
-            style={{ width: "80%", margin: "0 auto 0 auto" , textAlign: 'center' }}
-            value={password}
-            onChange={(event) => {
-              setPassword(event.currentTarget.value);
-            }}
-          />
-          <div style={{ display: "flex", justifyContent: "center" }}>
-            <Button
-              style={{ width: "250px", backgroundColor: '#57CC99', margin: "30px auto 0 auto" }}
-              mt="xl"
-              mb="xl"
-              className="auth-btn"
-              
-              size="lg"
-              onClick={loginPressed}
-            >
-              Log In
-            </Button>
-          </div>
-          <h5 style={{marginTop: 20,textAlign: 'center'}}> No account created? Make one with us <span onClick={handleRegister} style={{fontWeight: 800, color:'purple', marginTop: 10, cursor: 'pointer'}}><i>here</i></span></h5>
-          {errorMessage && (
+      <form onSubmit={loginPressed}>
+        <TextInput
+          label="Email address!"
+          size="md"
+          value={email}
+          style={{ width: "80%", margin: "0 auto 0 auto", textAlign: 'center' }}
+          onChange={(event) => {
+            setEmail(event.currentTarget.value);
+          }}
+        />
+        <PasswordInput
+          label="Password"
+          mt="md"
+          size="md"
+          style={{ width: "80%", margin: "0 auto 0 auto", textAlign: 'center' }}
+          value={password}
+          onChange={(event) => {
+            setPassword(event.currentTarget.value);
+          }}
+        />
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <Button
+            style={{ width: "250px", backgroundColor: '#57CC99', margin: "30px auto 0 auto" }}
+            mt="xl"
+            mb="xl"
+            className="auth-btn"
+            size="lg"
+            type="submit"
+          >
+            Log In
+          </Button>
+        </div>
+      </form>
+
+      <h5 style={{ marginTop: 20, textAlign: 'center' }}> No account created? Make one with us <span onClick={handleRegister} style={{ fontWeight: 800, color: 'purple', marginTop: 10, cursor: 'pointer' }}><i>here</i></span></h5>
+      {errorMessage && (
         <div className="error-message">
           <p>{errorMessage}</p>
-        </div>)}
-        </Paper>
-        
-      </div>
-      <div className="root-login">
-        {isAuthenticated && surveysCompleted && <Navigate to={`/my/account/${userID}`} />}
-        {isAuthenticated && !surveysCompleted && <Navigate to={`/my/survey-starter/${userID}`} />}
-      </div>
-    </div>
+        </div>
+      )}
+    </Paper>
+
+  </div>
+  <div className="root-login">
+    {isAuthenticated && surveysCompleted && <Navigate to={`/my/account/${userID}`} />}
+    {isAuthenticated && !surveysCompleted && <Navigate to={`/my/survey-starter/${userID}`} />}
+  </div>
+</div>
+
   );
 }
 
