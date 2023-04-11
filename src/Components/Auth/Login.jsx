@@ -54,7 +54,6 @@ const Login = () => {
           setErrorMessage(""); // Clear any previous error message upon successful login
           setLoading(false);
 
-          const navigate = useNavigate();
           if (surveyContext.surveysCompleted) {
             navigate(`/my/account/${userID}`);
           } else {
