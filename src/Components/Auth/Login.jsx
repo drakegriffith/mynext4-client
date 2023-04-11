@@ -36,11 +36,11 @@ const Login = () => {
       });
   
       const token = res.data.access;
-      init_api(token);
+      init_api();
       const config = {
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${res.data.access}`,
+          'Authorization': `JWT ${res.data.access}`,
           'Accept': 'application/json'
         }
       };

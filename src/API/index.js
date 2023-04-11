@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export let API;
 
-export function init_api(token, options) {
+export function init_api(options) {
   const apiOptions = {
     baseURL: 'https://app.mynext4.com',
     timeout: 30000, // ms
@@ -10,7 +10,7 @@ export function init_api(token, options) {
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Content-Type': 'application/json',
-      ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
+  
       ...((options || {}).headers || {})
     },
     ...(options || {}),
