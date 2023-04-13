@@ -10,7 +10,7 @@ const AccountActivation = () => {
         async function activateAccount() {
         try {
            
-            const response = await API.get(`activate/${uid}/${token}`);
+            const response = await API.get(`api/activate/${uid}/${token}`);
 
 
     
