@@ -11,7 +11,7 @@ import { config } from 'react-spring';
 
 function CourseSurveyTest() {
     init_api()
-    const { isAuthenticated } = useContext(AuthContext)
+    const { isAuthenticated, token } = useContext(AuthContext)
     const { userID } = useContext(UserContext);
     const navigate = useNavigate();
     const surveyContext = useContext(SurveyContext)
@@ -20,7 +20,7 @@ function CourseSurveyTest() {
     const [questions, setQuestions] = useState([]);
     const [submittedAnswer, setSubmittedAnswer] = useState(null);
     const [id, setId] = useState(1);
-  
+
     const handleChange = (event) => {
         setAnswer(parseInt(event.target.value, 10));
     }
@@ -28,7 +28,7 @@ function CourseSurveyTest() {
     const config = {
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${yourToken}`,
+        'Authorization': `Bearer ${token}`,
         'Accept': 'application/json',
       },
     };

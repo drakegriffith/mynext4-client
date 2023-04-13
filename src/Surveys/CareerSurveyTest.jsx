@@ -9,7 +9,7 @@ import { SurveyContext } from './SurveyContext';
 
 init_api();
 function CareerSurveyTest() {
-    const { isAuthenticated } = useContext(AuthContext)
+    const { isAuthenticated, token } = useContext(AuthContext)
     const { userID } = useContext(UserContext);
     const [answer, setAnswer] = useState(null);
     const [complete, setComplete] = useState(false);
@@ -22,7 +22,7 @@ function CareerSurveyTest() {
     const config = {
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${yourToken}`,
+          'Authorization': `Bearer ${token}`,
           'Accept': 'application/json',
         },
       };
