@@ -24,26 +24,23 @@ const Login = () => {
   const surveyContext = useContext(SurveyContext)
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
-  const [tempUID, setTempUID] = useState("");
-  const [compSurveys, setCompSurveys] = useState(false);
+ 
 
   function handleRegister() {
     navigate("/web/auth/create")
   }
 
-  const handleNavigation = async (userId, config) => {
-  try {
-    const response = await API.get(`/check_initial_surveys/${userId}/`, config);
-  
-    if (surveyContext.surveysCompleted || compSurveys) {
-      navigate(`/my/account/${userId}`);
-    } else {
-      navigate(`/my/survey-starter/${userId}`);
+  const handleNavigation = async (userId, initialSurveysCompleted, config) => {
+    try {
+      if (initialSurveysCompleted) {
+        navigate(`/my/account/${userId}`);
+      } else {
+        navigate(`/my/survey-starter/${userId}`);
+      }
+    } catch (error) {
+      console.error("Error fetching survey data:", error);
     }
-  } catch (error) {
-    console.error("Error fetching survey data:", error);
-  }
-};
+  };
 
   const loginPressed = async (e) => {
     e.preventDefault();
@@ -91,14 +88,15 @@ const Login = () => {
       setTempUID(response.data.id)
       setUsername(response.data.username);
       setDateJoined(response.data.date_joined);
+      let initialSurveysCompleted;
       await API.get(`/check_initial_surveys/${response.data.id}/`, config).then((response) => {
         setSurveysCompleted(response.data.initalSurveys);
-        setCompSurveys(response.data.initalSurveys);
+        initialSurveysCompleted = response.data.initalSurveys;
       });
       setIsAuthenticated(true);
       setErrorMessage(""); // Clear any previous error message upon successful login
       setLoading(false);
-      handleNavigation(response.data.id, config);
+      handleNavigation(response.data.id, initialSurveysCompleted, config);
     } catch (error) {
       console.error("Error during login:", error);
       if (error.response && error.response.status === 400) {
