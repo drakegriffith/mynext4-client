@@ -12,7 +12,7 @@ import { AuthContext } from "./AuthContext";
 import { UserContext } from "../../Pages/App";
 import { SurveyContext } from "../../Surveys/SurveyContext";
 import { useNavigate } from "react-router-dom";
-import { config } from "react-spring";
+import { AuthContext } from "./AuthContext";
 
 const Login = () => {
   init_api();
