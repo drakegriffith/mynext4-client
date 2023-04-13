@@ -3,7 +3,7 @@ import LandingButton from "./LandingButton";
 
 const Landing = () => {
     return (
-        <div>
+        <div className="landing-container">
             <LandingButton />
         </div>
     )

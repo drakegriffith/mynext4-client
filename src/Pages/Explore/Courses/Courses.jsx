@@ -10,6 +10,13 @@ export const Courses = () => {
     const [course, setCourse] = useState("");
     
     const { id }  = useParams();
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+        'Accept': 'application/json',
+      },
+    };
   
     const CoursePrerequisites = React.memo(({ prerequisites }) => {
         
@@ -18,10 +25,11 @@ export const Courses = () => {
         console.log(courseData)
         
         
+        
         const search = async (searchVal) => {
           let result = null;
           const searchValue = searchVal.trim()
-          await API.get(`/api/search/course/${searchValue}/`)
+          await API.get(`/api/search/course/${searchValue}/`, config)
             .then((response) => {
               console.log(response.data)
               if (response.data.courses.length > 0) {
@@ -106,7 +114,7 @@ export const Courses = () => {
 
       const getCourse = useCallback(async (id) => {
         init_api();
-        const response  = await API.get(`api/courses/get_course/${id}/`)
+        const response  = await API.get(`api/courses/get_course/${id}/`, config)
         
         setCourse(response.data);
       }, []);
