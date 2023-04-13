@@ -48,7 +48,6 @@ const Login = () => {
           'Accept': 'application/json'
         }
       });
-      console.log("hi:");
       const newToken = res.data.access;
       console.log("New token:", newToken);
       setToken(newToken); // Update token value in state
@@ -69,7 +68,7 @@ const Login = () => {
         'Accept': 'application/json'
       }
     };
-
+    console.log("token passed as " + newToken)
     try {
       const response = await API.get("/auth/users/me/", config);
       console.log('API call success:', response);
