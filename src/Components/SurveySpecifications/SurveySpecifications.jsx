@@ -16,15 +16,14 @@ function SurveySpecifications() {
   const { userID } = useContext(UserContext);
   const navigate = useNavigate();
 
-  console.log("COLLEGE" + surveyContext.collegeCompleted)
-  console.log("CAREER" + surveyContext.careerCompleted)
-  console.log("COURSE" + surveyContext.courseCompleted)
+  
 
   useEffect(() => {
     init_api();
     const checkCollegeCompletion = async () => {
       try {
         const response = await API.get(`/check-college-survey/${userID}/`);
+        console.log('Check college completion response:', response.data.collegeCompleted);
         surveyContext.setIsCollegeCompleted(response.data.collegeCompleted);
       } catch (error) {
         console.error('Error checking survey completion:', error);
@@ -34,6 +33,7 @@ function SurveySpecifications() {
     const checkCourseCompletion = async () => {
       try {
         const response = await API.get(`/check-course-survey/${userID}/`);
+        console.log('Check course completion response:', response.data.courseCompleted);
         surveyContext.setIsCourseCompleted(response.data.courseCompleted);
 
       } catch (error) {
@@ -44,6 +44,7 @@ function SurveySpecifications() {
     const checkCareerCompletion = async () => {
       try {
         const response = await API.get(`/check-career-survey/${userID}/`);
+        console.log('Check career completion response:', response.data.careerCompleted);
         surveyContext.setIsCareerCompleted(response.data.careerCompleted);
       } catch (error) {
         console.error('Error checking survey completion:', error);
@@ -61,6 +62,10 @@ function SurveySpecifications() {
       surveyContext.setSurveysCompleted(true);
     }
   }, [surveyContext])
+
+  console.log("COLLEGE" + surveyContext.collegeCompleted)
+  console.log("CAREER" + surveyContext.careerCompleted)
+  console.log("COURSE" + surveyContext.courseCompleted)
 
   const buttonStyles = {
     padding: "15px 20px",
