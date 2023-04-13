@@ -69,8 +69,14 @@ const Login = () => {
       setLoading(false);
     } catch (error) {
       console.error("Error during token generation:", error);
-      // Handle error here, e.g., display an error message
-    }
+      setLoading(false); // Set loading to false when an error occurs
+      if (error.response && error.response.status === 401) {
+        setErrorMessage("Incorrect email or password. Please try again.");
+      } else {
+        setErrorMessage("An error occurred while logging in. Please try again.");
+      }
+    };
+
   };
 
   const getUserData = async (newToken) => {
@@ -102,6 +108,7 @@ const Login = () => {
       handleNavigation(response.data.id, initialSurveysCompleted, config);
     } catch (error) {
       console.error("Error during login:", error);
+      setLoading(false);
       if (error.response && error.response.status === 400) {
         setErrorMessage("An error occurred while logging in. Please try again.");
         setLoading(false);
