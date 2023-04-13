@@ -55,12 +55,9 @@ export const SmallCourse = ({course, onSelect, showHeart, searchValue, onDelete,
         </div>
         {
   showHeart && (
-    <Trash
-      size={24}
-    style={{cursor: 'pointer'}}
     
-      onClick={() => setShowModal(true)}
-    />
+      <Heart size={32} color="red" />
+  
   )
 }
 <div className="icon-container" onClick={handleClick}>

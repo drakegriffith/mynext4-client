@@ -319,7 +319,7 @@ const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
 </motion.div>
 
 
-<h5 style={{marginTop:5, fontSize: '16px', color: 'white'}}> MyMedals</h5>
+<h5 style={{marginTop:5, fontSize: '16px', color: 'white'}}> <Sparkles>MyMedals</Sparkles></h5>
 
 <motion.div className="step-6-tut"
     animate={{ y: [-20, 0], opacity: [0, 1] }}
@@ -355,7 +355,7 @@ const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
   />
 </motion.div>
 
-<h5 style={{marginTop:5, fontSize: '16px', color: 'white'}}> MySurveys</h5>
+<h5 style={{marginTop:5, fontSize: '16px', color: 'white'}}><Sparkles>MySurveys</Sparkles> </h5>
 <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', height: '90px' }}>
   <Paper onClick={openSetting} className="step-7-tut" shadow="xl" style={{ marginTop: 10,padding: '13px', cursor: 'pointer', display: 'flex', justifyContent: 'center' }}>
     <Settings size={36} />

@@ -61,11 +61,7 @@ export const SmallCollege = ({college, onSelect, showHeart, searchValue, onDelet
         
         {
   showHeart && (
-    <Trash
-      size={24}
-      style={{cursor: 'pointer'}}
-      onClick={() => setShowModal(true)}
-    />
+    <Heart size={32} color="red" />
   )
 }
 

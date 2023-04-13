@@ -51,7 +51,7 @@ export const MyCareers = ({  onSelectCareer, setCareers, careers, removeDuplicat
           career_name: career.career_name,
           user_id: userID,
 
-        })
+        }, config)
 
         // do something with the response data
       } catch (error) {
@@ -111,7 +111,7 @@ export const MyCareers = ({  onSelectCareer, setCareers, careers, removeDuplicat
               {chunk.map((name, id) => (
                 <li key={chunkIndex * 6 + id} className="my-component-list-item" >
                 
-                  <SmallCareer onDelete={() => removeCareer(name)} career={name} onSelect={() => onSelectCareer(name)} isLiked={true} showHeart={true}/>
+                  <SmallCareer career={name} onSelect={() => onSelectCareer(name)} isLiked={true} showHeart={true}/>
                 
                 </li>
               ))}
@@ -140,7 +140,7 @@ export const MyCareers = ({  onSelectCareer, setCareers, careers, removeDuplicat
               {chunk.map((name, id) => (
                 <li key={chunkIndex * 6 + id} className="my-component-list-item" >
         
-                  <SmallCareer career={name} onSelect={() => onSelectCareer(name)} showHeart={true}/>
+                  <SmallCareer career={name} onSelect={() => onSelectCareer(name)} />
      
                 </li>
               ))}

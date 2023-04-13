@@ -160,11 +160,9 @@ export const SmallCareer = ({career, onSelect,search, searchValue, showHeart, on
         <div>
         {
   showHeart && (
-    <Trash
-      size={24}
-      style={{cursor: 'pointer'}}
-      onClick={() => setShowModal(true)}
-    />
+
+      <Heart size={32} color="red" />
+    
   )
 }
 <div className="icon-container" onClick={handleClick}>

@@ -44,7 +44,7 @@ export const MyColleges = ({  onSelectCollege, setColleges, colleges }) => {
           college_name: college.college_name,
           user_id: userID,
 
-        })
+        }, config)
 
         // do something with the response data
       } catch (error) {
@@ -95,7 +95,7 @@ export const MyColleges = ({  onSelectCollege, setColleges, colleges }) => {
               {chunk.map((name, id) => (
                 <li key={chunkIndex * 8 + id} className="my-component-list-item" >
                 
-                  <SmallCollege onDelete={() => removeCollege(name)} college={name} onSelect={() => onSelectCollege(name)} showHeart={false}/>
+                  <SmallCollege college={name} onSelect={() => onSelectCollege(name)} showHeart={true}/>
                 </li>
               ))}
             </ul>

@@ -22,7 +22,7 @@ export const MyCourses = ({ onSelectCourse, setCourses, courses, removeDuplicate
 
     const getRecommendations = useCallback(async () => {
       init_api();
-      await API.post(`/mark-recommendations-completed/${userID}/`);
+      await API.post(`/mark-recommendations-completed/${userID}/`, config);
       const response = await API.get(`/api/course/recommendations/view/${userID}/`, config);
       setRecommendedCourses(response.data);
 
@@ -48,7 +48,7 @@ export const MyCourses = ({ onSelectCourse, setCourses, courses, removeDuplicate
         API.post('/api/users/courselist/delete/', {
           course_name: course.course_name,
           user_id: userID,
-        })
+        }, config)
         // do something with the response data
       } catch (error) {
         console.error(error);
@@ -99,7 +99,7 @@ export const MyCourses = ({ onSelectCourse, setCourses, courses, removeDuplicate
             {chunk.map((name, id) => (
               <li key={chunkIndex * 8 + id} className="my-component-list-item" >
               
-                <SmallCourse key={id} onDelete={() => removeCourse(name)} isLiked={true} course={name} onSelect={() => onSelectCourse(name)} showHeart={true}/>
+                <SmallCourse key={id}  isLiked={true} course={name} onSelect={() => onSelectCourse(name)} showHeart={true}/>
               </li>
             ))}
           </ul>
@@ -128,7 +128,7 @@ export const MyCourses = ({ onSelectCourse, setCourses, courses, removeDuplicate
           <ul className="my-component-list">
             {chunk.map((name, id) => (
               <li key={chunkIndex * 6 + id} className="my-component-list-item" >
-                <SmallCourse key={id} course={name} onSelect={() => onSelectCourse(name)} showHeart={true}/>
+                <SmallCourse key={id} course={name} onSelect={() => onSelectCourse(name)} showHeart={false}/>
               </li>
             ))}
           </ul>
