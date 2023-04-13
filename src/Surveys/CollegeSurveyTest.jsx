@@ -32,7 +32,7 @@ function CollegeSurveyTest() {
         const checkSurveyCompletion = async () => {
           try {
             const response = await API.get(`/check-college-survey/${userID}/`, config);
-            surveyContext.setIsCollegeCompleted(response.data.collegeCompleted);
+            surveyContext.setIsCollegeCompleted(response.data.careerCompleted);
     
           } catch (error) {
             console.error('Error checking survey completion:', error);

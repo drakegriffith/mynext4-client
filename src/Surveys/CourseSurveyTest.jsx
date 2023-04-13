@@ -98,6 +98,21 @@ function CourseSurveyTest() {
           surveyContext.setIsCourseCompleted(true);
           navigate(`/my/survey-starter/${userID}`);
         };
+
+
+      useEffect(() => {
+          const checkSurveyCompletion = async () => {
+            try {
+              const response = await API.get(`/check-course-survey/${userID}/`, config);
+              surveyContext.setIsCourseCompleted(response.data.careerCompleted);
+      
+            } catch (error) {
+              console.error('Error checking survey completion:', error);
+            }
+          };
+        
+          checkSurveyCompletion();
+        }, [userID, surveyContext]);
        
     
 

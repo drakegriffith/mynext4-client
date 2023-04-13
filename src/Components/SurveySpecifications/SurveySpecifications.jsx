@@ -16,15 +16,23 @@ function SurveySpecifications() {
   const { userID } = useContext(UserContext);
   const navigate = useNavigate();
 
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+      'Accept': 'application/json',
+    },
+  };
+
   
 
   useEffect(() => {
     init_api();
     const checkCollegeCompletion = async () => {
       try {
-        const response = await API.get(`/check-college-survey/${userID}/`);
-        console.log('Check college completion response:', response.data.collegeCompleted);
-        surveyContext.setIsCollegeCompleted(response.data.collegeCompleted);
+        const response = await API.get(`/check-college-survey/${userID}/`, config);
+        console.log('Check college completion response:', response.data.careerCompleted);
+        surveyContext.setIsCollegeCompleted(response.data.careerCompleted);
       } catch (error) {
         console.error('Error checking survey completion:', error);
       }
@@ -32,9 +40,9 @@ function SurveySpecifications() {
 
     const checkCourseCompletion = async () => {
       try {
-        const response = await API.get(`/check-course-survey/${userID}/`);
-        console.log('Check course completion response:', response.data.courseCompleted);
-        surveyContext.setIsCourseCompleted(response.data.courseCompleted);
+        const response = await API.get(`/check-course-survey/${userID}/`, config);
+        console.log('Check course completion response:', response.data.careerCompleted);
+        surveyContext.setIsCourseCompleted(response.data.careerCompleted);
 
       } catch (error) {
         console.error('Error checking survey completion:', error);
@@ -43,7 +51,7 @@ function SurveySpecifications() {
   
     const checkCareerCompletion = async () => {
       try {
-        const response = await API.get(`/check-career-survey/${userID}/`);
+        const response = await API.get(`/check-career-survey/${userID}/`, config);
         console.log('Check career completion response:', response.data.careerCompleted);
         surveyContext.setIsCareerCompleted(response.data.careerCompleted);
       } catch (error) {
