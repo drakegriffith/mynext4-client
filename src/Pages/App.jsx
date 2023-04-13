@@ -41,7 +41,7 @@ function App() {
  
   
     return (
-      <div id="mobile-warning">
+
       <UserContext.Provider value={{userID, setUserID, username, setUsername, dateJoined, setDateJoined }}>
       <AuthProvider>
         <SurveyProvider>
@@ -82,7 +82,7 @@ function App() {
       </AuthProvider>
       </UserContext.Provider>
 
-      </div>
+    
     );
   }
 
