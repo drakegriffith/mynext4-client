@@ -62,11 +62,19 @@ const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
     // ...
   ];
 
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${yourToken}`,
+      'Accept': 'application/json',
+    },
+  };
+
   useEffect(() => {
     init_api();
     const setTutorialComplete = async () => {
       try {
-        await API.post(`/mark-completed-tutorial/${userID}/`);
+        await API.post(`/mark-completed-tutorial/${userID}/`, config);
       } catch (error) {
         console.error('Error marking survey as completed:', error);
       }
@@ -80,7 +88,7 @@ const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
     init_api();
     const checkTutorialCompletion = async () => {
       try {
-        const response = await API.get(`/check-tutorial-complete/${userID}/`);
+        const response = await API.get(`/check-tutorial-complete/${userID}/`, config);
         console.log(response.data)
         setShowTutorial(!response.data.tutorialStatus)
       } catch (error) {
@@ -110,9 +118,9 @@ const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
   
       try {
         const [courseResponse, collegeResponse, careerResponse] = await Promise.all([
-          API.get(`/api/users/courselist/${userID}/`),
-          API.get(`/api/users/collegelist/${userID}/`),
-          API.get(`/api/users/careerlist/${userID}/`),
+          API.get(`/api/users/courselist/${userID}/`, config),
+          API.get(`/api/users/collegelist/${userID}/`, config),
+          API.get(`/api/users/careerlist/${userID}/`, config),
         ]);
   
         setCourseLikedList(courseResponse.data.liked_list);

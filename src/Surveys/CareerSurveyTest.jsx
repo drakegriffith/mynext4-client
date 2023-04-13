@@ -114,7 +114,7 @@ function CareerSurveyTest() {
 
     const handleFinalSubmit = async () => {
         try {
-            await API.post(`/mark-completed-career-one/${userID}/`, configx);
+            await API.post(`/mark-completed-career-one/${userID}/`, config);
             surveyContext.setIsCareerCompleted(true);
             navigate(`/my/survey-starter/${userID}`);
           } catch (error) {
