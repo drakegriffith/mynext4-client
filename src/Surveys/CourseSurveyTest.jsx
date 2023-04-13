@@ -7,6 +7,7 @@ import { SurveyContext } from './SurveyContext';
 import { useNavigate } from 'react-router-dom';
 import { motion } from "framer-motion";
 import styles from "./Surveys.module.css";
+import { config } from 'react-spring';
 
 function CourseSurveyTest() {
     init_api()
@@ -24,9 +25,17 @@ function CourseSurveyTest() {
         setAnswer(parseInt(event.target.value, 10));
     }
 
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${yourToken}`,
+        'Accept': 'application/json',
+      },
+    };
+
     const fetchSurveyQuestions = useCallback(async () => {
         try {
-            const promise = API.get(`/survey/course/${id}/`);
+            const promise = API.get(`/survey/course/${id}/`, config);
             promise.then((response) => {
                 const res = response.data;
                 setQuestions(res);
@@ -43,7 +52,7 @@ function CourseSurveyTest() {
 
     const getNextQuestion = useCallback(async () => {
         try {
-            await API.get(`/survey/course/${id + 1}/`);  
+            await API.get(`/survey/course/${id + 1}/`, config);  
         } catch (error) {
             setComplete(true);
         };
@@ -68,7 +77,7 @@ function CourseSurveyTest() {
         console.log(data.questionID)
        
         try {
-            await API.post('/CourseSurveyOneAnswers/', data);
+            await API.post('/CourseSurveyOneAnswers/', data, config);
             setAnswer(null);
             setId((prevID) => prevID + 1);
           
@@ -80,7 +89,7 @@ function CourseSurveyTest() {
 
     const handleFinalSubmit = async () => {
         try {
-            await API.post(`/mark-completed-course-one/${userID}/`);
+            await API.post(`/mark-completed-course-one/${userID}/`, config);
             surveyContext.setIsCourseCompleted(true);
             navigate(`/my/survey-starter/${userID}`);
           } catch (error) {

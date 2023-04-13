@@ -18,9 +18,17 @@ function CareerSurveyTest() {
     const [submittedAnswer, setSubmittedAnswer] = useState(null);
     const surveyContext = useContext(SurveyContext);
     const [id, setId] = useState(1);
+
+    const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${yourToken}`,
+          'Accept': 'application/json',
+        },
+      };
     
     const checkCareerCompletion = async (userID) => {
-        const promise = API.get(`/check-career-survey/${userID}/`)
+        const promise = API.get(`/check-career-survey/${userID}/`, config)
             promise.then((response) => {
                 const res = response.data;
                 console.log(res)
@@ -47,7 +55,7 @@ function CareerSurveyTest() {
     const fetchSurveyQuestions = useCallback(async () => {
        ;
         try {
-            const promise = API.get(`/survey/career/${id}/`);
+            const promise = API.get(`/survey/career/${id}/`, config);
             promise.then((response) => {
                 const res = response.data;
                 console.log(res)
@@ -65,7 +73,7 @@ function CareerSurveyTest() {
 
     const getNextQuestion =  useCallback(async () => {
         try {
-            await API.get(`/survey/career/${id + 1}/`);
+            await API.get(`/survey/career/${id + 1}/`, config);
         } catch (error) {
             setComplete(true)
             
@@ -92,7 +100,7 @@ function CareerSurveyTest() {
         };
         
         try {
-            await API.post(`/CareerSurveyOneAnswers/`, data);
+            await API.post(`/CareerSurveyOneAnswers/`, data, config);
             setAnswer(null);
             setId((prevID) => prevID + 1);
           
@@ -106,7 +114,7 @@ function CareerSurveyTest() {
 
     const handleFinalSubmit = async () => {
         try {
-            await API.post(`/mark-completed-career-one/${userID}/`);
+            await API.post(`/mark-completed-career-one/${userID}/`, configx);
             surveyContext.setIsCareerCompleted(true);
             navigate(`/my/survey-starter/${userID}`);
           } catch (error) {

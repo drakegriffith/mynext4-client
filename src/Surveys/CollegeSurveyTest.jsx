@@ -10,7 +10,7 @@ import { SurveyContext } from './SurveyContext';
 init_api();
 function CollegeSurveyTest() {
     const { userID } = useContext(UserContext)
-    const { isAuthenticated } = useContext(AuthContext)
+    const { isAuthenticated, token } = useContext(AuthContext)
     const [answer, setAnswer] = useState(null);
     const [complete, setComplete] = useState(false);
     const [questions, setQuestions] = useState([]);
@@ -19,10 +19,19 @@ function CollegeSurveyTest() {
     const navigate = useNavigate();
     const [id, setId] = useState(1);
 
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+        'Accept': 'application/json',
+      },
+    };
+  
+
     useEffect(() => {
         const checkSurveyCompletion = async () => {
           try {
-            const response = await API.get(`/check-college-survey/${userID}/`);
+            const response = await API.get(`/check-college-survey/${userID}/`, config);
             surveyContext.setIsCollegeCompleted(response.data.collegeCompleted);
     
           } catch (error) {
@@ -40,7 +49,7 @@ function CollegeSurveyTest() {
     const fetchSurveyQuestions = useCallback(async () => {
        ;
         try {
-            const promise = API.get(`/survey/college/${id}/`);
+            const promise = API.get(`/survey/college/${id}/`, config);
             promise.then((response) => {
                 const res = response.data;
                 console.log(res)
@@ -59,7 +68,7 @@ function CollegeSurveyTest() {
 
     const getNextQuestion = useCallback(async () => {
         try {
-            await API.get(`/survey/college/${id + 1}/`);
+            await API.get(`/survey/college/${id + 1}/`, config);
         } catch (error) {
             setComplete(true);
         }
@@ -85,7 +94,7 @@ function CollegeSurveyTest() {
         };
         
         try {
-            await API.post('/CollegeSurveyOneAnswers/', data);
+            await API.post('/CollegeSurveyOneAnswers/', data, config);
             setAnswer(null);
             setId((prevID) => prevID + 1);
           
@@ -97,7 +106,7 @@ function CollegeSurveyTest() {
 
     const handleFinalSubmit = async () => {
         try {
-          await API.post(`/mark-completed-college-one/${userID}/`);
+          await API.post(`/mark-completed-college-one/${userID}/`, config);
           surveyContext.setIsCollegeCompleted(true);
           navigate(`/my/survey-starter/${userID}`);
         } catch (error) {
