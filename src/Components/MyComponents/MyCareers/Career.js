@@ -161,7 +161,7 @@ export const SmallCareer = ({career, onSelect,search, searchValue, showHeart, on
         {
   showHeart && (
 
-      <Heart size={32} style={{backgroundColor: 'red'}}  color="red" />
+      <Heart size={32} style={{fill: 'red'}} color="red" />
     
   )
 }

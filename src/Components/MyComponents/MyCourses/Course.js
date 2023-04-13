@@ -56,7 +56,7 @@ export const SmallCourse = ({course, onSelect, showHeart, searchValue, onDelete,
         {
   showHeart && (
     
-      <Heart size={32} style={{backgroundColor: 'red'}} color="red" />
+      <Heart size={32} style={{fill: 'red'}} color="red" />
   
   )
 }

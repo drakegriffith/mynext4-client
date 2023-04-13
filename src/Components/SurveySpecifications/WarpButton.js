@@ -17,7 +17,7 @@ function WarpButton() {
         'Accept': 'application/json',
       },
     };
-
+/*
     const activateRecommendationCourse = useCallback(async () => {
       try {
         await API.get(`/api/course/recommendations/${userID}/`, config);
@@ -41,6 +41,8 @@ function WarpButton() {
         console.error(error);
       }
     }, [userID]);
+
+    */
     
 
     
@@ -50,13 +52,13 @@ function WarpButton() {
     
       const handleClick = async (event) => {
         event.preventDefault();
-        setButtonText('Writing recommendations...');
+        setButtonText('Writing your Next4...');
         await activateRecommendationCareer();
         await activateRecommendationCollege();
         await activateRecommendationCourse();
         setTimeout(() => {
           navigate(`/my/account/${userID}`) // Replace with the URL of your dashboard
-         }, 5000); // 5 seconds delay
+         }, 15000); // 5 seconds delay
         // Do something after activating the recommendations
       };
     

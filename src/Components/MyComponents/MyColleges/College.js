@@ -61,7 +61,7 @@ export const SmallCollege = ({college, onSelect, showHeart, searchValue, onDelet
         
         {
   showHeart && (
-    <Heart size={32} style={{backgroundColor: 'red'}}  color="red" />
+    <Heart size={32} style={{fill: 'red'}} color="red" />
   )
 }
 
