@@ -105,7 +105,7 @@ const CareerDataPage = ({setCareers, careers}) => {
           career_name: career.career_name,
           user_id: userID,
           score: score,
-        }).then(() => {
+        }, config).then(() => {
           console.log("ADDED");
           setCareerLikedList([...careerLikedList, { ...career, score }]);
         });
@@ -121,7 +121,7 @@ const CareerDataPage = ({setCareers, careers}) => {
           career_name: career.career_name,
           user_id: userID,
           score: score,
-        }).then(() => {
+        }, config).then(() => {
           const updatedCareerLikedList = [...careerLikedList];
           updatedCareerLikedList[careerIndex] = updatedCareer;
           setCareerLikedList(updatedCareerLikedList);

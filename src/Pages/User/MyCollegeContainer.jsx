@@ -92,7 +92,7 @@ const CollegeDataPage = ({setColleges, colleges}) => {
           college_name: college.college_name,
           user_id: userID,
           score: score,
-        }).then(() => {
+        }, config).then(() => {
           setCollegeLikedList([...collegeLikedList, { ...college, score }]);
         });
       } else {
@@ -107,7 +107,7 @@ const CollegeDataPage = ({setColleges, colleges}) => {
           college_name: college.college_name,
           user_id: userID,
           score: score,
-        }).then(() => {
+        }, config).then(() => {
           const updatedCollegeLikedList = [...collegeLikedList];
           updatedCollegeLikedList[collegeIndex] = updatedCollege;
           setCollegeLikedList(updatedCollegeLikedList);

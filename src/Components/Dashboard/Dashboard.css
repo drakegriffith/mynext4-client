@@ -35,7 +35,7 @@
   transition: box-shadow 0.3s ease-in-out;
   position: relative;
   width: 15%;
-  height: 700px;
+  height: 850px;
 
 }
 
@@ -230,7 +230,7 @@
 
 .dashboard-main-area {
   background-color: #22577A;
-  height: 700px;
+  height: 850px;
   box-shadow: 0 0 5px rgba(0, 0, 255, 0.2);
   transition: box-shadow 0.3s ease-in-out;
   display: flex;

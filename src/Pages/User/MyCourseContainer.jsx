@@ -85,11 +85,11 @@ const CourseDataPage = ({setCourses, courses}) => {
       if (courseIndex === -1) {
         // College does not exist in the list
         init_api();
-        API.post("/api/users/courselist/add/", {
+        API.post("/api/users/courselist/add/", config, {
           course_name: course.course_name,
           user_id: userID,
           score: score,
-        }).then(() => {
+        }, config).then(() => {
           setCourseLikedList([...courseLikedList, { ...course, score }]);
         });
       } else {
@@ -104,7 +104,7 @@ const CourseDataPage = ({setCourses, courses}) => {
           college_name: course.course_name,
           user_id: userID,
           score: score,
-        }).then(() => {
+        }, config).then(() => {
           const updatedCourseLikedList = [...courseLikedList];
           updatedCourseLikedList[courseIndex] = updatedCourse;
           setCourseLikedList(updatedCourseLikedList);

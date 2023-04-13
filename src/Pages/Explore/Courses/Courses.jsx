@@ -30,7 +30,7 @@ export const Courses = () => {
         const search = async (searchVal) => {
           let result = null;
           const searchValue = searchVal.trim()
-          await API.get(`/api/search/course/${searchValue}/`, config)
+          await API.get(`/api/search/course/${searchValue}/`)
             .then((response) => {
               console.log(response.data)
               if (response.data.courses.length > 0) {
