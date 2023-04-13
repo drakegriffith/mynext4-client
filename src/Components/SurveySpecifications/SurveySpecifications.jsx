@@ -13,7 +13,7 @@ import Sparkles from "../Sparkles/Sparkles";
 function SurveySpecifications() {
   const [showTutorial, setShowTutorial] = useState(true);
   const surveyContext = useContext(SurveyContext);
-  const { userID } = useContext(UserContext);
+  const { userID, token } = useContext(UserContext);
   const navigate = useNavigate();
 
   const config = {
