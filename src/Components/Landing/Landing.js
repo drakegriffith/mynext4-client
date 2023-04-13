@@ -1,9 +1,13 @@
 import React from "react";
+import LandingButton from "./LandingButton";
 
 const Landing = () => {
     return (
-        <h1> New Landing </h1>
+        <div>
+            <LandingButton />
+        </div>
     )
+   
 }
 
 export default Landing;
