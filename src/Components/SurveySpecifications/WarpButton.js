@@ -8,11 +8,19 @@ function WarpButton() {
     init_api();
     const navigate = useNavigate();
     const [buttonText, setButtonText] = useState('Activate your MyNext4');
-    const { userID } = useContext(UserContext)
+    const { userID, token } = useContext(UserContext)
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+        'Accept': 'application/json',
+      },
+    };
 
     const activateRecommendationCourse = useCallback(async () => {
       try {
-        await API.get(`/api/course/recommendations/${userID}/`);
+        await API.get(`/api/course/recommendations/${userID}/`, config);
       } catch (error) {
         console.error(error);
       }
@@ -20,7 +28,7 @@ function WarpButton() {
     
     const activateRecommendationCollege = useCallback(async () => {
       try {
-        await API.get(`/api/college/recommendations/${userID}/`);
+        await API.get(`/api/college/recommendations/${userID}/`, config);
       } catch (error) {
         console.error(error);
       }
@@ -28,7 +36,7 @@ function WarpButton() {
     
     const activateRecommendationCareer = useCallback(async () => {
       try {
-        await API.get(`/api/career/recommendations/${userID}/`);
+        await API.get(`/api/career/recommendations/${userID}/`, config);
       } catch (error) {
         console.error(error);
       }

@@ -31,7 +31,7 @@ function SurveySpecifications() {
     const checkCollegeCompletion = async () => {
       try {
         const response = await API.get(`/check-college-survey/${userID}/`, config);
-        console.log('Check college completion response:', response.data.careerCompleted);
+  
         surveyContext.setIsCollegeCompleted(response.data.careerCompleted);
       } catch (error) {
         console.error('Error checking survey completion:', error);
@@ -41,7 +41,7 @@ function SurveySpecifications() {
     const checkCourseCompletion = async () => {
       try {
         const response = await API.get(`/check-course-survey/${userID}/`, config);
-        console.log('Check course completion response:', response.data.careerCompleted);
+    
         surveyContext.setIsCourseCompleted(response.data.careerCompleted);
 
       } catch (error) {
@@ -52,7 +52,7 @@ function SurveySpecifications() {
     const checkCareerCompletion = async () => {
       try {
         const response = await API.get(`/check-career-survey/${userID}/`, config);
-        console.log('Check career completion response:', response.data.careerCompleted);
+
         surveyContext.setIsCareerCompleted(response.data.careerCompleted);
       } catch (error) {
         console.error('Error checking survey completion:', error);
@@ -71,9 +71,6 @@ function SurveySpecifications() {
     }
   }, [surveyContext])
 
-  console.log("COLLEGE" + surveyContext.collegeCompleted)
-  console.log("CAREER" + surveyContext.careerCompleted)
-  console.log("COURSE" + surveyContext.courseCompleted)
 
   const buttonStyles = {
     padding: "15px 20px",
