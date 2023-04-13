@@ -33,9 +33,8 @@ const Login = () => {
   const handleNavigation = async (userId, config) => {
   try {
     const response = await API.get(`/check_initial_surveys/${userId}/`, config);
-    setSurveysCompleted(response.data.initalSurveys);
-
-    if (response.data.initalSurveys) {
+  
+    if (surveyContext.surveysCompleted) {
       navigate(`/my/account/${userId}`);
     } else {
       navigate(`/my/survey-starter/${userId}`);
