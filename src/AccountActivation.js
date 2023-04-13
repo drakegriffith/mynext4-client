@@ -7,7 +7,7 @@ const AccountActivation = () => {
     useEffect(() => {
         async function activateAccount() {
         try {
-            const response = await API.get(`/api/accounts/activate/${uid}/${token}/`);
+            const response = await API.get(`accounts/activate/${uid}/${token}`);
             
             if (response.status === 204) {
             alert('Account activated successfully.');
