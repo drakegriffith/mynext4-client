@@ -9,8 +9,9 @@ const AccountActivation = () => {
     useEffect(() => {
         async function activateAccount() {
         try {
+            console.log("started assignment")
             const response = await API.get(`activate/${uid}/${token}`);
-            
+            console.log("called response")
             if (response.status === 204) {
             alert('Account activated successfully.');
             }
@@ -19,8 +20,9 @@ const AccountActivation = () => {
             alert('Error activating account.');
         }
         }
-
+        console.log("completed task")
         activateAccount();
+        console.log("all around success")
     }, [uid, token]);
 
   return (
