@@ -1,12 +1,14 @@
 
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import "./Careers.css";
 import { API, init_api } from "../../../API";
 import { useParams } from "react-router-dom";
 import {  MediumCareer } from "../../../Components/MyComponents/MyCareers/Career";
+import { AuthContext } from "../../../Components/Auth/AuthContext";
 
 function Careers() {
     const [career, setCareer] = useState("");
+    const { token } = useContext(AuthContext)
     /*
     const [knowledge, setKnowledge] = useState([]);
     const [skills, setSkills] = useState([]);
@@ -371,6 +373,13 @@ function Careers() {
       };
     
       
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+          'Accept': 'application/json',
+        },
+      };
     
       const medalStyle = {
         fontWeight: 400,
@@ -389,7 +398,7 @@ function Careers() {
       const getCareer = useCallback(async (id) => {
         try {
           init_api();
-          const response = await API.get(`api/careers/get_career/${id}/`);
+          const response = await API.get(`api/careers/get_career/${id}/`, config);
         console.log(response.data)
           setCareer(response.data);
         } catch (error) {
@@ -412,7 +421,7 @@ function Careers() {
       
         const search = async (industry) => {
           let result = null;
-          await API.get(`/api/explore/career/industry/${industry}/`)
+          await API.get(`/api/explore/career/industry/${industry}/`, config)
             .then((response) => {
               result = response.data.careers;
             })

@@ -1,12 +1,22 @@
-import React, { useCallback, useState, useEffect } from "react";
+import React, { useCallback, useState, useEffect, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { MediumCollege } from "../../../Components/MyComponents/MyColleges/College";
 import { API, init_api } from "../../../API";// Import the API object
 import { useParams } from "react-router-dom";
+import { config } from "react-spring";
+import { AuthContext } from "../../../Components/Auth/AuthContext";
 
 export const Colleges = () => {
     const [college, setCollege] = useState("");
     const { id } = useParams();
+    const { token } = useContext(AuthContext)
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+        'Accept': 'application/json',
+      },
+    };
 
     const SimilarColleges = React.memo(({ similar_colleges }) => {
         const [collegeData, setCollegeData] = useState([]);
@@ -14,7 +24,7 @@ export const Colleges = () => {
         const search = async (searchVal) => {
             let result = null;
             const searchValue = searchVal.trim();
-            await API.get(`/api/search/college/${searchValue}/`)
+            await API.get(`search/college/${searchValue}/`, config)
             .then((response) => {
                 if (response.data.colleges.length > 0) {
                 result = response.data.colleges[0];

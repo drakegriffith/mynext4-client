@@ -23,7 +23,7 @@ import Next4College from "./images/college_icon.png"
 
 const Dashboard = () => {
   const [showTutorial, setShowTutorial] = useState(false);
-const { userID, username, setUserID, setUsername } = useContext(UserContext)
+const { userID, username, setUserID, setUsername, token } = useContext(UserContext)
 const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
   const [careerLikedList, setCareerLikedList] = useState([]);
   const [collegeLikedList, setCollegeLikedList] = useState([]);
@@ -65,7 +65,7 @@ const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
   const config = {
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${yourToken}`,
+      'Authorization': `Bearer ${token}`,
       'Accept': 'application/json',
     },
   };
