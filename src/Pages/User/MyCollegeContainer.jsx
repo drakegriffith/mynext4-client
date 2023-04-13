@@ -217,7 +217,7 @@ const CollegeDataPage = ({setColleges, colleges}) => {
         showSkipButton
       />
       <MyColleges className="step-2-tut" onSelectCollege={selectCollege} setColleges= {setCollegeLikedList} colleges={collegeLikedList} />
-      <Paper className="step-1-tut" withBorder shadow="xl" p="md" sx={{position: 'relative', width: "40%", top: -30, height:'82vh', margin: '0 1.5% 0 1.5%', backgroundColor: '#57CC99', border: '.5px solid #C7F9CC' ,borderRadius: '5px' , zIndex: 1}}>
+      <Paper className="step-1-tut" withBorder shadow="xl" p="md" sx={{position: 'relative', width: "40%", top: -30, height:'82vh', margin: '0 .5% 0 1.5%', backgroundColor: '#57CC99', border: '.5px solid #C7F9CC' ,borderRadius: '5px' , zIndex: 1}}>
         <div className="componentMiddleHeader">
             <div className="my-component-header-text step-4-tut"><b> Showcase Colleges</b> </div>
             <AnimatePresence>

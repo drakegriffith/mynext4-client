@@ -229,7 +229,7 @@ const CareerDataPage = ({setCareers, careers}) => {
       />
         
         <MyCareers className="step-2-tut" onSelectCareer={selectCareer} removeDuplicates={removeDuplicates} setCareers={setCareerLikedList}  careers = {careerLikedList}/>
-        <Paper withBorder className="step-1-tut" shadow="xl" p="md" sx={{position: 'relative', width: "40%", top: -30, height:'82vh', margin: '0 1.5% 0 1.5%', backgroundColor: '#57CC99', border: '.5px solid #C7F9CC' ,borderRadius: '5px' , zIndex: 1}}>
+        <Paper withBorder className="step-1-tut" shadow="xl" p="md" sx={{position: 'relative', width: "40%", top: -30, height:'82vh', margin: '0 .5% 0 1.5%', backgroundColor: '#57CC99', border: '.5px solid #C7F9CC' ,borderRadius: '5px' , zIndex: 1}}>
         <div className="componentMiddleHeader" style={{marginBottom: 15}}>
             <div className="my-component-header-text step-4-tut" ><b> Showcase Careers</b> </div>
             <AnimatePresence>
