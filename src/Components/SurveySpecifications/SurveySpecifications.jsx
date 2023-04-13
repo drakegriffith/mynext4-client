@@ -9,6 +9,7 @@ import { API, init_api } from "../../API";
 import Joyride, { STATUS } from 'react-joyride';
 import { CircleX } from "tabler-icons-react";
 import Sparkles from "../Sparkles/Sparkles";
+import { AuthContext } from "../Auth/AuthContext";
 
 function SurveySpecifications() {
   const [showTutorial, setShowTutorial] = useState(true);
