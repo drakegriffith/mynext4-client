@@ -25,6 +25,7 @@ const Login = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [tempUID, setTempUID] = useState("");
+  const [compSurveys, setCompSurveys] = useState(false);
 
   function handleRegister() {
     navigate("/web/auth/create")
@@ -34,7 +35,7 @@ const Login = () => {
   try {
     const response = await API.get(`/check_initial_surveys/${userId}/`, config);
   
-    if (surveyContext.surveysCompleted) {
+    if (surveyContext.surveysCompleted || compSurveys) {
       navigate(`/my/account/${userId}`);
     } else {
       navigate(`/my/survey-starter/${userId}`);
@@ -92,6 +93,7 @@ const Login = () => {
       setDateJoined(response.data.date_joined);
       await API.get(`/check_initial_surveys/${response.data.id}/`, config).then((response) => {
         setSurveysCompleted(response.data.initalSurveys);
+        setCompSurveys(true);
       });
       setIsAuthenticated(true);
       setErrorMessage(""); // Clear any previous error message upon successful login
