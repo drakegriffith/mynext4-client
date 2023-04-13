@@ -62,9 +62,9 @@ const Login = () => {
         }
       });
       const newToken = res.data.access;
-      console.log("New token:", newToken);
+     
       setToken(newToken); // Update token value in state
-      console.log('Token state:', newToken);
+    
       await getUserData(newToken);
       setLoading(false);
     } catch (error) {
@@ -86,7 +86,7 @@ const Login = () => {
     console.log("token passed as " + newToken)
     try {
       const response = await API.get("/auth/users/me/", config);
-      console.log('API call success:', response);
+   
       setUserID(response.data.id);
       setTempUID(response.data.id)
       setUsername(response.data.username);

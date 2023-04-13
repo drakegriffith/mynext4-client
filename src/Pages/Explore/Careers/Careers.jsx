@@ -399,7 +399,7 @@ function Careers() {
         try {
           init_api();
           const response = await API.get(`api/careers/get_career/${id}/`, config);
-        console.log(response.data)
+        
           setCareer(response.data);
         } catch (error) {
           console.error(error);
