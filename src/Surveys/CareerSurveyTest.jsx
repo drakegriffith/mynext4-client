@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext, useCallback } from 'react';
-import { API } from '../API';
+import { API, init_api } from '../API';
 import { AuthContext } from '../Components/Auth/AuthContext';
 import { UserContext } from '../Pages/App';
 import { useNavigate } from 'react-router-dom';
@@ -7,6 +7,7 @@ import styles from "./Surveys.module.css";
 import { motion } from "framer-motion";
 import { SurveyContext } from './SurveyContext';
 
+init_api();
 function CareerSurveyTest() {
     const { isAuthenticated } = useContext(AuthContext)
     const { userID } = useContext(UserContext);
@@ -46,7 +47,7 @@ function CareerSurveyTest() {
     const fetchSurveyQuestions = useCallback(async () => {
        ;
         try {
-            const promise = API.get(`/api/survey/career/${id}/`);
+            const promise = API.get(`/survey/career/${id}/`);
             promise.then((response) => {
                 const res = response.data;
                 console.log(res)
@@ -64,7 +65,7 @@ function CareerSurveyTest() {
 
     const getNextQuestion =  useCallback(async () => {
         try {
-            await API.get(`/api/survey/career/${id + 1}/`);
+            await API.get(`/survey/career/${id + 1}/`);
         } catch (error) {
             setComplete(true)
             
@@ -91,7 +92,7 @@ function CareerSurveyTest() {
         };
         
         try {
-            await API.post(`/api/CareerSurveyOneAnswers/`, data);
+            await API.post(`/CareerSurveyOneAnswers/`, data);
             setAnswer(null);
             setId((prevID) => prevID + 1);
           

@@ -26,7 +26,7 @@ function CourseSurveyTest() {
 
     const fetchSurveyQuestions = useCallback(async () => {
         try {
-            const promise = API.get(`/api/survey/course/${id}/`);
+            const promise = API.get(`/survey/course/${id}/`);
             promise.then((response) => {
                 const res = response.data;
                 setQuestions(res);
@@ -43,7 +43,7 @@ function CourseSurveyTest() {
 
     const getNextQuestion = useCallback(async () => {
         try {
-            await API.get(`/api/survey/course/${id + 1}/`);  
+            await API.get(`/survey/course/${id + 1}/`);  
         } catch (error) {
             setComplete(true);
         };
@@ -68,7 +68,7 @@ function CourseSurveyTest() {
         console.log(data.questionID)
        
         try {
-            await API.post('/api/CourseSurveyOneAnswers/', data);
+            await API.post('/CourseSurveyOneAnswers/', data);
             setAnswer(null);
             setId((prevID) => prevID + 1);
           

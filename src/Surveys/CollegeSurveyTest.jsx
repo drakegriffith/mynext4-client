@@ -7,8 +7,8 @@ import styles from "./Surveys.module.css";
 import { motion } from "framer-motion";
 import { SurveyContext } from './SurveyContext';
 
+init_api();
 function CollegeSurveyTest() {
-    init_api();
     const { userID } = useContext(UserContext)
     const { isAuthenticated } = useContext(AuthContext)
     const [answer, setAnswer] = useState(null);
@@ -40,7 +40,7 @@ function CollegeSurveyTest() {
     const fetchSurveyQuestions = useCallback(async () => {
        ;
         try {
-            const promise = API.get(`/api/survey/college/${id}/`);
+            const promise = API.get(`/survey/college/${id}/`);
             promise.then((response) => {
                 const res = response.data;
                 console.log(res)
@@ -59,7 +59,7 @@ function CollegeSurveyTest() {
 
     const getNextQuestion = useCallback(async () => {
         try {
-            await API.get(`/api/survey/college/${id + 1}/`);
+            await API.get(`/survey/college/${id + 1}/`);
         } catch (error) {
             setComplete(true);
         }
@@ -85,7 +85,7 @@ function CollegeSurveyTest() {
         };
         
         try {
-            await API.post('/api/CollegeSurveyOneAnswers/', data);
+            await API.post('/CollegeSurveyOneAnswers/', data);
             setAnswer(null);
             setId((prevID) => prevID + 1);
           

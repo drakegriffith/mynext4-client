@@ -97,7 +97,7 @@ function SurveySpecifications() {
   const tutorialSteps = [
     {
       target: '.step-1-tut',
-      content: "Welcome to MyNext4. Activate your account after completing three composite survey's on courses, colleges, and careers. We use these survey's to help us write more accurate recommendations for you, and to ensure you enjoy a personalized experience with MyNext4 rather than one of randomness.",
+      content: "Welcome to MyNext4! Activate your account after completing three composite survey's on courses, colleges, and careers. We use these survey's to help us write more accurate recommendations for you, and to ensure you enjoy a personalized experience with MyNext4 rather than one of randomness.",
     },
     // ...
   ];
@@ -126,7 +126,7 @@ function SurveySpecifications() {
   showSkipButton
 />
       <h1 className="shiny-text step-1-tut" style={{ marginTop: "100px", padding: '20px', backgroundColor: '#FFF', borderRadius: '5px', marginBottom: "5px", fontSize: '36px' }}><Sparkles><b>Make MyNext4 Yours</b></Sparkles></h1>
-      <h4 style={{ padding: '10px', backgroundColor: '#FFF', borderRadius: '5px 5px 5px 5px', marginBottom: "5px", fontSize: '20px',textAlign: 'center', width: '100px' }}> Click the <span style={{color:'red'}}>red</span> circle above for aid while completing the tutorial. </h4>
+      <h4 style={{ padding: '10px', backgroundColor: '#FFF', borderRadius: '5px 5px 5px 5px', marginBottom: "5px", fontSize: '20px',textAlign: 'center', width: '400px' }}> Click the <span style={{color:'red'}}>red</span> circle above for aid while completing the tutorial. </h4>
       <h2 style={{ marginBottom: "15px" }}>{`${(surveyContext.isCourseCompleted + surveyContext.isCollegeCompleted + surveyContext.isCareerCompleted)}/3 surveys complete`}</h2>
 
       <div style={{ display: "flex", flexDirection: "row" }}>

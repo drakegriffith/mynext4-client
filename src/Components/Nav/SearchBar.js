@@ -25,7 +25,7 @@ const SearchBar = () => {
         } else if (searchVal.length > 1) {
         if (searchVal.length % 2 === 0) {
             init_api();
-            const searchUrl = `/api/search/${searchType || 'global'}/${searchVal}/`;
+            const searchUrl = `/search/${searchType || 'global'}/${searchVal}/`;
             await API.get(searchUrl).then((response) => {
                 setShowResults(true);
                 setFilteredResults({
