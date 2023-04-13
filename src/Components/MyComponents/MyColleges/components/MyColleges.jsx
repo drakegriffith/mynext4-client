@@ -11,7 +11,15 @@ import "../../MyComponents.css"
 
 export const MyColleges = ({  onSelectCollege, setColleges, colleges }) => {
   const [recommendedColleges, setRecommendedColleges] = useState([]);
-  const { userID } = useContext(UserContext);
+  const { userID, token } = useContext(UserContext);
+
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+      'Accept': 'application/json',
+    },
+  };
 
   function removeCollege(collegeObject) {
     const updatedList = colleges.filter(item => item.id !== collegeObject.id);
@@ -21,7 +29,7 @@ export const MyColleges = ({  onSelectCollege, setColleges, colleges }) => {
 
     const getRecommendedColleges = useCallback(async () => {
       init_api();
-      const response = await API.get(`/api/college/recommendations/view/${userID}/`);
+      const response = await API.get(`/api/college/recommendations/view/${userID}/`, config);
       setRecommendedColleges(response.data);
     }, [userID]);
 
@@ -32,7 +40,7 @@ export const MyColleges = ({  onSelectCollege, setColleges, colleges }) => {
     const handleDeleteCollegeFeedback = async (college) => {
       try {
         init_api();
-        API.post('/api/users/collegelist/delete/', {
+        API.post('/api/users/collegelist/delete/', config, {
           college_name: college.college_name,
           user_id: userID,
 

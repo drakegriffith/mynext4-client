@@ -1,5 +1,5 @@
 import {useParams} from 'react-router';
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState, useContext } from "react";
 import { init_api, API } from '../../../API';
 import './Courses.css';
 import { MediumCourse } from '../../../Components/MyComponents/MyCourses/Course';

@@ -14,10 +14,19 @@ import Sparkles from "../../../Sparkles/Sparkles";
 export const MyCareers = ({  onSelectCareer, setCareers, careers, removeDuplicates}) => {
   const [recommendedCareers, setRecommendedCareers] = useState([]);
   const [activeTab, setActiveTab] = useState("home");
-  const { userID } = useContext(UserContext);
+  const { userID, token } = useContext(UserContext);
+
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+      'Accept': 'application/json',
+    },
+  };
+
     const getRecommendedCareers = useCallback(async () => {
       init_api();
-      const response = await API.get(`/api/career/recommendations/view/${userID}/`);
+      const response = await API.get(`/api/career/recommendations/view/${userID}/`, config);
       setRecommendedCareers(response.data);
     }, [userID]);
 
@@ -38,7 +47,7 @@ export const MyCareers = ({  onSelectCareer, setCareers, careers, removeDuplicat
 
       try {
         init_api();
-        API.post('/api/users/careerlist/delete/', {
+        API.post('/api/users/careerlist/delete/', config, {
           career_name: career.career_name,
           user_id: userID,
 

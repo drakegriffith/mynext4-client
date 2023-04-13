@@ -10,12 +10,20 @@ import "../../MyComponents.css"
 
 export const MyCourses = ({ onSelectCourse, setCourses, courses, removeDuplicates}) => {
     const [recommendedCourses, setRecommendedCourses] = useState([]);
-    const { userID } = useContext(UserContext)
+    const { userID, token } = useContext(UserContext)
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+        'Accept': 'application/json',
+      },
+    };
 
     const getRecommendations = useCallback(async () => {
       init_api();
-      await API.post(`/mark-recommendations-completed/${userID}/`);
-      const response = await API.get(`/api/course/recommendations/view/${userID}/`);
+      await API.post(`/mark-recommendations-completed/${userID}/`, config);
+      const response = await API.get(`/api/course/recommendations/view/${userID}/`, config);
       setRecommendedCourses(response.data);
 
     }, [userID]);
@@ -37,7 +45,7 @@ export const MyCourses = ({ onSelectCourse, setCourses, courses, removeDuplicate
       console.log(course)
       try {
         init_api();
-        API.post('/api/users/courselist/delete/', {
+        API.post('/api/users/courselist/delete/', config, {
           course_name: course.course_name,
           user_id: userID,
         })
