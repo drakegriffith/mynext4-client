@@ -10,7 +10,8 @@ const AccountActivation = () => {
         async function activateAccount() {
         try {
             console.log("started assignment")
-            const response = await API.post(`activate/${uid}/${token}`);
+            const response = await API.get(`api/activate/${uid}/${token}`);
+
             console.log("called response")
             if (response.status === 204) {
             alert('Account activated successfully.');
