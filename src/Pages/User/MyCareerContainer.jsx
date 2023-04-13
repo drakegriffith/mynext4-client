@@ -18,10 +18,18 @@ const CareerDataPage = ({setCareers, careers}) => {
     const [selectedCareers, setSelectedCareers] = useState([]);
     const [view, setView] = useState("large");
     const [careerLikedList, setCareerLikedList] = useState([]);
-    const { userID } = useContext(UserContext)
+    const { userID, token } = useContext(UserContext)
     const { isAuthenticated } = useContext(AuthContext);
     const largeCareerRef = useRef(null);
     const [errorMessage, setErrorMessage] = useState(null);
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+        'Accept': 'application/json',
+      },
+    };
     
     const removeDuplicates = (list) => {
       const uniqueList = list.filter((college, index) => {
@@ -43,7 +51,7 @@ const CareerDataPage = ({setCareers, careers}) => {
     useEffect(() => {
       const getLikedList = async () => {
         init_api();
-        await API.get(`/api/users/careerlist/${userID}/`)
+        await API.get(`/api/users/careerlist/${userID}/`, config)
           .then((response) => {
             setCareerLikedList(response.data.liked_list);
           });
@@ -57,7 +65,7 @@ const CareerDataPage = ({setCareers, careers}) => {
     useEffect(() => {
       const setTutorialCardsComplete = async () => {
         try {
-          await API.post(`/mark-completed-tutorial-cards/${userID}/`);
+          await API.post(`/mark-completed-tutorial-cards/${userID}/`, config);
         } catch (error) {
           console.error('Error marking survey as completed:', error);
         }
@@ -71,7 +79,7 @@ const CareerDataPage = ({setCareers, careers}) => {
     useEffect(() => {
       const checkTutorialCompletion = async () => {
         try {
-          const response = await API.get(`/check-tutorial-complete-cards/${userID}/`);
+          const response = await API.get(`/check-tutorial-complete-cards/${userID}/`,config);
           setShowTutorialCards(!response.data.tutorialStatusCards)
         } catch (error) {
           console.error('Error checking survey completion:', error);
@@ -93,7 +101,7 @@ const CareerDataPage = ({setCareers, careers}) => {
       if (careerIndex === -1) {
         // College does not exist in the list
         init_api();
-        API.post("/api/users/careerlist/add/", {
+        API.post("/api/users/careerlist/add/", config, {
           career_name: career.career_name,
           user_id: userID,
           score: score,
@@ -109,7 +117,7 @@ const CareerDataPage = ({setCareers, careers}) => {
         };
         init_api();
 
-        API.post("/api/users/careerlist/add/", {
+        API.post("/api/users/careerlist/add/", config, {
           career_name: career.career_name,
           user_id: userID,
           score: score,

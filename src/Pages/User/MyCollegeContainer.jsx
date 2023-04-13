@@ -20,15 +20,22 @@ const CollegeDataPage = ({setColleges, colleges}) => {
   const [view, setView] = useState("large");
   const [collegeLikedList, setCollegeLikedList] = useState([]);
   const largeCollegeRef = useRef(null);
-  const { userID } = useContext(UserContext)
+  const { userID, token } = useContext(UserContext)
   const [errorMessage, setErrorMessage] = useState(null);
   const { isAuthenticated } = useContext(AuthContext);
   
-      
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+      'Accept': 'application/json',
+    },
+  };
+
     useEffect(() => {
       const getLikedList = async () => {
         init_api();
-        await API.get(`/api/users/collegelist/${userID}/`)
+        await API.get(`/api/users/collegelist/${userID}/`, config)
           .then((response) => {
             setCollegeLikedList(response.data.liked_list);
           });
@@ -42,7 +49,7 @@ const CollegeDataPage = ({setColleges, colleges}) => {
     useEffect(() => {
       const setTutorialCardsComplete = async () => {
         try {
-          await API.post(`/mark-completed-tutorial-cards/${userID}/`);
+          await API.post(`/mark-completed-tutorial-cards/${userID}/`, config);
         } catch (error) {
           console.error('Error marking survey as completed:', error);
         }
@@ -56,7 +63,7 @@ const CollegeDataPage = ({setColleges, colleges}) => {
     useEffect(() => {
       const checkTutorialCompletion = async () => {
         try {
-          const response = await API.get(`/check-tutorial-complete-cards/${userID}/`);
+          const response = await API.get(`/check-tutorial-complete-cards/${userID}/`, config);
           setShowTutorialCards(!response.data.tutorialStatusCards)
         } catch (error) {
           console.error('Error checking survey completion:', error);
@@ -81,7 +88,7 @@ const CollegeDataPage = ({setColleges, colleges}) => {
       if (collegeIndex === -1) {
         // College does not exist in the list
         init_api();
-        API.post("/api/users/collegelist/add/", {
+        API.post("/api/users/collegelist/add/", config, {
           college_name: college.college_name,
           user_id: userID,
           score: score,
@@ -96,7 +103,7 @@ const CollegeDataPage = ({setColleges, colleges}) => {
         };
         init_api();
 
-        API.post("/api/users/collegelist/add/", {
+        API.post("/api/users/collegelist/add/", config, {
           college_name: college.college_name,
           user_id: userID,
           score: score,

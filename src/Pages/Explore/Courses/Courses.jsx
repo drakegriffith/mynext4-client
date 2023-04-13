@@ -5,10 +5,11 @@ import './Courses.css';
 import { MediumCourse } from '../../../Components/MyComponents/MyCourses/Course';
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router";
+import { AuthContext } from '../../../Components/Auth/AuthContext';
 
 export const Courses = () => {
     const [course, setCourse] = useState("");
-    
+    const { token } = useContext(AuthContext)
     const { id }  = useParams();
     const config = {
       headers: {

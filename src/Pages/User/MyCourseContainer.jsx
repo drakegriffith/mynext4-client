@@ -18,14 +18,23 @@ const CourseDataPage = ({setCourses, courses}) => {
     const [selectedCourses, setSelectedCourses] = useState([]); // Medium view
     const [view, setView] = useState("large");
     const [courseLikedList, setCourseLikedList] = useState([]);
-    const { userID } = useContext(UserContext)
+    const { userID, token } = useContext(UserContext)
     const largeCourseRef = useRef(null);
     const [errorMessage, setErrorMessage] = useState(null);
     const { isAuthenticated } = useContext(AuthContext);
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+        'Accept': 'application/json',
+      },
+    };
+    
     useEffect(() => {
       const getLikedList = async () => {
         init_api();
-        await API.get(`/api/users/courselist/${userID}/`)
+        await API.get(`/api/users/courselist/${userID}/`, config)
           .then((response) => {
             setCourseLikedList(response.data.liked_list);
           });
@@ -39,7 +48,7 @@ const CourseDataPage = ({setCourses, courses}) => {
     useEffect(() => {
       const setTutorialCardsComplete = async () => {
         try {
-          await API.post(`/mark-completed-tutorial-cards/${userID}/`);
+          await API.post(`/mark-completed-tutorial-cards/${userID}/`, config);
         } catch (error) {
           console.error('Error marking survey as completed:', error);
         }
@@ -53,7 +62,7 @@ const CourseDataPage = ({setCourses, courses}) => {
     useEffect(() => {
       const checkTutorialCompletion = async () => {
         try {
-          const response = await API.get(`/check-tutorial-complete-cards/${userID}/`);
+          const response = await API.get(`/check-tutorial-complete-cards/${userID}/`, config);
           setShowTutorialCards(!response.data.tutorialStatusCards)
         } catch (error) {
           console.error('Error checking survey completion:', error);
@@ -76,7 +85,7 @@ const CourseDataPage = ({setCourses, courses}) => {
       if (courseIndex === -1) {
         // College does not exist in the list
         init_api();
-        API.post("/api/users/courselist/add/", {
+        API.post("/api/users/courselist/add/", config, {
           course_name: course.course_name,
           user_id: userID,
           score: score,
@@ -91,7 +100,7 @@ const CourseDataPage = ({setCourses, courses}) => {
         };
         init_api();
 
-        API.post("/api/users/courselist/add/", {
+        API.post("/api/users/courselist/add/", config, {
           college_name: course.course_name,
           user_id: userID,
           score: score,
