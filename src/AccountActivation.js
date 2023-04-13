@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react';
 import { API, init_api } from './API'; // Replace with your actual API configuration
 import { useParams } from 'react-router';
+
+init_api();
 const AccountActivation = () => {
     const { uid, token } = useParams();
-    init_api();
+
     useEffect(() => {
         async function activateAccount() {
         try {
