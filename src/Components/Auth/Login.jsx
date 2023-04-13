@@ -24,7 +24,7 @@ const Login = () => {
   const surveyContext = useContext(SurveyContext)
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
-  const [tempToken, setTempToken] = useState("");
+  const [tempUID, setTempUID] = useState("");
 
   function handleRegister() {
     navigate("/web/auth/create")
@@ -73,6 +73,7 @@ const Login = () => {
       const response = await API.get("/auth/users/me/", config);
       console.log('API call success:', response);
       setUserID(response.data.id);
+      setTempUID(response.data.id)
       setUsername(response.data.username);
       setDateJoined(response.data.date_joined);
       await API.get(`/check_initial_surveys/${response.data.id}/`, config).then((response) => {
@@ -83,9 +84,9 @@ const Login = () => {
       setLoading(false);
 
       if (surveyContext.surveysCompleted) {
-        navigate(`/my/account/${userID}`);
+        navigate(`/my/account/${tempUID}`);
       } else {
-        navigate(`/my/survey-starter/${userID}`);
+        navigate(`/my/survey-starter/${tempUID}`);
       }
     } catch (error) {
       console.error("Error during login:", error);
