@@ -10,7 +10,8 @@ const AccountActivation = () => {
         async function activateAccount() {
         try {
            
-            const response = await API.post(`api/activate/${uid}/${token}`);
+          const response = await API.post(`api/activate/${uid}/${token}`, {}, {headers: {'content-type': 'application/json'}});
+
 
 
     
