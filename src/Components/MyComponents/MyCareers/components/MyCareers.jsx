@@ -47,7 +47,7 @@ export const MyCareers = ({  onSelectCareer, setCareers, careers, removeDuplicat
 
       try {
         init_api();
-        API.post('/api/users/careerlist/delete/', config, {
+        API.post('/api/users/careerlist/delete/', {
           career_name: career.career_name,
           user_id: userID,
 

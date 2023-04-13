@@ -22,7 +22,7 @@ export const MyCourses = ({ onSelectCourse, setCourses, courses, removeDuplicate
 
     const getRecommendations = useCallback(async () => {
       init_api();
-      await API.post(`/mark-recommendations-completed/${userID}/`, config);
+      await API.post(`/mark-recommendations-completed/${userID}/`);
       const response = await API.get(`/api/course/recommendations/view/${userID}/`, config);
       setRecommendedCourses(response.data);
 
@@ -45,7 +45,7 @@ export const MyCourses = ({ onSelectCourse, setCourses, courses, removeDuplicate
       console.log(course)
       try {
         init_api();
-        API.post('/api/users/courselist/delete/', config, {
+        API.post('/api/users/courselist/delete/', {
           course_name: course.course_name,
           user_id: userID,
         })

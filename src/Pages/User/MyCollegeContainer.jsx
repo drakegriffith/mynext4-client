@@ -88,7 +88,7 @@ const CollegeDataPage = ({setColleges, colleges}) => {
       if (collegeIndex === -1) {
         // College does not exist in the list
         init_api();
-        API.post("/api/users/collegelist/add/", config, {
+        API.post("/api/users/collegelist/add/", {
           college_name: college.college_name,
           user_id: userID,
           score: score,
@@ -103,7 +103,7 @@ const CollegeDataPage = ({setColleges, colleges}) => {
         };
         init_api();
 
-        API.post("/api/users/collegelist/add/", config, {
+        API.post("/api/users/collegelist/add/", {
           college_name: college.college_name,
           user_id: userID,
           score: score,

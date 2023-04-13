@@ -40,7 +40,7 @@ export const MyColleges = ({  onSelectCollege, setColleges, colleges }) => {
     const handleDeleteCollegeFeedback = async (college) => {
       try {
         init_api();
-        API.post('/api/users/collegelist/delete/', config, {
+        API.post('/api/users/collegelist/delete/', {
           college_name: college.college_name,
           user_id: userID,
 
