@@ -97,7 +97,7 @@ function SurveySpecifications() {
   const tutorialSteps = [
     {
       target: '.step-1-tut',
-      content: "Welcome to MyNext4! Activate your account after completing three composite survey's on courses, colleges, and careers. We use these survey's to help us write more accurate recommendations for you, and to ensure you enjoy a personalized experience with MyNext4 rather than one of randomness.",
+      content: "Welcome to MyNext4! Activate your account after completing three composite surveys on courses, colleges, and careers. We use these surveys as a starting point to personalize your MyNext4. You'll receive recommendations for all three categories upon completion.",
     },
     // ...
   ];

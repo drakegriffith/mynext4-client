@@ -30,6 +30,21 @@ const Login = () => {
     navigate("/web/auth/create")
   }
 
+  const handleNavigation = async (userId, config) => {
+  try {
+    const response = await API.get(`/check_initial_surveys/${userId}/`, config);
+    setSurveysCompleted(response.data.initalSurveys);
+
+    if (response.data.initalSurveys) {
+      navigate(`/my/account/${userId}`);
+    } else {
+      navigate(`/my/survey-starter/${userId}`);
+    }
+  } catch (error) {
+    console.error("Error fetching survey data:", error);
+  }
+};
+
   const loginPressed = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -82,12 +97,7 @@ const Login = () => {
       setIsAuthenticated(true);
       setErrorMessage(""); // Clear any previous error message upon successful login
       setLoading(false);
-
-      if (surveyContext.surveysCompleted) {
-        navigate(`/my/account/${tempUID}`);
-      } else {
-        navigate(`/my/survey-starter/${tempUID}`);
-      }
+      handleNavigation(response.data.id, config);
     } catch (error) {
       console.error("Error during login:", error);
       if (error.response && error.response.status === 400) {
