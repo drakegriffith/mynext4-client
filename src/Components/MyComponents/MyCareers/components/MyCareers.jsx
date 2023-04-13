@@ -124,6 +124,7 @@ export const MyCareers = ({  onSelectCareer, setCareers, careers, removeDuplicat
      
   
   <Tabs.Panel value="recommendations" pt="xs">
+  <h4 style={{marginTop: 10}}><i> Coming soon!</i> </h4>
    
            <Carousel
         showArrows={true}

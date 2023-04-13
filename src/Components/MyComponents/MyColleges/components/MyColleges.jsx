@@ -105,6 +105,8 @@ export const MyColleges = ({  onSelectCollege, setColleges, colleges }) => {
       </Tabs.Panel>
       
       <Tabs.Panel value="recommendations" pt="xs">
+
+        <h4 style={{marginTop: 10}}><i> Coming soon!</i> </h4>
  
            <Carousel
         showArrows={true}
