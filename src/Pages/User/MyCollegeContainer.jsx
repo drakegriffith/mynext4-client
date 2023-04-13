@@ -162,11 +162,11 @@ const CollegeDataPage = ({setColleges, colleges}) => {
     },
     {
       target: '.step-3-tut',
-      content: 'Choose component cards to compare or independantly inspect one with our showcase feature.',
+      content: 'Choose component cards to compare or inspect a single with our showcase feature.',
     },
     {
       target: '.step-4-tut',
-      content: "Switch between single or multi-mode with one click.",
+      content: "Click on cards and inspect their attributes in the middle area. Click the search icon on the card to view it's main page.",
     },
     {
       target: '.step-5-tut',
