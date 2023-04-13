@@ -53,9 +53,9 @@ function WarpButton() {
       const handleClick = async (event) => {
         event.preventDefault();
         setButtonText('Writing your Next4...');
-        await activateRecommendationCareer();
-        await activateRecommendationCollege();
-        await activateRecommendationCourse();
+        //await activateRecommendationCareer();
+        //await activateRecommendationCollege();
+        //await activateRecommendationCourse();
         setTimeout(() => {
           navigate(`/my/account/${userID}`) // Replace with the URL of your dashboard
          }, 15000); // 5 seconds delay
@@ -67,7 +67,7 @@ function WarpButton() {
       return () => {
         warpButton.removeEventListener("click", handleClick);
       };
-    }, [activateRecommendationCareer, activateRecommendationCollege, activateRecommendationCourse, navigate, userID]);
+    }, [userID]);
   
     return (
       <button
