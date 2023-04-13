@@ -16,6 +16,10 @@ function SurveySpecifications() {
   const { userID } = useContext(UserContext);
   const navigate = useNavigate();
 
+  console.log("COLLEGE" + surveyContext.collegeCompleted)
+  console.log("CAREER" + surveyContext.careerCompleted)
+  console.log("COURSE" + surveyContext.courseCompleted)
+
   useEffect(() => {
     init_api();
     const checkCollegeCompletion = async () => {
