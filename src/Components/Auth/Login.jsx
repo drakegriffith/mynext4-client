@@ -93,7 +93,7 @@ const Login = () => {
       setDateJoined(response.data.date_joined);
       await API.get(`/check_initial_surveys/${response.data.id}/`, config).then((response) => {
         setSurveysCompleted(response.data.initalSurveys);
-        setCompSurveys(true);
+        setCompSurveys(response.data.initalSurveys);
       });
       setIsAuthenticated(true);
       setErrorMessage(""); // Clear any previous error message upon successful login

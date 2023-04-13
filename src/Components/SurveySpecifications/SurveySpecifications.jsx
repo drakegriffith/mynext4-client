@@ -15,6 +15,7 @@ function SurveySpecifications() {
   const surveyContext = useContext(SurveyContext);
   const { userID, token } = useContext(UserContext);
   const navigate = useNavigate();
+  const { isAuthenticated } = useContext(AuthContext);
 
   const config = {
     headers: {
@@ -118,6 +119,7 @@ function SurveySpecifications() {
 
   
   return (
+    isAuthenticated &&
     <div className={`${surveyContext.surveyCompleted ? 'survey-background' : ''}`}>
     {surveyContext.surveysCompleted ? 
     <div id="survey-page">
