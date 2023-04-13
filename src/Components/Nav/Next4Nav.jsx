@@ -7,14 +7,15 @@ import { motion, AnimatePresence } from 'framer-motion';
 import SearchBar from "./SearchBar";
 import Next4Logo from "./images/icon.png"
 import "./NavBar.css"
+import { SurveyContext } from "../../Surveys/SurveyContext";
 
 function Next4Nav() {
   const { isAuthenticated } = useContext(AuthContext);
   const { userID, username } = useContext(UserContext);
-
+  const surveyContext = useContext(SurveyContext);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
+    surveyContext.surveysCompleted ? setIsDropdownOpen(!isDropdownOpen) : console.log("Complete the three Cs survey first!")
   };
 
   const dropdownItems = [
