@@ -166,11 +166,11 @@ const Login = () => {
     <div className="login-container">
   <div style={{ margin: 0 }}>
     <Paper elevation={5} radius={0} p="60px 180px" shadow="xl">
-      <h1 className="auth-title">Sign Into MyNext4! </h1>
+      <h1 className="auth-title">Sign Into MyNext4 </h1>
 
       <form onSubmit={loginPressed}>
         <TextInput
-          label="Email address!"
+          label="Email address"
           size="md"
           value={email}
           style={{ width: "80%", margin: "0 auto 0 auto", textAlign: 'center' }}
