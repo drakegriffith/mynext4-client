@@ -100,7 +100,7 @@ export const Colleges = () => {
 const getCollege = useCallback(async (id) => {
     try {
       init_api();
-      const response = await API.get(`api/colleges/get_college/${id}/`);
+      const response = await API.get(`api/colleges/get_college/${id}/`, config);
     
       setCollege(response.data);
     } catch (error) {
