@@ -1,18 +1,21 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../Auth/AuthContext";
 import { UserContext } from "../../Pages/App"; // Make sure to import these contexts from the correct location
 import { ChevronDown } from "tabler-icons-react";
 import { motion, AnimatePresence } from 'framer-motion';
+import { init_api, API } from "../../API";
+import { UserContext } from "../../Pages/App"
 import SearchBar from "./SearchBar";
 import Next4Logo from "./images/icon.png"
 import "./NavBar.css"
 
 function Next4Nav() {
   const { isAuthenticated } = useContext(AuthContext);
-  const { userID, username } = useContext(UserContext);
+  const { userID, username, token } = useContext(UserContext);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [tutorialComplete, setTutorialComplete] = useState(false);
+
 
   const config = {
     headers: {
