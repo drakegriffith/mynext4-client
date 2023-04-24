@@ -68,6 +68,7 @@ function Next4Nav() {
                   animate={{ y: 0, opacity: 1 }}
                   exit={{ y: -10, opacity: 0 }}
                   style={{ zIndex: 100 }}
+                  onClick={(e) => e.stopPropagation()}
                 >
                   {renderDropdownItems()}
                 </motion.div>
