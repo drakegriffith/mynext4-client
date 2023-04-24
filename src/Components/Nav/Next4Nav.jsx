@@ -7,15 +7,37 @@ import { motion, AnimatePresence } from 'framer-motion';
 import SearchBar from "./SearchBar";
 import Next4Logo from "./images/icon.png"
 import "./NavBar.css"
-import { SurveyContext } from "../../Surveys/SurveyContext";
 
 function Next4Nav() {
   const { isAuthenticated } = useContext(AuthContext);
   const { userID, username } = useContext(UserContext);
-  const surveyContext = useContext(SurveyContext);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [tutorialComplete, setTutorialComplete] = useState(false);
+
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+      'Accept': 'application/json',
+    },
+  };
+
+  useEffect(() => {
+    const getTutorialStatus = async () => {
+      init_api();
+      await API.get(`/check-tutorial-complete/${userID}/`, config)
+        .then((response) => {
+          setTutorialComplete(response.data.tutorialStatus);
+        });
+    }
+  
+    if (userID) {
+      getTutorialStatus();
+    }
+  }, [userID]);
+
   const toggleDropdown = () => {
-    surveyContext.surveysCompleted ? setIsDropdownOpen(!isDropdownOpen) : console.log("Complete the three Cs survey first!")
+    tutorialComplete ? setIsDropdownOpen(!isDropdownOpen) : console.log("Complete the three Cs survey first!")
   };
 
   const dropdownItems = [
