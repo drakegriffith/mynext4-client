@@ -90,7 +90,9 @@ function Next4Nav() {
           </Link> */}
         <a
           href="https://docs.google.com/forms/d/e/1FAIpQLSdbaGk74witOlKx_l9PdInBgghchc89dSnbjGcq_cFfoERv6A/viewform"
-          class="nav-link"
+          className="nav-link"
+          target="_blank"
+          rel="noopener noreferrer"
         >
           Schedule Free Counseling
         </a>
