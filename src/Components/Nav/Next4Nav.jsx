@@ -91,7 +91,7 @@ function Next4Nav() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          More With MyNext4
+          MyNext4 Newsletter
         </a>
         {/* <Link className="nav-link" to="/store">
             MyNext4 Store
