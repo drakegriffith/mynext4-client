@@ -82,9 +82,17 @@ function Next4Nav() {
         </div>
       </div>
       <div className="nav-links">
-        <Link className="nav-link" to="/more">
+        {/* <Link className="nav-link" to="/more">
           More with MyNext4
-        </Link>
+        </Link> */}
+        <a
+          href="https://mailchi.mp/5fc6caa60f50/mynext4"
+          className="nav-link"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          More with MyNext4
+        </a>
         {/* <Link className="nav-link" to="/store">
             MyNext4 Store
           </Link> */}
