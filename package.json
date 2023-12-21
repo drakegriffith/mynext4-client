@@ -28,6 +28,7 @@
     "react-router": "^6.4.4",
     "react-router-dom": "^6.4.4",
     "react-scripts": "5.0.1",
+    "react-social-media-embed": "^2.4.1",
     "react-spring": "^9.7.1",
     "recharts": "^2.1.16",
     "redux-devtools-extension": "^2.13.9",
@@ -64,6 +65,7 @@
   "devDependencies": {
     "@babel/cli": "^7.19.3",
     "@babel/core": "^7.20.5",
-    "@babel/preset-env": "^7.20.2"
+    "@babel/preset-env": "^7.20.2",
+    "eslint-plugin-jest": "^27.6.0"
   }
 }

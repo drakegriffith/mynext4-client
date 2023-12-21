@@ -45,7 +45,7 @@ function App() {
       <UserContext.Provider value={{userID, setUserID, username, setUsername, dateJoined, setDateJoined }}>
       <AuthProvider>
         <SurveyProvider>
-        {showAnimation && <InitialAnimation onAnimationEnd={handleAnimationEnd} />}
+        {/* {showAnimation && <InitialAnimation onAnimationEnd={handleAnimationEnd} />} */}
     
 
   

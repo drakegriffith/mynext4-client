@@ -86,7 +86,7 @@ function Next4Nav() {
           More with MyNext4
         </Link> */}
         <a
-          href="https://mailchi.mp/5fc6caa60f50/mynext4"
+          href="https://mailchi.mp/c304a1075d87/newsletter"
           className="nav-link"
           target="_blank"
           rel="noopener noreferrer"
@@ -97,7 +97,7 @@ function Next4Nav() {
             MyNext4 Store
           </Link> */}
         <a
-          href="https://docs.google.com/forms/d/e/1FAIpQLSdbaGk74witOlKx_l9PdInBgghchc89dSnbjGcq_cFfoERv6A/viewform"
+          href="https://mynext4.mailchimpsites.com"
           className="nav-link"
           target="_blank"
           rel="noopener noreferrer"

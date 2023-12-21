@@ -1,9 +1,15 @@
 .landing-container {
-    margin: 0;
-    height: 100vh;
-    display: flex;
-    justify-content: flex-start;
-    align-items: flex-end;
+    /* height: 100vh; */
+    /* display: flex; */
+    justify-content: center;
+    margin-left: 30px;
+    margin-right: 30px;
+    align-items: center;
+    margin-top: 110px;
+  }
+
+  .landing-bottom {
+    margin-top: 30px;
   }
   
   .button-container {
